@@ -10,19 +10,26 @@ body {
   background-color: #151719;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   min-height: 100vh;
-  word-spacing: 30px;
+  align-items: center;
 }
 
 #speedSlider {
   margin: 20px 0;
 }
 
+.centered {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .waviy {
   font-size: 50px;
   position: relative;
+  text-align: center;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,0.2));
 }
 
