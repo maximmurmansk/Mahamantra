@@ -38,32 +38,34 @@ body {
   font-family: 'Alfa Slab One', cursive;
   display: inline-block;
   color: #fff;
-  transform: scale(1);
-  animation: waviy 5.3s infinite;
+  animation-name: waviy;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
 }
 
-/* 👇 Пропишем индивидуальные задержки */
-.waviy span:nth-child(1)  { animation-delay: 0.33s; }
-.waviy span:nth-child(2)  { animation-delay: 0.66s; }
-.waviy span:nth-child(3)  { animation-delay: 0.99s; }
-.waviy span:nth-child(4)  { animation-delay: 1.32s; }
-.waviy span:nth-child(5)  { animation-delay: 1.65s; }
-.waviy span:nth-child(6)  { animation-delay: 1.98s; }
-.waviy span:nth-child(7)  { animation-delay: 2.31s; }
-.waviy span:nth-child(8)  { animation-delay: 2.64s; }
-.waviy span:nth-child(9)  { animation-delay: 2.97s; }
-.waviy span:nth-child(10) { animation-delay: 3.30s; }
-.waviy span:nth-child(11) { animation-delay: 3.63s; }
-.waviy span:nth-child(12) { animation-delay: 3.96s; }
-.waviy span:nth-child(13) { animation-delay: 4.29s; }
-.waviy span:nth-child(14) { animation-delay: 4.62s; }
-.waviy span:nth-child(15) { animation-delay: 4.95s; }
-.waviy span:nth-child(16) { animation-delay: 5.28s; }
+/* 🔁 Поочерёдные задержки */
+.waviy span:nth-child(1)  { animation-delay: 0s; }
+.waviy span:nth-child(2)  { animation-delay: 0.5s; }
+.waviy span:nth-child(3)  { animation-delay: 1s; }
+.waviy span:nth-child(4)  { animation-delay: 1.5s; }
+.waviy span:nth-child(5)  { animation-delay: 2s; }
+.waviy span:nth-child(6)  { animation-delay: 2.5s; }
+.waviy span:nth-child(7)  { animation-delay: 3s; }
+.waviy span:nth-child(8)  { animation-delay: 3.5s; }
+.waviy span:nth-child(9)  { animation-delay: 4s; }
+.waviy span:nth-child(10) { animation-delay: 4.5s; }
+.waviy span:nth-child(11) { animation-delay: 5s; }
+.waviy span:nth-child(12) { animation-delay: 5.5s; }
+.waviy span:nth-child(13) { animation-delay: 6s; }
+.waviy span:nth-child(14) { animation-delay: 6.5s; }
+.waviy span:nth-child(15) { animation-delay: 7s; }
+.waviy span:nth-child(16) { animation-delay: 7.5s; }
 
-/* 🔁 Анимация */
+/* 💫 Ключевые кадры */
 @keyframes waviy {
-  0%   { transform: scale(1); }
-  10%  { transform: scale(1.3); color: orange; }
-  15%  { transform: scale(1); }
-  100% { transform: scale(1); }
+  0%   { transform: scale(1);   color: #fff; }
+  50%  { transform: scale(1.3); color: orange; }
+  100% { transform: scale(1);   color: #fff; }
 }
