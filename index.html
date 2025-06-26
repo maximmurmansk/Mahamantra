@@ -7,26 +7,28 @@
 </head>
 <body>
   <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
-  <div class="waviy">
-    <span>Харе</span>
-    <span>Кришна</span>
-    <span>Харе</span>
-    <span>Кришна</span>
-    <br>
-    <span>Кришна</span>
-    <span>Кришна</span>
-    <span>Харе</span>
-    <span>Харе</span>
-    <br>
-    <span>Харе</span>
-    <span>Рама</span>
-    <span>Харе</span>
-    <span>Рама</span>
-    <br>
-    <span>Рама</span>
-    <span>Рама</span>
-    <span>Харе</span>
-    <span>Харе</span>
+  <div class="centered">
+    <div class="waviy">
+      <span>Харе</span>
+      <span>Кришна</span>
+      <span>Харе</span>
+      <span>Кришна</span>
+      <br>
+      <span>Кришна</span>
+      <span>Кришна</span>
+      <span>Харе</span>
+      <span>Харе</span>
+      <br>
+      <span>Харе</span>
+      <span>Рама</span>
+      <span>Харе</span>
+      <span>Рама</span>
+      <br>
+      <span>Рама</span>
+      <span>Рама</span>
+      <span>Харе</span>
+      <span>Харе</span>
+    </div>
   </div>
 
   <script>
@@ -34,9 +36,9 @@
     const slider = document.getElementById('speedSlider');
 
     const speedMap = {
-      1: 1.5, // Нормально (медленнее)
-      2: 1,   // Средне
-      3: 0.5  // Быстро
+      1: 1.5, // медленно
+      2: 1,   // средне
+      3: 0.5  // быстро
     };
 
     let baseDuration = speedMap[slider.value];
