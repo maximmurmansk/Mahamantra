@@ -41,7 +41,9 @@ body {
   color: #fff;
   transform: scale(1);
   animation: waviy 4s infinite;
-  animation-delay: calc(0.33s * var(--i)); /* работает, если в index.html есть --i */
+  animation-delay: calc(0.33s * var(--i));
+  position: relative;
+  --i: 1;
 }
 
 /* ✅ Ключевые кадры */
