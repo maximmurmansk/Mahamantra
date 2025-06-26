@@ -10,25 +10,25 @@
   <button id="switchStyle">Сменить стиль</button>
   <div class="centered">
     <div class="waviy">
-      <span>Харе</span>
-      <span>Кришна</span>
-      <span>Харе</span>
-      <span>Кришна</span>
+      <span style="--i:1">Харе</span>
+      <span style="--i:2">Кришна</span>
+      <span style="--i:3">Харе</span>
+      <span style="--i:4">Кришна</span>
       <br>
-      <span>Кришна</span>
-      <span>Кришна</span>
-      <span>Харе</span>
-      <span>Харе</span>
+      <span style="--i:5">Кришна</span>
+      <span style="--i:6">Кришна</span>
+      <span style="--i:7">Харе</span>
+      <span style="--i:8">Харе</span>
       <br>
-      <span>Харе</span>
-      <span>Рама</span>
-      <span>Харе</span>
-      <span>Рама</span>
+      <span style="--i:9">Харе</span>
+      <span style="--i:10">Рама</span>
+      <span style="--i:11">Харе</span>
+      <span style="--i:12">Рама</span>
       <br>
-      <span>Рама</span>
-      <span>Рама</span>
-      <span>Харе</span>
-      <span>Харе</span>
+      <span style="--i:13">Рама</span>
+      <span style="--i:14">Рама</span>
+      <span style="--i:15">Харе</span>
+      <span style="--i:16">Харе</span>
     </div>
   </div>
 
@@ -39,16 +39,21 @@
     const themeLink = document.getElementById('themeStylesheet');
 
     const speedMap = {
-      1: 1,
-      2: 0.5,
-      3: 0.35
+      1: '6s',
+      2: '4s',
+      3: '2s'
     };
 
-    let baseDuration = speedMap[slider.value];
+    function updateDuration() {
+      if (themeLink.getAttribute('href') === 'style.css' || themeLink.getAttribute('href') === 'style2.css') {
+        const duration = speedMap[slider.value];
+        spans.forEach(span => {
+          span.style.animationDuration = duration;
+        });
+      }
+    }
 
-    slider.addEventListener('input', () => {
-      baseDuration = speedMap[slider.value];
-    });
+    slider.addEventListener('input', updateDuration);
 
     switchStyleBtn.addEventListener('click', () => {
       if (themeLink.getAttribute('href') === 'style.css') {
@@ -56,24 +61,10 @@
       } else {
         themeLink.setAttribute('href', 'style.css');
       }
+      updateDuration();
     });
 
-    async function animateWords() {
-      while (true) {
-        for (let span of spans) {
-          span.style.transition = `transform ${baseDuration / 2}s, color ${baseDuration / 2}s`;
-          span.style.transform = 'scale(1.3)';
-          span.style.color = 'orange';
-          await new Promise(resolve => setTimeout(resolve, (baseDuration / 2) * 1000));
-
-          span.style.transform = 'scale(1)';
-          span.style.color = '#fff';
-          await new Promise(resolve => setTimeout(resolve, (baseDuration / 2) * 1000));
-        }
-      }
-    }
-
-    animateWords();
+    updateDuration();
   </script>
 </body>
 </html>
