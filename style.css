@@ -50,7 +50,7 @@ body{
 }
 
 .waviy span{
-  font-family:'Alfa Slab One',cursive;
+  font-family:'Russo One', 'Alfa Slab One', sans-serif, cursive;
   display:inline-block;
   position:relative;
   animation:waviy var(--speed) infinite;
