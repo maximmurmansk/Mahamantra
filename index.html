@@ -6,25 +6,23 @@
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
 </head>
 <body>
-  <input type="range" id="speedSlider" min="1" max="3" value="1" step="1">
+  <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
   <button id="switchStyle">Сменить стиль</button>
+
   <div class="centered">
     <div class="waviy">
       <span style="--i:1">Харе</span>
       <span style="--i:2">Кришна</span>
       <span style="--i:3">Харе</span>
-      <span style="--i:4">Кришна</span>
-      <br>
+      <span style="--i:4">Кришна</span><br>
       <span style="--i:5">Кришна</span>
       <span style="--i:6">Кришна</span>
       <span style="--i:7">Харе</span>
-      <span style="--i:8">Харе</span>
-      <br>
+      <span style="--i:8">Харе</span><br>
       <span style="--i:9">Харе</span>
       <span style="--i:10">Рама</span>
       <span style="--i:11">Харе</span>
-      <span style="--i:12">Рама</span>
-      <br>
+      <span style="--i:12">Рама</span><br>
       <span style="--i:13">Рама</span>
       <span style="--i:14">Рама</span>
       <span style="--i:15">Харе</span>
@@ -33,38 +31,32 @@
   </div>
 
   <script>
-    const spans = document.querySelectorAll('.waviy span');
-    const slider = document.getElementById('speedSlider');
-    const switchStyleBtn = document.getElementById('switchStyle');
-    const themeLink = document.getElementById('themeStylesheet');
+    const slider       = document.getElementById('speedSlider');
+    const switchBtn    = document.getElementById('switchStyle');
+    const themeLink    = document.getElementById('themeStylesheet');
 
-    const speedMap = {
-      1: '6s',
-      2: '4s',
-      3: '2s'
-    };
+    const speedMap = { 1: '6s', 2: '5s', 3: '4s' };
 
-    function updateDuration() {
-      if (themeLink.getAttribute('href') === 'style.css' || themeLink.getAttribute('href') === 'style2.css') {
-        const duration = speedMap[slider.value];
-        spans.forEach(span => {
-          span.style.animationDuration = duration;
-        });
-      }
+    function updateSpeed() {
+      const dur  = speedMap[slider.value];          // "4s", "5s" или "6s"
+      const num  = parseFloat(dur);                 // 4  /  5  / 6
+      const step = (num / 16).toFixed(3) + 's';     // равномерная «ступень»
+
+      document.documentElement.style.setProperty('--speed', dur);
+      document.documentElement.style.setProperty('--step',  step);
     }
 
-    slider.addEventListener('input', updateDuration);
+    /* реагируем на ползунок */
+    slider.addEventListener('input', updateSpeed);
 
-    switchStyleBtn.addEventListener('click', () => {
-      if (themeLink.getAttribute('href') === 'style.css') {
-        themeLink.setAttribute('href', 'style2.css');
-      } else {
-        themeLink.setAttribute('href', 'style.css');
-      }
-      updateDuration();
+    /* переключаем тему */
+    switchBtn.addEventListener('click', () => {
+      themeLink.href = themeLink.href.endsWith('style.css') ? 'style2.css'
+                                                            : 'style.css';
     });
 
-    updateDuration();
+    /* первоначальная установка */
+    updateSpeed();
   </script>
 </body>
 </html>
