@@ -6,8 +6,12 @@
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
 </head>
 <body>
-  <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
-  <button id="switchStyle">Сменить стиль</button>
+
+  <!-- ▸ Элементы управления помещены в отдельный контейнер ◂ -->
+  <div class="controls">
+    <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
+    <button id="switchStyle">Сменить стиль</button>
+  </div>
 
   <div class="centered">
     <div class="waviy">
@@ -31,32 +35,29 @@
   </div>
 
   <script>
-    const slider       = document.getElementById('speedSlider');
-    const switchBtn    = document.getElementById('switchStyle');
-    const themeLink    = document.getElementById('themeStylesheet');
+    const slider    = document.getElementById('speedSlider');
+    const switchBtn = document.getElementById('switchStyle');
+    const themeLink = document.getElementById('themeStylesheet');
 
     const speedMap = { 1: '6s', 2: '5s', 3: '4s' };
 
     function updateSpeed() {
-      const dur  = speedMap[slider.value];          // "4s", "5s" или "6s"
-      const num  = parseFloat(dur);                 // 4  /  5  / 6
-      const step = (num / 16).toFixed(3) + 's';     // равномерная «ступень»
-
+      const dur  = speedMap[slider.value];           // «4s», «5s» или «6s»
+      const num  = parseFloat(dur);                  // 4 / 5 / 6
+      const step = (num / 16).toFixed(3) + 's';      // равномерная задержка
       document.documentElement.style.setProperty('--speed', dur);
       document.documentElement.style.setProperty('--step',  step);
     }
 
-    /* реагируем на ползунок */
     slider.addEventListener('input', updateSpeed);
 
-    /* переключаем тему */
     switchBtn.addEventListener('click', () => {
-      themeLink.href = themeLink.href.endsWith('style.css') ? 'style2.css'
-                                                            : 'style.css';
+      themeLink.href = themeLink.href.endsWith('style.css')
+        ? 'style2.css'
+        : 'style.css';
     });
 
-    /* первоначальная установка */
-    updateSpeed();
+    updateSpeed();   // начальная установка
   </script>
 </body>
 </html>
