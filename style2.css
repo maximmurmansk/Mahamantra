@@ -17,11 +17,20 @@ body{
   text-align:center;
 }
 
-.controls{ margin-top:40px; }
-
-#speedSlider,#switchStyle{
-  margin:0 10px;
+.counter{
+  position:fixed;
+  top:10px;
+  right:10px;
+  font-family:'Alfa Slab One',cursive;
+  font-size:20px;
+  background:rgba(255,255,255,.6);
+  padding:6px 12px;
+  border-radius:8px;
 }
+
+.controls{margin-top:40px;}
+
+#speedSlider,#switchStyle{margin:0 10px;}
 
 .centered{
   flex:1;
