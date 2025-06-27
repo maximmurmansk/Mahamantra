@@ -31,7 +31,7 @@ body{
 
 /* панель управления */
 .controls{margin-top:40px;}
-#speedSlider,#switchStyle{margin:0 10px;}
+#speedSlider{margin-right:24px;}
 
 /* кнопка-иконка */
 .icon-btn{
