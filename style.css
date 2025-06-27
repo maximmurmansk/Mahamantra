@@ -22,7 +22,8 @@ body{
   position:fixed;
   top:10px;
   right:10px;
-  font-family:'Alfa Slab One',cursive;
+  font-family: 'Cormorant Infant', serif;
+  font-weight: 300;
   font-size:20px;
   background:rgba(0,0,0,.4);
   padding:6px 12px;
@@ -50,7 +51,9 @@ body{
 }
 
 .waviy span{
-  font-family:'Russo One', 'Alfa Slab One', sans-serif, cursive;
+  font-family: 'Cormorant Infant', serif;
+  font-weight: 300;          /* можно 400, если хотите чуть контрастнее */
+  font-style: italic;      
   display:inline-block;
   position:relative;
   animation:waviy var(--speed) infinite;
