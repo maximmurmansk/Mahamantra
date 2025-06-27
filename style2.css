@@ -36,16 +36,16 @@ body{
   width:44px; height:44px;
   border:none;
   border-radius:50%;
-  background:#2e2e2e;
+  background:#e0e0e0;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  color:#ffb400;                 /* цвет линий иконки */
+  color:#ff8c00;
   transition:background .2s;
 }
-.icon-btn:hover{background:#404040;}
-.hidden{display:none!important;} /* скрываем ненужную иконку */
+.icon-btn:hover{background:#d0d0d0;}
+.hidden{display:none!important;}
 
 /* анимация */
 .centered{
