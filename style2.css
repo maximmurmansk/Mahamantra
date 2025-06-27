@@ -17,7 +17,11 @@ body{
   text-align:center;
 }
 
-#speedSlider,#switchStyle{margin:10px;}
+.controls{ margin-top:40px; }
+
+#speedSlider,#switchStyle{
+  margin:0 10px;
+}
 
 .centered{
   flex:1;
@@ -43,7 +47,7 @@ body{
 }
 
 @keyframes waviy{
-  0% {transform:scale(1);}
-  10%{transform:scale(1.3); color:#ff5722;}
-  15%{transform:scale(1);}
+  0%  {transform:scale(1);}
+  10% {transform:scale(1.3);color:#ff5722;}
+  15% {transform:scale(1);}
 }
