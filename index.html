@@ -57,6 +57,7 @@
     /* === карта скоростей === */
     const speedMap = { 1:'7s', 2:'5s', 3:'4s' };
 
+     /* скорость анимации */
     function updateSpeed(){
       const dur  = speedMap[slider.value];           // «4s» | «5s» | «6s»
       const num  = parseFloat(dur);                  // 4 | 5 | 6
@@ -66,21 +67,24 @@
     }
     slider.addEventListener('input', updateSpeed);
 
-    /* переключаем тему */
-    switchBtn.addEventListener('click',()=>{
-      themeLink.href = themeLink.href.endsWith('style.css') ? 'style2.css'
-                                                            : 'style.css';
-    });
+      /* переключение темы + иконок */
+    function switchTheme(){
+      const dark = themeLink.href.endsWith('style.css');   /* сейчас тёмная? */
+      themeLink.href = dark ? 'style2.css' : 'style.css';
+      moonIcon.classList.toggle('hidden', !dark);  // показать => скрыть
+      sunIcon.classList.toggle('hidden',  dark);   // скрыть   => показать
+    }
+    themeToggle.addEventListener('click', switchTheme);
 
-    /* фиксируем завершение каждого цикла */
+    /* счётчик бусин / кругов */
     document.querySelector('.waviy span[style*="--i:16"]')
       .addEventListener('animationiteration',()=>{
-        beads++;
-        if(beads>=108){ beads=0; rounds++; }
+        if(++beads >= 108){ beads = 0; ++rounds; }
         counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
       });
 
-    updateSpeed();     // первичная установка
+    /* первичная установка */
+    updateSpeed();
   </script>
 </body>
 </html>
