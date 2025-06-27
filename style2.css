@@ -59,7 +59,7 @@ body{
 
 .waviy{
   position:relative;
-  font-size:60px;
+  font-size:70px;
   -webkit-box-reflect:below -20px linear-gradient(transparent,rgba(0,0,0,.1));
 }
 .waviy span{
