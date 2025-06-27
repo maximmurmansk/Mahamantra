@@ -7,12 +7,16 @@
 </head>
 <body>
 
-  <!-- ▸ Элементы управления помещены в отдельный контейнер ◂ -->
+  <!-- ▸ СЧЁТЧИК ◂ -->
+  <div class="counter" id="counter">Круги: 0 | Бусины: 0</div>
+
+  <!-- ▸ Элементы управления ◂ -->
   <div class="controls">
     <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
     <button id="switchStyle">Сменить стиль</button>
   </div>
 
+  <!-- ▸ Текст мантры ◂ -->
   <div class="centered">
     <div class="waviy">
       <span style="--i:1">Харе</span>
@@ -30,17 +34,24 @@
       <span style="--i:13">Рама</span>
       <span style="--i:14">Рама</span>
       <span style="--i:15">Харе</span>
-      <span style="--i:16">Харе</span>
+      <span style="--i:16">Харе</span> <!-- ← последняя, за ней следим -->
     </div>
   </div>
 
   <script>
-    const slider    = document.getElementById('speedSlider');
-    const switchBtn = document.getElementById('switchStyle');
-    const themeLink = document.getElementById('themeStylesheet');
+    /* === ПЕРЕМЕННЫЕ === */
+    const slider     = document.getElementById('speedSlider');
+    const switchBtn  = document.getElementById('switchStyle');
+    const themeLink  = document.getElementById('themeStylesheet');
+    const counterEl  = document.getElementById('counter');
 
-    const speedMap = { 1: '6s', 2: '5s', 3: '4s' };
+    let beads  = 0;
+    let rounds = 0;
 
+    /* === КАРТА СКОРОСТЕЙ === */
+    const speedMap = { 1: '7s', 2: '6s', 3: '5s' };
+
+    /* === ОБНОВЛЯЕМ СКОРОСТЬ И ШАГ === */
     function updateSpeed() {
       const dur  = speedMap[slider.value];           // «4s», «5s» или «6s»
       const num  = parseFloat(dur);                  // 4 / 5 / 6
@@ -51,13 +62,26 @@
 
     slider.addEventListener('input', updateSpeed);
 
+    /* === ПЕРЕКЛЮЧЕНИЕ ТЕМЫ === */
     switchBtn.addEventListener('click', () => {
-      themeLink.href = themeLink.href.endsWith('style.css')
-        ? 'style2.css'
-        : 'style.css';
+      themeLink.href = themeLink.href.endsWith('style.css') ? 'style2.css'
+                                                            : 'style.css';
     });
 
-    updateSpeed();   // начальная установка
+    /* === СЧЁТЧИК: реагируем на завершение цикла последней буквы === */
+    const lastSpan = document.querySelector('.waviy span[style*="--i:16"]');
+
+    lastSpan.addEventListener('animationiteration', () => {
+      beads += 1;
+      if (beads >= 108) {
+        beads = 0;
+        rounds += 1;
+      }
+      counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
+    });
+
+    /* первоначальная установка */
+    updateSpeed();
   </script>
 </body>
 </html>
