@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
 
 :root{
-  --speed:5s;     /* переопределяется JS-ом */
-  --step:0.312s;  /* 5 / 16, изменяется JS-ом вместе со скоростью */
+  --speed:5s;     /* переопределяет JS */
+  --step:0.312s;  /* 5 / 16, тоже меняет JS */
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -17,12 +17,22 @@ body{
   text-align:center;
 }
 
-/* ▸ контейнер для слайдера и кнопки ◂ */
-.controls{ margin-top:40px; }
-
-#speedSlider,#switchStyle{
-  margin:0 10px;          /* лишь горизонтальный зазор */
+/* ▸ СЧЁТЧИК ◂ */
+.counter{
+  position:fixed;
+  top:10px;
+  right:10px;
+  font-family:'Alfa Slab One',cursive;
+  font-size:20px;
+  background:rgba(0,0,0,.4);
+  padding:6px 12px;
+  border-radius:8px;
 }
+
+/* ▸ КНОПКА + СЛАЙДЕР ◂ */
+.controls{margin-top:40px;}
+
+#speedSlider,#switchStyle{margin:0 10px;}
 
 .centered{
   flex:1;
