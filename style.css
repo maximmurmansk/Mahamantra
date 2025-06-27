@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+
 :root{
   --speed:5s;     /* переопределяет JS */
   --step:0.312s;  /* 5 / 16, тоже меняет JS */
@@ -7,6 +7,9 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
+  font-family: 'Cormorant Infant', serif;
+  font-weight: 300;      /* самый тонкий доступный вес */
+  font-style: italic;    /* подчёркиваем изящность */
   background:#151719;
   color:#fff;
   min-height:100vh;
@@ -50,7 +53,9 @@ body{
 }
 
 .waviy span{
-  font-family:'Alfa Slab One',cursive;
+  font-family: 'Cormorant Infant', serif;
+  font-weight: 300;
+  font-style: italic;
   display:inline-block;
   position:relative;
   animation:waviy var(--speed) infinite;
