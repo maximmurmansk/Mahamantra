@@ -29,8 +29,25 @@ body{
 }
 
 .controls{margin-top:40px;}
-#speedSlider,#switchStyle{margin:0 10px;}
+#speedSlider{margin-right:12px;}
 
+/* кнопка-иконка */
+.icon-btn{
+  width:44px; height:44px;
+  border:none;
+  border-radius:50%;
+  background:#2e2e2e;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  color:#ffb400;                 /* цвет линий иконки */
+  transition:background .2s;
+}
+.icon-btn:hover{background:#404040;}
+.hidden{display:none!important;} /* скрываем ненужную иконку */
+
+/* анимация */
 .centered{
   flex:1;
   display:flex;
