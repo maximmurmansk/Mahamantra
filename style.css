@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
-
 :root{
   --speed:5s;     /* переопределяет JS */
   --step:0.312s;  /* 5 / 16, тоже меняет JS */
@@ -51,7 +50,7 @@ body{
 }
 
 .waviy span{
-  font-family: 'Cormorant Infant', serif;
+  font-family:'Alfa Slab One', serif;
   font-weight: 300;          /* можно 400, если хотите чуть контрастнее */
   font-style: italic;      
   display:inline-block;
