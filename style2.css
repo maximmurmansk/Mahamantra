@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap');
 
-:root{
-  --speed:5s;
-  --step:0.312s;
-}
+:root{ --speed:5s; --step:0.312s; }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -16,61 +13,51 @@ body{
   align-items:center;
   text-align:center;
   font-family:"Great Vibes",cursive;
-  font-weight:400;
 }
 
 .counter{
-  position:fixed;
-  top:10px; right:10px;
-  font-size:30px;
-  background:rgba(255,255,255,.6);
-  padding:6px 12px;
-  border-radius:8px;
+  position:fixed; top:10px; right:10px;
+  font-size:30px; padding:6px 12px;
+  background:rgba(255,255,255,.6); border-radius:8px;
 }
 
 .controls{margin-top:40px;}
-#speedSlider{margin-right:24px;}
+#speedSlider{margin-right:24px; width:160px;}
 
-/* кнопка-иконка */
 .icon-btn{
-  width:44px; height:44px;
-  border:none;
-  border-radius:50%;
-  background:#e0e0e0;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  color:#ff8c00;
-  transition:background .2s;
+  width:44px;height:44px;border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#e0e0e0;color:#ff8c00;cursor:pointer;transition:.2s;
 }
 .icon-btn:hover{background:#d0d0d0;}
 .hidden{display:none!important;}
 
-/* анимация */
 .centered{
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  word-spacing:30px;
+  flex:1;display:flex;justify-content:center;align-items:center;
+  width:100%;word-spacing:30px;
 }
 
 .waviy{
-  position:relative;
-  font-size:70px;
+  position:relative;font-size:70px;
   -webkit-box-reflect:below -20px linear-gradient(transparent,rgba(0,0,0,.1));
 }
 .waviy span{
-  font-family:"Great Vibes",cursive;
-  display:inline-block;
-  position:relative;
+  display:inline-block;position:relative;
   animation:waviy var(--speed) infinite;
-  animation-delay:calc(var(--step) * var(--i));
+  animation-delay:calc(var(--step)*var(--i));
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.2));
 }
 @keyframes waviy{
-  0%  {transform:scale(1);}
-  10% {transform:scale(1.3); color:#e4491d;}
-  15% {transform:scale(1);}
+  0%{transform:scale(1);}
+  10%{transform:scale(1.3);color:#e4491d;}
+  15%{transform:scale(1);}
+}
+
+/* ===== Mobile режим ===== */
+body.mobile .waviy span{
+  animation:none !important;
+  transition:transform .25s ease,color .25s ease;
+}
+body.mobile .waviy span.active{
+  transform:scale(1.3); color:#e4491d;
 }
