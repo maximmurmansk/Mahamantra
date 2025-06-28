@@ -32,6 +32,15 @@ body{
 /* панель управления */
 .controls{margin-top:40px; display:inline-flex; align-items:center; gap:10px;}
 
+.spd-btn{
+  width:44px; height:44px; font-size:30px; line-height:44px;
+  border:none; border-radius:50%; cursor:pointer; color:#fff;
+  background:#444; transition:.2s; user-select:none;
+}
+.spd-btn:hover{background:#555;}
+
+.spd-text{font-size:30px; padding:0;}
+
 /* кнопка-иконка */
 .icon-btn{
   width:44px; height:44px;
