@@ -4,30 +4,33 @@
   <meta charset="UTF-8">
   <title>Харе Кришна</title>
 
-  <!-- ▸ Подключаем оба шрифта одним запросом ◂ -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap"
-    rel="stylesheet">
+  <!-- Подключаем шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <!-- Тёмная тема по умолчанию -->
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
 </head>
-<body>
 
-  <!-- ▸ счётчик ◂ -->
+<!-- Класс desktop / mobile будет подменяться JS-ом -->
+<body class="desktop">
+
+  <!-- Счётчик кругов и бусин -->
   <div class="counter" id="counter">Круги: 0 | Бусины: 0</div>
 
-  <!-- ▸ панель управления ◂ -->
+  <!-- Панель управления -->
   <div class="controls">
     <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
-     <!-- Кнопка-иконка -->
+
+    <!-- Кнопка-иконка -->
     <button id="themeToggle" class="icon-btn" aria-label="Смена темы">
-      <!-- ЛУНА (по умолчанию видима) -->
+      <!-- Луна -->
       <svg id="moonIcon" viewBox="0 0 24 24" width="24" height="24"
            fill="none" stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3
                  a7 7 0 0 0 9.79 9.79z"/>
       </svg>
-      <!-- СОЛНЦЕ (скрыто до переключения) -->
+      <!-- Солнце -->
       <svg id="sunIcon" class="hidden" viewBox="0 0 24 24" width="24" height="24"
            fill="none" stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
@@ -44,72 +47,94 @@
     </button>
   </div>
 
-  <!-- ▸ текст мантры ◂ -->
+  <!-- Текст мантры -->
   <div class="centered">
-    <div class="waviy">
-      <span style="--i:1">Харе</span>
-      <span style="--i:2">Кришна</span>
-      <span style="--i:3">Харе</span>
-      <span style="--i:4">Кришна</span><br>
-      <span style="--i:5">Кришна</span>
-      <span style="--i:6">Кришна</span>
-      <span style="--i:7">Харе</span>
-      <span style="--i:8">Харе</span><br>
-      <span style="--i:9">Харе</span>
-      <span style="--i:10">Рама</span>
-      <span style="--i:11">Харе</span>
-      <span style="--i:12">Рама</span><br>
-      <span style="--i:13">Рама</span>
-      <span style="--i:14">Рама</span>
-      <span style="--i:15">Харе</span>
-      <span style="--i:16">Харе</span>
+    <div class="waviy" id="mainLine">
+      <span style="--i:1">Харе</span><span style="--i:2">Кришна</span>
+      <span style="--i:3">Харе</span><span style="--i:4">Кришна</span><br>
+      <span style="--i:5">Кришна</span><span style="--i:6">Кришна</span>
+      <span style="--i:7">Харе</span><span style="--i:8">Харе</span><br>
+      <span style="--i:9">Харе</span><span style="--i:10">Рама</span>
+      <span style="--i:11">Харе</span><span style="--i:12">Рама</span><br>
+      <span style="--i:13">Рама</span><span style="--i:14">Рама</span>
+      <span style="--i:15">Харе</span><span style="--i:16">Харе</span>
     </div>
   </div>
 
   <script>
-     /* DOM-элементы */
-    const slider      = document.getElementById('speedSlider');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeLink   = document.getElementById('themeStylesheet');
-    const moonIcon    = document.getElementById('moonIcon');
-    const sunIcon     = document.getElementById('sunIcon');
-    const counterEl   = document.getElementById('counter');
+  /* --- DOM --- */
+  const slider      = document.getElementById('speedSlider');
+  const themeLink   = document.getElementById('themeStylesheet');
+  const themeBtn    = document.getElementById('themeToggle');
+  const moonIcon    = document.getElementById('moonIcon');
+  const sunIcon     = document.getElementById('sunIcon');
+  const counterEl   = document.getElementById('counter');
+  const spans       = [...document.querySelectorAll('.waviy span')];
 
-    /* === счётчики бусин/кругов === */
-    let beads  = 0;
-    let rounds = 0;
+  /* --- счётчики --- */
+  let beads = 0, rounds = 0;
 
-    /* === карта скоростей === */
-    const speedMap = { 1:'7s', 2:'6s', 3:'4.5s' };
+  /* --- карта скоростей --- */
+  const cssSpeed = {1:'7s', 2:'6s', 3:'4.5s'};
+  const jsSpeed  = {1:520, 2:420, 3:300};
 
-     /* скорость анимации */
-    function updateSpeed(){
-      const dur  = speedMap[slider.value];           // «4s» | «5s» | «6s»
-      const num  = parseFloat(dur);                  // 4 | 5 | 6
-      const step = (num/16).toFixed(3)+'s';          // равномерная задержка
+  /* первичная CSS-скорость */
+  function updateCssSpeed(){
+      const dur = cssSpeed[slider.value];
+      const num = parseFloat(dur);
+      const step= (num/16).toFixed(3)+'s';
       document.documentElement.style.setProperty('--speed', dur);
       document.documentElement.style.setProperty('--step',  step);
-    }
-    slider.addEventListener('input', updateSpeed);
+  }
+  updateCssSpeed();
+  slider.addEventListener('input', updateCssSpeed);
 
-      /* переключение темы + иконок */
-    function switchTheme(){
-      const dark = themeLink.href.endsWith('style.css');   /* сейчас тёмная? */
-      themeLink.href = dark ? 'style2.css' : 'style.css';
-      moonIcon.classList.toggle('hidden', !dark);  // показать => скрыть
-      sunIcon.classList.toggle('hidden',  dark);   // скрыть   => показать
-    }
-    themeToggle.addEventListener('click', switchTheme);
+  /* --- переключатель темы --- */
+  themeBtn.addEventListener('click',()=>{
+     const dark = themeLink.href.endsWith('style.css');
+     themeLink.href = dark ? 'style2.css' : 'style.css';
+     moonIcon.classList.toggle('hidden', !dark);
+     sunIcon.classList.toggle('hidden',  dark);
+  });
 
-    /* счётчик бусин / кругов */
-    document.querySelector('.waviy span[style*="--i:16"]')
-      .addEventListener('animationiteration',()=>{
-        if(++beads >= 108){ beads = 0; ++rounds; }
-        counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
-      });
+  /* --- Desktop счётчик (CSS animationiteration) --- */
+  document.querySelector('.waviy span[style*="--i:16"]')
+    .addEventListener('animationiteration', ()=>{
+       if(document.body.className!=='desktop') return;
+       if(++beads>=108){ beads=0;++rounds;}
+       counterEl.textContent=`Круги: ${rounds} | Бусины: ${beads}`;
+    });
 
-    /* первичная установка */
-    updateSpeed();
+  /* -------------------------------------------------
+     Адаптив: desktop  ↔ mobile
+  --------------------------------------------------*/
+  let idx=0, last=performance.now(), stepMS=jsSpeed[slider.value];
+
+  slider.addEventListener('input',()=>{ stepMS = jsSpeed[slider.value]; });
+
+  function setMode(){
+     const mobile = matchMedia('(max-width:768px)').matches;
+     document.body.className = mobile ? 'mobile' : 'desktop';
+     spans.forEach(s=>s.classList.remove('active'));
+     idx=0; last=performance.now();
+  }
+  setMode();
+  addEventListener('resize', setMode);
+
+  function frame(now){
+     if(document.body.className==='mobile' && now-last>=stepMS){
+        spans[idx].classList.remove('active');
+        idx=(idx+1)%spans.length;
+        spans[idx].classList.add('active');
+        if(idx===spans.length-1){
+           if(++beads>=108){beads=0;++rounds;}
+           counterEl.textContent=`Круги: ${rounds} | Бусины: ${beads}`;
+        }
+        last=now;
+     }
+     requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
   </script>
 </body>
 </html>
