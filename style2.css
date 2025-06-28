@@ -25,6 +25,7 @@ body{
 }
 
 .controls{margin-top:40px;}
+
 .spd-btn{
   width:44px; height:44px; font-size:30px; line-height:44px;
   border:none; border-radius:50%; cursor:pointer; color:#fff;
