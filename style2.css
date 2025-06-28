@@ -25,7 +25,14 @@ body{
 }
 
 .controls{margin-top:40px;}
-#speedSlider{margin-right:24px;}
+.spd-btn{
+  width:44px; height:44px; font-size:30px; line-height:44px;
+  border:none; border-radius:50%; cursor:pointer; color:#fff;
+  background:#444; transition:.2s; user-select:none;
+}
+.spd-btn:hover{background:#555;}
+
+.spd-text{font-size:30px; padding:0;}
 
 .icon-btn{
   width:44px; height:44px;
@@ -38,6 +45,7 @@ body{
   cursor:pointer;
   color:#ff8c00;
   transition:background .2s;
+  margin-left:30px;
 }
 .icon-btn:hover{background:#d0d0d0;}
 .hidden{display:none!important;}
