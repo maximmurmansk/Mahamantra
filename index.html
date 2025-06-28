@@ -4,21 +4,23 @@
   <meta charset="UTF-8">
   <title>Харе Кришна</title>
 
-  <!-- ▸ Подключаем оба шрифта одним запросом ◂ -->
+  <!-- рукописные шрифты -->
   <link
     href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap"
     rel="stylesheet">
+  <!-- тема по умолчанию — тёмная -->
   <link id="themeStylesheet" rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ▸ счётчик ◂ -->
+  <!-- счётчик кругов / бусин -->
   <div class="counter" id="counter">Круги: 0 | Бусины: 0</div>
 
-  <!-- ▸ панель управления ◂ -->
+  <!-- панель управления -->
   <div class="controls">
     <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
-     <!-- Кнопка-иконка -->
+
+    <!-- Кнопка-иконка -->
     <button id="themeToggle" class="icon-btn" aria-label="Смена темы">
       <!-- ЛУНА (по умолчанию видима) -->
       <svg id="moonIcon" viewBox="0 0 24 24" width="24" height="24"
@@ -44,30 +46,22 @@
     </button>
   </div>
 
-  <!-- ▸ текст мантры ◂ -->
+  <!-- текст мантры -->
   <div class="centered">
     <div class="waviy">
-      <span style="--i:1">Харе</span>
-      <span style="--i:2">Кришна</span>
-      <span style="--i:3">Харе</span>
-      <span style="--i:4">Кришна</span><br>
-      <span style="--i:5">Кришна</span>
-      <span style="--i:6">Кришна</span>
-      <span style="--i:7">Харе</span>
-      <span style="--i:8">Харе</span><br>
-      <span style="--i:9">Харе</span>
-      <span style="--i:10">Рама</span>
-      <span style="--i:11">Харе</span>
-      <span style="--i:12">Рама</span><br>
-      <span style="--i:13">Рама</span>
-      <span style="--i:14">Рама</span>
-      <span style="--i:15">Харе</span>
-      <span style="--i:16">Харе</span>
+      <span style="--i:1">Харе</span><span style="--i:2">Кришна</span>
+      <span style="--i:3">Харе</span><span style="--i:4">Кришна</span><br>
+      <span style="--i:5">Кришна</span><span style="--i:6">Кришна</span>
+      <span style="--i:7">Харе</span><span style="--i:8">Харе</span><br>
+      <span style="--i:9">Харе</span><span style="--i:10">Рама</span>
+      <span style="--i:11">Харе</span><span style="--i:12">Рама</span><br>
+      <span style="--i:13">Рама</span><span style="--i:14">Рама</span>
+      <span style="--i:15">Харе</span><span style="--i:16">Харе</span>
     </div>
   </div>
 
   <script>
-     /* DOM-элементы */
+    /* DOM-элементы */
     const slider      = document.getElementById('speedSlider');
     const themeToggle = document.getElementById('themeToggle');
     const themeLink   = document.getElementById('themeStylesheet');
@@ -75,24 +69,24 @@
     const sunIcon     = document.getElementById('sunIcon');
     const counterEl   = document.getElementById('counter');
 
-    /* === счётчики бусин/кругов === */
+    /* счётчики круг / бусина */
     let beads  = 0;
     let rounds = 0;
 
-    /* === карта скоростей === */
-    const speedMap = { 1:'7s', 2:'6s', 3:'4.5s' };
+    /* карта скоростей */
+    const speedMap = { 1:'6s', 2:'5s', 3:'4s' };
 
-     /* скорость анимации */
+    /* скорость анимации */
     function updateSpeed(){
-      const dur  = speedMap[slider.value];           // «4s» | «5s» | «6s»
-      const num  = parseFloat(dur);                  // 4 | 5 | 6
-      const step = (num/16).toFixed(3)+'s';          // равномерная задержка
+      const dur  = speedMap[slider.value];
+      const num  = parseFloat(dur);
+      const step = (num/16).toFixed(3)+'s';
       document.documentElement.style.setProperty('--speed', dur);
       document.documentElement.style.setProperty('--step',  step);
     }
     slider.addEventListener('input', updateSpeed);
 
-      /* переключение темы + иконок */
+    /* переключение темы + иконок */
     function switchTheme(){
       const dark = themeLink.href.endsWith('style.css');   /* сейчас тёмная? */
       themeLink.href = dark ? 'style2.css' : 'style.css';
@@ -105,7 +99,7 @@
     document.querySelector('.waviy span[style*="--i:16"]')
       .addEventListener('animationiteration',()=>{
         if(++beads >= 108){ beads = 0; ++rounds; }
-        counterEl.textContent = Круги: ${rounds} | Бусины: ${beads};
+        counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
       });
 
     /* первичная установка */
