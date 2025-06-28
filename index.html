@@ -70,10 +70,12 @@
     </div>
   </div>
 
-  <script>
-    /* DOM-элементы */
-    const slider      = document.getElementById('speedSlider');
-    const themeToggle = document.getElementById('themeToggle');
+ <script>
+    /* DOM */
+    const decBtn      = document.getElementById('decSpeed');
+    const incBtn      = document.getElementById('incSpeed');
+    const speedTxt    = document.getElementById('speedDisplay');
+    const themeBtn    = document.getElementById('themeToggle');
     const themeLink   = document.getElementById('themeStylesheet');
     const moonIcon    = document.getElementById('moonIcon');
     const sunIcon     = document.getElementById('sunIcon');
@@ -83,18 +85,25 @@
     let beads  = 0;
     let rounds = 0;
 
-    /* карта скоростей */
-    const speedMap = { 1:'6s', 2:'5s', 3:'4s' };
+        /* скорость */
+    let speed = 5.0;             // сек. по умолчанию
+    const min = 3.0, max = 10.0, step = 0.5;
 
-    /* скорость анимации */
-    function updateSpeed(){
-      const dur  = speedMap[slider.value];
-      const num  = parseFloat(dur);
-      const step = (num/16).toFixed(3)+'s';
+    function applySpeed(){
+      const dur  = speed + 's';
+      const part = (speed / 16).toFixed(3) + 's';
       document.documentElement.style.setProperty('--speed', dur);
-      document.documentElement.style.setProperty('--step',  step);
+      document.documentElement.style.setProperty('--step',  part);
+      speedTxt.textContent = speed.toFixed(1) + ' с';
     }
-    slider.addEventListener('input', updateSpeed);
+    applySpeed();
+
+   decBtn.addEventListener('click', ()=>{          // −
+  if (speed > min) { speed -= step; applySpeed(); }
+});
+incBtn.addEventListener('click', ()=>{          // +
+  if (speed < max) { speed += step; applySpeed(); }
+});
 
     /* переключение темы + иконок */
     function switchTheme(){
@@ -112,8 +121,6 @@
         counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
       });
 
-    /* первичная установка */
-    updateSpeed();
   </script>
 </body>
 </html>
