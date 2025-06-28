@@ -85,7 +85,10 @@
     let beads  = 0;
     let rounds = 0;
 
-        /* скорость */
+    /* ➊ флаг, который говорит: «пропусти следующий iteration» */
+let skipNext = false;
+   
+    /* скорость */
     let speed = 5.0;             // сек. по умолчанию
     const min = 3.0, max = 10.0, step = 0.5;
 
@@ -95,8 +98,9 @@
       document.documentElement.style.setProperty('--speed', dur);
       document.documentElement.style.setProperty('--step',  part);
       speedTxt.textContent = speed.toFixed(1) + ' с';
+ 
+  skipNext = true;          /* ➋ после смены скорости пропустить одно событие */
     }
-    applySpeed();
 
    decBtn.addEventListener('click', ()=>{          // −
   if (speed > min) { speed -= step; applySpeed(); }
@@ -104,6 +108,7 @@
 incBtn.addEventListener('click', ()=>{          // +
   if (speed < max) { speed += step; applySpeed(); }
 });
+    applySpeed();
 
     /* переключение темы + иконок */
     function switchTheme(){
@@ -114,13 +119,16 @@ incBtn.addEventListener('click', ()=>{          // +
     }
     themeToggle.addEventListener('click', switchTheme);
 
-    /* счётчик бусин / кругов */
-    document.querySelector('.waviy span[style*="--i:16"]')
-      .addEventListener('animationiteration',()=>{
-        if(++beads >= 108){ beads = 0; ++rounds; }
-        counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
-      });
-
-  </script>
+   /* --- счётчик бусин / кругов --- */
+document.querySelector('.waviy span[style*="--i:16"]')
+  .addEventListener('animationiteration', ()=>{
+      if (skipNext){          // ➌ игнорируем первое событие после applySpeed()
+          skipNext = false;
+          return;
+      }
+      if (++beads >= 108){ beads = 0; ++rounds; }
+      counterEl.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
+  });
+</script>
 </body>
 </html>
