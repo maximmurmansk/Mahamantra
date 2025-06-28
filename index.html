@@ -16,11 +16,13 @@
   <!-- счётчик кругов / бусин -->
   <div class="counter" id="counter">Круги: 0 | Бусины: 0</div>
 
-  <!-- панель управления -->
+   <!-- Панель управления -->
   <div class="controls">
-    <input type="range" id="speedSlider" min="1" max="3" value="2" step="1">
-
-    <!-- Кнопка-иконка -->
+    <button id="decSpeed" class="spd-btn" aria-label="Снизить скорость">−</button>
+    <span id="speedDisplay" class="spd-text">5 с</span>
+    <button id="incSpeed" class="spd-btn" aria-label="Увеличить скорость">+</button>
+    
+    <!-- Кнопка-темы -->
     <button id="themeToggle" class="icon-btn" aria-label="Смена темы">
       <!-- ЛУНА (по умолчанию скрыта) -->
       <svg id="moonIcon" class="hidden" viewBox="0 0 24 24" width="24" height="24"
