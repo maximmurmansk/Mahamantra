@@ -99,11 +99,11 @@ document.getElementById('dec').onclick = ()=>{
 /* иконка переключателя темы */
 document.getElementById('theme').onclick = ()=>{
   const link = document.getElementById('themeStylesheet');
-  const dark = link.href.endsWith('style.css');
-  link.href  = dark ? 'style2.css' : 'style.css';
+  const light = link.href.endsWith('style2.css');
+  link.href  = light ? 'style.css' : 'style2.css';
   const light = !dark;
-  document.getElementById('moon').classList.toggle('hidden', !light);
-  document.getElementById('sun') .classList.toggle('hidden', light);
+  document.getElementById('sun') .classList.toggle('hidden', !light);
+  document.getElementById('moon').classList.toggle('hidden', light);
 };
 
 /* считаем по событию ПЕРВОГО слова */
