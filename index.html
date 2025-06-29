@@ -101,8 +101,9 @@ document.getElementById('theme').onclick = ()=>{
   const link = document.getElementById('themeStylesheet');
   const dark = link.href.endsWith('style.css');
   link.href  = dark ? 'style2.css' : 'style.css';
-  document.getElementById('moon').classList.toggle('hidden',  dark);
-  document.getElementById('sun') .classList.toggle('hidden', !dark);
+  const light = !dark;
+  document.getElementById('moon').classList.toggle('hidden', !light);
+  document.getElementById('sun') .classList.toggle('hidden', light);
 };
 
 /* считаем по событию ПЕРВОГО слова */
