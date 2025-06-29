@@ -7,7 +7,7 @@
   <!-- шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap" rel="stylesheet">
 
-  <!-- тёмная тема -->
+  <!-- светлая тема -->
   <link id="themeStylesheet" rel="stylesheet" href="style2.css">
 </head>
 <body>
@@ -15,7 +15,13 @@
   <!-- счётчик -->
   <div class="counter" id="counter">Круги: 0 | Бусины: 1</div>
 
-  <!-- панель -->
+ <!-- вертикальный контрол шрифта (ПК) -->
+  <div class="font-ctrl" id="fontCtrl">
+    <button id="fInc" class="f-btn">+</button>
+    <button id="fDec" class="f-btn">−</button>
+  </div>
+  
+  <!-- панель скорости / темы -->
   <div class="controls">
     <button id="dec" class="spd-btn">−</button>
     <span   id="spdText" class="spd-text">5с</span>
@@ -50,7 +56,7 @@
   </div>
 
 <script>
-/* ===== счётчики ===== */
+/* ====== счётчик кругов и бусин ====== */
 let beads = 1, rounds = 0;
 const out = document.getElementById('counter');
 
@@ -90,7 +96,7 @@ document.getElementById('dec').onclick = ()=>{
   if(speed > min){ speed -= step; setSpeed(true); }
 };
 
-/* тема */
+/* иконка переключателя темы */
 document.getElementById('theme').onclick = ()=>{
   const link = document.getElementById('themeStylesheet');
   const dark = link.href.endsWith('style.css');
@@ -104,6 +110,29 @@ first.addEventListener('animationiteration', ()=>{
   if(skipOnce){ skipOnce = false; return; }  // служебный вызов
   if(++beads > 108){ beads = 1; ++rounds; }
   out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
+});
+
+/* ====== вертикальные + / − ====== */
+let baseSize = 70, fStep = 5;
+document.getElementById('fInc').onclick = ()=>{ baseSize+=fStep; waviy.style.fontSize=baseSize+'px'; showCtrl(); };
+document.getElementById('fDec').onclick = ()=>{ if(baseSize>30){ baseSize-=fStep; waviy.style.fontSize=baseSize+'px'; } showCtrl(); };
+
+/* автоскрытие блока */
+const fontCtrl = document.getElementById('fontCtrl');
+let hideTimer;
+function showCtrl(){
+  if(window.innerWidth<1024) return;        // на мобильных не показываем
+  clearTimeout(hideTimer);
+  fontCtrl.classList.add('active');
+  hideTimer = setTimeout(()=>fontCtrl.classList.remove('active'), 1000);
+}
+
+/* обнаруживаем курсор в «углу» 120×120px */
+document.addEventListener('mousemove', e=>{
+  if(window.innerWidth<1024) return;
+  if(e.clientX > window.innerWidth-120 && e.clientY > window.innerHeight-120){
+    showCtrl();
+  }
 });
 </script>
 </body>
