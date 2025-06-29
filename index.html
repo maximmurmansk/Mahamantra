@@ -99,11 +99,13 @@ document.getElementById('dec').onclick = ()=>{
 /* иконка переключателя темы */
 document.getElementById('theme').onclick = ()=>{
   const link = document.getElementById('themeStylesheet');
-  const light = link.href.endsWith('style2.css');
-  link.href  = light ? 'style.css' : 'style2.css';
-  const light = !light;
-  document.getElementById('sun') .classList.toggle('hidden', !light);
-  document.getElementById('moon').classList.toggle('hidden', light);
+  let light   = link.href.endsWith('style2.css'); // true → style2.css
+  let dark    = !light;                           // противоположный флаг
+  link.href   = light ? 'style.css' : 'style2.css';
+  light       = !light;   // стало ли теперь светло?
+  dark        = !dark;    // стало ли теперь темно?
+document.getElementById('sun' ).classList.toggle('hidden',  light); // Солнце скрываем, когда светло
+document.getElementById('moon').classList.toggle('hidden',  dark ); // Луну  скрываем, когда темно
 };
 
 /* считаем по событию ПЕРВОГО слова */
