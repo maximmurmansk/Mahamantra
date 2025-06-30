@@ -4,24 +4,24 @@
   <meta charset="UTF-8">
   <title>Харе Кришна</title>
 
-  <!-- шрифты -->
+  <!-- ШРИФТЫ -->
   <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap" rel="stylesheet">
 
-  <!-- светлая тема -->
+  <!-- СВЕТЛАЯ ТЕМА -->
   <link id="themeStylesheet" rel="stylesheet" href="style2.css">
 </head>
 <body>
 
-  <!-- счётчик -->
+  <!-- СЧЁТЧИК -->
   <div class="counter" id="counter">Круги: 0 | Бусины: 1</div>
 
- <!-- вертикальный контрол шрифта (ПК) -->
+  <!-- ВЕРТИКАЛЬНЫЙ КОНТРОЛ ШРИФТА -->
   <div class="font-ctrl" id="fontCtrl">
     <button id="fInc" class="f-btn">+</button>
     <button id="fDec" class="f-btn">−</button>
   </div>
   
-  <!-- панель скорости / темы -->
+  <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
   <div class="controls">
     <button id="dec" class="spd-btn">−</button>
     <span   id="spdText" class="spd-text">5с</span>
@@ -33,7 +33,7 @@
     </button>
   </div>
 
-  <!-- текст -->
+  <!-- ТЕКСТ -->
   <div class="centered">
     <div class="waviy" id="waviy">
       <span style="--i:1">Харе</span>
@@ -56,75 +56,94 @@
   </div>
 
 <script>
-/* ====== счётчик кругов и бусин ====== */
+/* ====== СЧЁТЧИК КРУГОВ И БУСИН ====== */
 let beads = 1, rounds = 0;
 const out = document.getElementById('counter');
 
-/* ===== скорость ===== */
+/* ===== ПАРАМЕТРЫ СКОРОСТИ ===== */
 let speed = 6.0;                 // секунд
 const min = 4, max = 9, step = 0.5;
 const spdText = document.getElementById('spdText');
 const waviy   = document.getElementById('waviy');
 const first   = waviy.querySelector('span[style*="--i:1"]'); // слушаем ПЕРВОЕ слово
 
-/* пропустить ли ближайший iteration */
-let skipOnce = false;
+/* отметка времени последнего рестарта */
+let lastReset = 0;                // ms
 
-/* применяем скорость и при необходимости перезапускаем волну */
+/* применяем custom-properties + при необходимости перезапускаем анимацию */
 function setSpeed(restart){
   document.documentElement.style.setProperty('--speed', speed + 's');
   document.documentElement.style.setProperty('--step',  (speed/16).toFixed(3) + 's');
   spdText.textContent = speed.toFixed(1) + 'с';
 
   if(restart){
-    /* жёстко рестартуем анимацию */
-    waviy.style.animation = 'none';
-    void waviy.offsetWidth;
-    waviy.style.animation = '';
-    skipOnce = true;                 // игнорируем только первый служебный сигнал
+    restartWave();                // жёсткий рестарт
+    lastReset = performance.now();// фиксируем время
   }
 }
 
-/* стартовая установка */
+/* физический перезапуск анимации для всех span */
+function restartWave(){
+  const spans = waviy.querySelectorAll('span');
+  spans.forEach(s => s.style.animation = 'none');
+  void waviy.offsetWidth;         // рефлоу
+  spans.forEach(s => s.style.animation = '');
+}
+
+/* начальная установка */
 setSpeed(false);
 
+/* универсальная функция изменения скорости */
+function changeSpeed(delta){
+  const next = +(speed + delta).toFixed(1);
+  if(next >= min && next <= max){
+    speed = next;
+    setSpeed(true);
+  }
+}
+
 /* кнопки скорости */
-document.getElementById('inc').onclick = ()=>{
-  if(speed < max){ speed += step; setSpeed(true); }
-};
-document.getElementById('dec').onclick = ()=>{
-  if(speed > min){ speed -= step; setSpeed(true); }
-};
+document.getElementById('inc').onclick = ()=> changeSpeed(+step);
+document.getElementById('dec').onclick = ()=> changeSpeed(-step);
 
-/* иконка переключателя темы */
+/* переключение темы */
 document.getElementById('theme').onclick = ()=>{
-  const link = document.getElementById('themeStylesheet');
-  let light   = link.href.endsWith('style2.css'); // true → style2.css
-  let dark    = !light;                           // противоположный флаг
-  link.href   = light ? 'style.css' : 'style2.css';
-  light       = !light;   // стало ли теперь светло?
-  dark        = !dark;    // стало ли теперь темно?
-document.getElementById('sun' ).classList.toggle('hidden',  light); // Солнце скрываем, когда светло
-document.getElementById('moon').classList.toggle('hidden',  dark ); // Луну  скрываем, когда темно
+  const link      = document.getElementById('themeStylesheet');
+  const lightNow  = link.href.endsWith('style2.css');
+  link.href       = lightNow ? 'style.css' : 'style2.css';
+  document.getElementById('sun' ).classList.toggle('hidden', !lightNow);
+  document.getElementById('moon').classList.toggle('hidden',  lightNow);
 };
 
-/* считаем по событию ПЕРВОГО слова */
+/* учёт бусин по событию ПЕРВОГО слова */
 first.addEventListener('animationiteration', ()=>{
-  if(skipOnce){ skipOnce = false; return; }  // служебный вызов
+  /* игнорируем импульсы, пришедшие <100 мс после рестарта */
+  if(performance.now() - lastReset < 100) return;
+
   if(++beads > 108){ beads = 1; ++rounds; }
   out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
 });
 
-/* ====== вертикальные + / − ====== */
+/* ====== ВЕРТИКАЛЬНЫЕ + / − ====== */
 let baseSize = 70, fStep = 5;
-document.getElementById('fInc').onclick = ()=>{ baseSize+=fStep; waviy.style.fontSize=baseSize+'px'; showCtrl(); };
-document.getElementById('fDec').onclick = ()=>{ if(baseSize>30){ baseSize-=fStep; waviy.style.fontSize=baseSize+'px'; } showCtrl(); };
+document.getElementById('fInc').onclick = ()=>{
+  baseSize += fStep;
+  waviy.style.fontSize = baseSize + 'px';
+  showCtrl();
+};
+document.getElementById('fDec').onclick = ()=>{
+  if(baseSize > 30){
+    baseSize -= fStep;
+    waviy.style.fontSize = baseSize + 'px';
+  }
+  showCtrl();
+};
 
 /* автоскрытие блока */
 const fontCtrl = document.getElementById('fontCtrl');
 let hideTimer;
 function showCtrl(){
-  if(window.innerWidth<1024) return;        // на мобильных не показываем
+  if(window.innerWidth < 1024) return;       // на мобильных не показываем
   clearTimeout(hideTimer);
   fontCtrl.classList.add('active');
   hideTimer = setTimeout(()=>fontCtrl.classList.remove('active'), 1000);
@@ -132,8 +151,8 @@ function showCtrl(){
 
 /* обнаруживаем курсор в «углу» 120×120px */
 document.addEventListener('mousemove', e=>{
-  if(window.innerWidth<1024) return;
-  if(e.clientX > window.innerWidth-120 && e.clientY > window.innerHeight-120){
+  if(window.innerWidth < 1024) return;
+  if(e.clientX > window.innerWidth - 120 && e.clientY > window.innerHeight - 120){
     showCtrl();
   }
 });
