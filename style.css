@@ -39,7 +39,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(74px, 7vw, 100px);
+    font-size: clamp(40px, 8vmin, 100px);
     white-space: pre-line;
     hyphens: none; /* запрет разрывов по дефису */
     pointer-events: none;
