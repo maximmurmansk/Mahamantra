@@ -37,7 +37,7 @@
             <span id="spdText" class="spd-text">5с</span>
             <button id="inc" class="spd-btn">+</button>
 
-            <button id="theme" class="icon-btn">
+            <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
                     id="moon"
                     viewBox="0 0 24 24"
@@ -109,7 +109,6 @@
 
             /* === ФЛАГИ СОСТОЯНИЯ === */
             let introVisible = true; // баннер сейчас показан
-            let skipOnce = false; // пропустить 1-й импульс после баннера
 
             function updateCounter() {
                 out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
@@ -121,24 +120,19 @@
                 max = 9,
                 step = 0.5;
             const spdText = document.getElementById("spdText");
-            /* отметка времени последнего рестарта */
-            let lastReset = 0; // ms
 
             /* применяем custom-properties + при необходимости перезапускаем анимацию */
             function setSpeed(restart) {
                 document.documentElement.style.setProperty(
                     "--speed",
-                    speed + "s",
+                    speed + "s"
                 );
                 document.documentElement.style.setProperty(
                     "--step",
-                    (speed / 16).toFixed(3) + "s",
+                    (speed / 16).toFixed(3) + "s"
                 );
                 spdText.textContent = speed.toFixed(1) + "с";
-                if (restart) {
-                    restartWave();
-                    lastReset = performance.now();
-                }
+                if (restart) restartWave();
             }
 
             /* физический перезапуск анимации для всех span */
@@ -155,16 +149,15 @@
                 clearTimeout(showIntro.timer);
                 introVisible = true;
                 intro.classList.remove("hidden");
-                waviy.classList.add("invisible");
+                waviy.classList.add("paused");
 
                 showIntro.timer = setTimeout(() => {
                     intro.classList.add("hidden");
-                    waviy.classList.remove("invisible");
+                    waviy.classList.remove("paused");
 
                     restartWave(); // ▶︎ запускаем волну, когда баннер исчез
-
                     introVisible = false;
-                    skipOnce = true; // первый импульс после баннера пропускаем
+                    beads = 1;
                     updateCounter(); // «Бусины 1»
                 }, 10000);
             }
@@ -184,8 +177,8 @@
             /* === ПЕРЕКЛЮЧЕНИЕ ТЕМЫ === */
             document.getElementById("theme").onclick = () => {
                 const link = document.getElementById("themeStylesheet");
-                const light = link.href.endsWith("style2.css");
-                link.href = light ? "style.css" : "style2.css";
+                const light = link.getAttribute("href") === "style2.css";
+                link.setAttribute("href", light ? "style.css" : "style2.css");
                 document
                     .getElementById("sun")
                     .classList.toggle("hidden", !light);
@@ -198,7 +191,7 @@
             first.addEventListener("animationiteration", () => {
                 if (introVisible) return; // пока баннер — не считаем
                 if (++beads > 108) {
-                    beads = 1;
+                    beads = 0;
                     ++rounds;
                     showIntro(); // начало нового круга
                 }
@@ -242,7 +235,7 @@
                 fontCtrl.classList.add("active");
                 hideTimer = setTimeout(
                     () => fontCtrl.classList.remove("active"),
-                    1000,
+                    1000
                 );
             }
             document.addEventListener("mousemove", (e) => {
