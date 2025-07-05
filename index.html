@@ -205,19 +205,33 @@
                 updateCounter();
             });
 
-            /* === МАСШТАБ ШРИФТА === */
+            /* === УПРАВЛЕНИЕ РАЗМЕРОМ ШРИФТА (адаптивное ограничение) === */
             let baseSize = 70,
-                fStep = 30,
-                maxSize = 130; // ← ограничение!
+                fStep = 30;
+            function fits(size) {
+                const prev = waviy.style.fontSize;
+                waviy.style.fontSize = size + "px";
+                const ok =
+                    waviy.scrollWidth <= innerWidth * 0.96 &&
+                    waviy.scrollHeight <= innerHeight * 0.9;
+                if (!ok) waviy.style.fontSize = prev; // откат
+                return ok;
+            }
             function resize(delta) {
                 const next = baseSize + delta;
-                if (next < 30 || next > maxSize) return; // не даём выйти за пределы
-                baseSize = next;
-                waviy.style.fontSize = baseSize + "px";
-                showCtrl();
+                if (next < 30) return;
+                if (fits(next)) {
+                    baseSize = next;
+                    showCtrl();
+                }
             }
             document.getElementById("fInc").onclick = () => resize(+fStep);
             document.getElementById("fDec").onclick = () => resize(-fStep);
+
+            /* auto-shrink if окно уменьшилось */
+            addEventListener("resize", () => {
+                while (baseSize > 30 && !fits(baseSize)) baseSize -= fStep;
+            });
 
             /* автоскрытие блока +/− */
             const fontCtrl = document.getElementById("fontCtrl");
