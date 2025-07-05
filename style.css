@@ -40,8 +40,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 64px;
+    white-space: pre-line;
+    hyphens: none; /* запрет разрывов по дефису */
     pointer-events: none;
     user-select: none;
+}
+#intro span:last-child {
+    white-space: nowrap;
 }
 .hidden {
     display: none !important;
