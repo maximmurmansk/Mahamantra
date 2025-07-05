@@ -1,118 +1,170 @@
-@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap");
 
-:root{
-  --speed:5s;      /* изменяет JS */
-  --step:0.312s;   /* 5 / 16 */
+:root {
+    --speed: 5s;
+    --step: 0.312s;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-body{
-  background:#151719;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  font-family:"Great Vibes",cursive;
-  font-weight:400;
+body {
+    background: #151719;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-family: "Great Vibes", cursive;
 }
 
 /* счётчик */
-.counter{
-  position:fixed;
-  top:10px; right:10px;
-  font-size:30px;
-  background:rgba(0,0,0,.45);
-  padding:6px 12px;
-  border-radius:8px;
+.counter {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+/* приветствие */
+.intro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 64px;
+    pointer-events: none;
+    user-select: none;
+}
+.hidden {
+    display: none !important;
+}
+
+/* невидимость мантры */
+.invisible {
+    opacity: 0;
 }
 
 /* панель управления */
-.controls{margin-top:40px; display:inline-flex; align-items:center; gap:10px;}
-
-.spd-btn{
-  width:44px; height:44px; font-size:30px; line-height:44px;
-  border:none; border-radius:50%; cursor:pointer; color:#fff;
-  background:#444; transition:.2s; user-select:none;
+.controls {
+    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
-.spd-btn:hover{background:#555;}
-
-.spd-text{font-size:30px; padding:0;}
+.spd-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 30px;
+    line-height: 44px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #fff;
+    background: #444;
+    transition: 0.2s;
+    user-select: none;
+}
+.spd-btn:hover {
+    background: #555;
+}
+.spd-text {
+    font-size: 30px;
+}
 
 /* кнопка-иконка */
-.icon-btn{
-  width:44px; height:44px;
-  border:none;
-  border-radius:50%;
-  background:#2e2e2e;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  color:#ffb400;                 /* цвет линий иконки */
-  transition:background .2s;
-  margin-left:30px;
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    margin-left: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffb400;
+    background: #2e2e2e;
+    transition: 0.2s;
 }
-.icon-btn:hover{background:#404040;}
-.hidden{display:none!important;} /* скрываем ненужную иконку */
-
-/* анимация */
-.centered{
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  word-spacing:30px;
+.icon-btn:hover {
+    background: #404040;
 }
 
-/* анимационный блок */
-.waviy{
-  position:relative;
-  font-size:70px;
-  -webkit-box-reflect:below -20px linear-gradient(transparent,rgba(0,0,0,.2));
+/* мантра */
+.centered {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    word-spacing: 30px;
 }
-.waviy span{
-  font-family:"Great Vibes",cursive;
-  display:inline-block;
-  position:relative;
-  animation:waviy var(--speed) infinite;
-  animation-delay:calc(var(--step) * var(--i));
+.waviy {
+    position: relative;
+    font-size: 70px;
+    -webkit-box-reflect: below -20px
+        linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+}
+.waviy span {
+    display: inline-block;
+    animation: waviy var(--speed) infinite;
+    animation-delay: calc(var(--step) * var(--i));
 }
 @keyframes waviy {
-  0% { transform: scale(1) }
-  10% { transform: scale(1.3); color: orange }
-  15% { transform: scale(1) }
-}
-/* ПК ≥ 1024 px: плавающий блок +/− */
-@media (min-width:1024px){
-  .font-ctrl{
-    position:fixed;
-    right:40px;
-    bottom:40px;
-    display:flex; flex-direction:column; gap:8px;
-    opacity:0; pointer-events:none;          /* скрыт + не ловит клики */
-    transition:opacity .25s;
-  }
-  .font-ctrl.active{                         /* показываем */
-    opacity:1; pointer-events:auto;
-  }
-
-  .f-btn{
-    width:44px; height:44px; font-size:28px; line-height:44px;
-    border:none; border-radius:50%; cursor:pointer; user-select:none;
-    transition:background .2s;
-  }
-  /* цвета для тёмной темы (style.css) */
-  body .f-btn{ background:#444; color:#fff; }
-  body .f-btn:hover{ background:#555; }
-  /* цвета для светлой темы (style2.css) заменить на:
-     background:#e0e0e0 / hover:#d0d0d0; color:#141414; */
+    0% {
+        transform: scale(1);
+    }
+    10% {
+        transform: scale(1.3);
+        color: orange;
+    }
+    15% {
+        transform: scale(1);
+    }
 }
 
-/* мобильные / планшеты: не показываем */
-@media (max-width:1023px){
-  .font-ctrl{ display:none; }
+/* плавающий блок +/− (ПК) */
+@media (min-width: 1024px) {
+    .font-ctrl {
+        position: fixed;
+        right: 40px;
+        bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s;
+    }
+    .font-ctrl.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .f-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 28px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        background: #444;
+        color: #fff;
+        transition: 0.2s;
+    }
+    .f-btn:hover {
+        background: #555;
+    }
+}
+@media (max-width: 1023px) {
+    .font-ctrl {
+        display: none;
+    }
 }

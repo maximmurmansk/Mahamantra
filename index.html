@@ -1,161 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Харе Кришна</title>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Харе Кришна</title>
 
-  <!-- ШРИФТЫ -->
-  <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap" rel="stylesheet">
+        <!-- ШРИФТЫ -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap"
+            rel="stylesheet"
+        />
 
-  <!-- СВЕТЛАЯ ТЕМА -->
-  <link id="themeStylesheet" rel="stylesheet" href="style2.css">
-</head>
-<body>
+        <!-- СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ -->
+        <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
+    </head>
+    <body>
+        <!-- СЧЁТЧИК -->
+        <div class="counter" id="counter">Круги: 0 | Бусины: 1</div>
 
-  <!-- СЧЁТЧИК -->
-  <div class="counter" id="counter">Круги: 0 | Бусины: 1</div>
+        <!-- ПРИВЕТСТВИЕ -->
+        <div id="intro" class="intro">
+            (джайа) Шри-Кришна-Чаитанйа Прабху Нитйананда Шри-Адваита Гададхара
+            Шривасади-Гаура-Бхакта-Вринда
+        </div>
 
-  <!-- ВЕРТИКАЛЬНЫЙ КОНТРОЛ ШРИФТА -->
-  <div class="font-ctrl" id="fontCtrl">
-    <button id="fInc" class="f-btn">+</button>
-    <button id="fDec" class="f-btn">−</button>
-  </div>
-  
-  <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
-  <div class="controls">
-    <button id="dec" class="spd-btn">−</button>
-    <span   id="spdText" class="spd-text">5с</span>
-    <button id="inc" class="spd-btn">+</button>
+        <!-- ПАНЕЛЬ +/− ШРИФТА -->
+        <div class="font-ctrl" id="fontCtrl">
+            <button id="fInc" class="f-btn">+</button>
+            <button id="fDec" class="f-btn">−</button>
+        </div>
 
-    <button id="theme" class="icon-btn">
-      <svg id="moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
-      <svg id="sun" class="hidden" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-  </div>
+        <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
+        <div class="controls">
+            <button id="dec" class="spd-btn">−</button>
+            <span id="spdText" class="spd-text">5с</span>
+            <button id="inc" class="spd-btn">+</button>
 
-  <!-- ТЕКСТ -->
-  <div class="centered">
-    <div class="waviy" id="waviy">
-      <span style="--i:1">Харе</span>
-      <span style="--i:2">Кришна</span>
-      <span style="--i:3">Харе</span>
-      <span style="--i:4">Кришна</span><br>
-      <span style="--i:5">Кришна</span>
-      <span style="--i:6">Кришна</span>
-      <span style="--i:7">Харе</span>
-      <span style="--i:8">Харе</span><br>
-      <span style="--i:9">Харе</span>
-      <span style="--i:10">Рама</span>
-      <span style="--i:11">Харе</span>
-      <span style="--i:12">Рама</span><br>
-      <span style="--i:13">Рама</span>
-      <span style="--i:14">Рама</span>
-      <span style="--i:15">Харе</span>
-      <span style="--i:16">Харе</span>
-    </div>
-  </div>
+            <button id="theme" class="icon-btn">
+                <svg
+                    id="moon"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+                <svg
+                    id="sun"
+                    class="hidden"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+            </button>
+        </div>
 
-<script>
-/* ====== СЧЁТЧИК КРУГОВ И БУСИН ====== */
-let beads = 1, rounds = 0;
-const out = document.getElementById('counter');
+        <!-- ТЕКСТ МАНТРЫ -->
+        <div class="centered">
+            <div class="waviy" id="waviy">
+                <span id="first" style="--i: 1">Харе</span>
+                <span style="--i: 2">Кришна</span>
+                <span style="--i: 3">Харе</span>
+                <span style="--i: 4">Кришна</span><br />
+                <span style="--i: 5">Кришна</span>
+                <span style="--i: 6">Кришна</span>
+                <span style="--i: 7">Харе</span>
+                <span style="--i: 8">Харе</span><br />
+                <span style="--i: 9">Харе</span>
+                <span style="--i: 10">Рама</span>
+                <span style="--i: 11">Харе</span>
+                <span style="--i: 12">Рама</span><br />
+                <span style="--i: 13">Рама</span>
+                <span style="--i: 14">Рама</span>
+                <span style="--i: 15">Харе</span>
+                <span style="--i: 16">Харе</span>
+            </div>
+        </div>
 
-/* ===== ПАРАМЕТРЫ СКОРОСТИ ===== */
-let speed = 6.0;                 // секунд
-const min = 4, max = 9, step = 0.5;
-const spdText = document.getElementById('spdText');
-const waviy   = document.getElementById('waviy');
-const first   = waviy.querySelector('span[style*="--i:1"]'); // слушаем ПЕРВОЕ слово
+        <script>
+            /* === СЧЁТЧИК === */
+            let beads = 1,
+                rounds = 0;
+            const out = document.getElementById("counter");
+            const intro = document.getElementById("intro");
+            const waviy = document.getElementById("waviy");
+            const first = document.getElementById("first");
 
-/* отметка времени последнего рестарта */
-let lastReset = 0;                // ms
+            /* === ФЛАГИ СОСТОЯНИЯ === */
+            let introVisible = true; // баннер сейчас показан
+            let skipOnce = false; // пропустить 1-й импульс после баннера
 
-/* применяем custom-properties + при необходимости перезапускаем анимацию */
-function setSpeed(restart){
-  document.documentElement.style.setProperty('--speed', speed + 's');
-  document.documentElement.style.setProperty('--step',  (speed/16).toFixed(3) + 's');
-  spdText.textContent = speed.toFixed(1) + 'с';
+            function updateCounter() {
+                out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
+            }
 
-  if(restart){
-    restartWave();                // жёсткий рестарт
-    lastReset = performance.now();// фиксируем время
-  }
-}
+            /* === СКОРОСТЬ === */
+            let speed = 5.0;
+            const min = 4,
+                max = 9,
+                step = 0.5;
+            const spdText = document.getElementById("spdText");
+            /* отметка времени последнего рестарта */
+            let lastReset = 0; // ms
 
-/* физический перезапуск анимации для всех span */
-function restartWave(){
-  const spans = waviy.querySelectorAll('span');
-  spans.forEach(s => s.style.animation = 'none');
-  void waviy.offsetWidth;         // рефлоу
-  spans.forEach(s => s.style.animation = '');
-}
+            /* применяем custom-properties + при необходимости перезапускаем анимацию */
+            function setSpeed(restart) {
+                document.documentElement.style.setProperty(
+                    "--speed",
+                    speed + "s",
+                );
+                document.documentElement.style.setProperty(
+                    "--step",
+                    (speed / 16).toFixed(3) + "s",
+                );
+                spdText.textContent = speed.toFixed(1) + "с";
+                if (restart) {
+                    restartWave();
+                    lastReset = performance.now();
+                }
+            }
 
-/* начальная установка */
-setSpeed(false);
+            /* физический перезапуск анимации для всех span */
+            function restartWave() {
+                const spans = waviy.querySelectorAll("span");
+                spans.forEach((s) => (s.style.animation = "none"));
+                void waviy.offsetWidth; // рефлоу
+                spans.forEach((s) => (s.style.animation = ""));
+            }
+            setSpeed(false);
 
-/* универсальная функция изменения скорости */
-function changeSpeed(delta){
-  const next = +(speed + delta).toFixed(1);
-  if(next >= min && next <= max){
-    speed = next;
-    setSpeed(true);
-  }
-}
+            /* === ПРИВЕТСТВИЕ === */
+            function showIntro() {
+                clearTimeout(showIntro.timer);
+                introVisible = true;
+                intro.classList.remove("hidden");
+                waviy.classList.add("invisible");
 
-/* кнопки скорости */
-document.getElementById('inc').onclick = ()=> changeSpeed(+step);
-document.getElementById('dec').onclick = ()=> changeSpeed(-step);
+                showIntro.timer = setTimeout(() => {
+                    intro.classList.add("hidden");
+                    waviy.classList.remove("invisible");
 
-/* переключение темы */
-document.getElementById('theme').onclick = ()=>{
-  const link      = document.getElementById('themeStylesheet');
-  const lightNow  = link.href.endsWith('style2.css');
-  link.href       = lightNow ? 'style.css' : 'style2.css';
-  document.getElementById('sun' ).classList.toggle('hidden', !lightNow);
-  document.getElementById('moon').classList.toggle('hidden',  lightNow);
-};
+                    restartWave(); // ▶︎ запускаем волну, когда баннер исчез
 
-/* учёт бусин по событию ПЕРВОГО слова */
-first.addEventListener('animationiteration', ()=>{
-  /* игнорируем импульсы, пришедшие <100 мс после рестарта */
-  if(performance.now() - lastReset < 100) return;
+                    introVisible = false;
+                    skipOnce = true; // первый импульс после баннера пропускаем
+                    updateCounter(); // «Бусины 1»
+                }, 10000);
+            }
+            showIntro();
 
-  if(++beads > 108){ beads = 1; ++rounds; }
-  out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
-});
+            /* универсальная функция изменения скорости */
+            function changeSpeed(delta) {
+                const next = +(speed + delta).toFixed(1);
+                if (next >= min && next <= max) {
+                    speed = next;
+                    setSpeed(true);
+                }
+            }
+            document.getElementById("inc").onclick = () => changeSpeed(+step);
+            document.getElementById("dec").onclick = () => changeSpeed(-step);
 
-/* ====== ВЕРТИКАЛЬНЫЕ + / − ====== */
-let baseSize = 70, fStep = 5;
-document.getElementById('fInc').onclick = ()=>{
-  baseSize += fStep;
-  waviy.style.fontSize = baseSize + 'px';
-  showCtrl();
-};
-document.getElementById('fDec').onclick = ()=>{
-  if(baseSize > 30){
-    baseSize -= fStep;
-    waviy.style.fontSize = baseSize + 'px';
-  }
-  showCtrl();
-};
+            /* === ПЕРЕКЛЮЧЕНИЕ ТЕМЫ === */
+            document.getElementById("theme").onclick = () => {
+                const link = document.getElementById("themeStylesheet");
+                const light = link.href.endsWith("style2.css");
+                link.href = light ? "style.css" : "style2.css";
+                document
+                    .getElementById("sun")
+                    .classList.toggle("hidden", !light);
+                document
+                    .getElementById("moon")
+                    .classList.toggle("hidden", light);
+            };
 
-/* автоскрытие блока */
-const fontCtrl = document.getElementById('fontCtrl');
-let hideTimer;
-function showCtrl(){
-  if(window.innerWidth < 1024) return;       // на мобильных не показываем
-  clearTimeout(hideTimer);
-  fontCtrl.classList.add('active');
-  hideTimer = setTimeout(()=>fontCtrl.classList.remove('active'), 1000);
-}
+            /* === ПОДСЧЁТ БУСИН === */
+            first.addEventListener("animationiteration", () => {
+                if (introVisible) return; // пока баннер — не считаем
+                if (++beads > 108) {
+                    beads = 1;
+                    ++rounds;
+                    showIntro(); // начало нового круга
+                }
+                updateCounter();
+            });
 
-/* обнаруживаем курсор в «углу» 120×120px */
-document.addEventListener('mousemove', e=>{
-  if(window.innerWidth < 1024) return;
-  if(e.clientX > window.innerWidth - 120 && e.clientY > window.innerHeight - 120){
-    showCtrl();
-  }
-});
-</script>
-</body>
+            /* === МАСШТАБ ШРИФТА === */
+            let baseSize = 70,
+                fStep = 5;
+            function resize(delta) {
+                const next = baseSize + delta;
+                if (next < 30) return;
+                baseSize = next;
+                waviy.style.fontSize = baseSize + "px";
+                showCtrl();
+            }
+            document.getElementById("fInc").onclick = () => resize(+fStep);
+            document.getElementById("fDec").onclick = () => resize(-fStep);
+
+            /* автоскрытие блока +/− */
+            const fontCtrl = document.getElementById("fontCtrl");
+            let hideTimer;
+            function showCtrl() {
+                if (innerWidth < 1024) return;
+                clearTimeout(hideTimer);
+                fontCtrl.classList.add("active");
+                hideTimer = setTimeout(
+                    () => fontCtrl.classList.remove("active"),
+                    1000,
+                );
+            }
+            document.addEventListener("mousemove", (e) => {
+                if (innerWidth < 1024) return;
+                if (
+                    e.clientX > innerWidth - 120 &&
+                    e.clientY > innerHeight - 120
+                )
+                    showCtrl();
+            });
+        </script>
+    </body>
 </html>
