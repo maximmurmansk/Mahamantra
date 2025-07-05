@@ -207,10 +207,11 @@
 
             /* === МАСШТАБ ШРИФТА === */
             let baseSize = 70,
-                fStep = 30;
+                fStep = 30,
+                maxSize = 130; // ← ограничение!
             function resize(delta) {
                 const next = baseSize + delta;
-                if (next < 30) return;
+                if (next < 30 || next > maxSize) return; // не даём выйти за пределы
                 baseSize = next;
                 waviy.style.fontSize = baseSize + "px";
                 showCtrl();
