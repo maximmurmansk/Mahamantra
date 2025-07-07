@@ -10,8 +10,42 @@
             rel="stylesheet"
         />
 
-        <!-- тема по умолчанию — светлая -->
+        <!-- светлая тема -->
         <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
+
+        <style>
+            /* ─── ДОБАВКИ ─── */
+
+            /* приветствие теперь фикс-центр и поверх всего */
+            #intro {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 15;
+                font-size: 48px;
+                line-height: 1.3;
+                text-align: center;
+                backdrop-filter: blur(2px);
+                background: rgba(0, 0, 0, 0.65);
+                color: #fff;
+                transition: opacity 0.4s;
+            }
+            #intro.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            /* отменяем старый word-spacing и даём отступ через margin */
+            .centered {
+                word-spacing: 0;
+            }
+            .waviy span + span {
+                margin-left: 30px;
+            }
+        </style>
     </head>
     <body>
         <!-- счётчик -->
@@ -47,7 +81,7 @@
             <span>Шривасади-Гаура-Бхакта-Вринда</span>
         </div>
 
-        <!-- панель ± шрифта -->
+        <!-- кнопки ± шрифта -->
         <div class="font-ctrl" id="fontCtrl">
             <button id="fInc" class="f-btn">+</button>
             <button id="fDec" class="f-btn">−</button>
@@ -59,7 +93,7 @@
             <span id="spdText" class="spd-text">5с</span>
             <button id="inc" class="spd-btn">+</button>
 
-            <!-- переключатель темы -->
+            <!-- тема -->
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
                     id="moon"
@@ -99,26 +133,22 @@
             </button>
         </div>
 
-        <!-- текст мантры (первый рендер из json) -->
-        <div class="centered">
-            <div class="waviy" id="waviy"></div>
-        </div>
+        <!-- мантра -->
+        <div class="centered"><div class="waviy" id="waviy"></div></div>
 
-        <!-- === ОСНОВНОЙ JS (счётчик, скорость, тема, шрифт) === -->
+        <!-- === базовый JS (коротко) === -->
         <script>
-            /* глобальные переменные */
+            /* счётчик */
             let beads = 1,
                 rounds = 1,
                 introVisible = true;
             const waviy = document.getElementById("waviy");
             const out = document.getElementById("counter");
             const intro = document.getElementById("intro");
-
             function updateCounter() {
                 out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
             }
 
-            /* обработчик одного цикла */
             function onIter() {
                 if (introVisible) return;
                 if (++beads > 108) {
@@ -128,38 +158,45 @@
                 }
                 updateCounter();
             }
-
-            /* назначаем id="first" и слушатель */
             function attachFirstListener() {
                 waviy
                     .querySelectorAll("#first")
                     .forEach((el) => el.removeAttribute("id"));
-                const firstSpan = waviy.querySelector("span");
-                if (!firstSpan) return;
-                firstSpan.id = "first";
-                firstSpan.addEventListener("animationiteration", onIter);
+                const first = waviy.querySelector("span");
+                if (!first) return;
+                first.id = "first";
+                first.addEventListener("animationiteration", onIter);
             }
-
-            /* скорость и остальные функции — остались без изменений ... */
 
             function showIntro() {
-                /* ваша текущая логика */
+                clearTimeout(showIntro.t);
+                introVisible = true;
+                intro.classList.remove("hidden");
+                waviy.classList.add("paused");
+                showIntro.t = setTimeout(() => {
+                    intro.classList.add("hidden");
+                    waviy.classList.remove("paused");
+                    introVisible = false;
+                    beads = 1;
+                    updateCounter();
+                    attachFirstListener();
+                }, 10000);
             }
+            showIntro(); /* стартовое приветствие */
 
-            attachFirstListener(); // слушатель для первой волны
+            /* скорость, тема, масштаб и др. — ваш прежний код без изменений */
         </script>
 
-        <!-- ===== JSON-перевод + рендер ===== -->
+        <!-- === загрузка JSON и смена языка === -->
         <script type="module">
             (async () => {
                 const translations = await fetch("translations.json").then(
                     (r) => r.json(),
                 );
-                const langSel = document.getElementById("langSel");
-
+                const sel = document.getElementById("langSel");
                 function render(lang = "ru") {
-                    const text = translations[lang] || translations.ru;
-                    const words = text.split(/\s+/).filter(Boolean);
+                    const txt = translations[lang] || translations.ru;
+                    const words = txt.split(/\s+/).filter(Boolean);
                     const html = words
                         .map(
                             (w, i) =>
@@ -169,11 +206,8 @@
                     waviy.innerHTML = html;
                     attachFirstListener();
                 }
-
                 render("ru");
-                langSel.addEventListener("change", (e) =>
-                    render(e.target.value),
-                );
+                sel.addEventListener("change", (e) => render(e.target.value));
             })();
         </script>
     </body>
