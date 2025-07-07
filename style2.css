@@ -3,7 +3,7 @@
 :root {
     --speed: 5s;
     --step: 0.312s;
-    --font-size: 100px; /* Управляется JavaScript */
+    --font-size: 100px;
 }
 
 * {
@@ -65,6 +65,7 @@ body {
     align-items: center;
     gap: 10px;
     z-index: 10;
+    white-space: nowrap;
 }
 .spd-btn {
     width: 44px;
@@ -189,17 +190,40 @@ body {
 /* Мобильная адаптация для телефонов */
 @media (max-width: 767px) {
     :root {
-        --font-size: 40px; /* Меньший размер шрифта для мобильных */
-    }
-    .waviy span + span {
-        margin-left: 10px; /* Меньший отступ между словами */
+        --font-size: 40px;
     }
     .waviy {
-        max-width: 90vw; /* Ограничение ширины текста */
-        word-wrap: break-word; /* Перенос слов */
+        width: 90vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .waviy span + span {
+        margin-left: 5px;
     }
     .intro {
-        font-size: 32px; /* Меньший размер шрифта для intro на мобильных */
+        font-size: 32px;
         padding: 10px;
+    }
+    .controls {
+        gap: 5px;
+    }
+    .spd-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+        line-height: 36px;
+    }
+    .spd-text {
+        font-size: 24px;
+    }
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+        margin-left: 10px;
+    }
+    .icon-btn svg {
+        width: 20px;
+        height: 20px;
     }
 }

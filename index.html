@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <!-- Добавлено для мобильной адаптации -->
         <title>Харе Кришна</title>
 
         <!-- ШРИФТЫ -->
@@ -33,7 +32,6 @@
                 z-index: 1001;
                 pointer-events: auto;
             }
-
             #intro span:last-child {
                 white-space: nowrap;
             }
@@ -87,7 +85,6 @@
             <button id="dec" class="spd-btn">−</button>
             <span id="spdText" class="spd-text">5с</span>
             <button id="inc" class="spd-btn">+</button>
-
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
                     id="moon"
@@ -254,7 +251,7 @@
 
             /* ШРИФТ */
             let baseSize = window.innerWidth < 768 ? 40 : 100,
-                fStep = 30; // Меньший размер для мобильных
+                fStep = 30;
             const fontCtrl = document.getElementById("fontCtrl");
             const fInc = document.getElementById("fInc");
             const fDec = document.getElementById("fDec");
@@ -295,7 +292,7 @@
                     return;
                 }
                 const now = performance.now();
-                if (now - lastShowTime < 100) return; // дебounce
+                if (now - lastShowTime < 100) return; // debounce
                 clearTimeout(hideTimer);
                 fontCtrl.classList.add("active");
                 lastShowTime = now;
@@ -356,7 +353,7 @@
 
             /* НАЧАЛЬНАЯ УСТАНОВКА */
             setSpeed(false);
-            updateFontSize(); // Устанавливаем начальный размер шрифта
+            updateFontSize();
             showIntro();
         </script>
 
@@ -375,15 +372,22 @@
                 function render(lang = "ru") {
                     const txt = translations[lang] || translations.ru;
                     const words = txt.split(/\s+/).filter(Boolean);
+                    const wordsPerLine = window.innerWidth < 768 ? 2 : 4; // 2 слова на линию для мобильных
                     const html = words
                         .map(
                             (w, i) =>
-                                `<span style="--i:${(i % 16) + 1}">${w}</span>${i % 4 === 3 && i !== 15 ? "<br>" : ""}`,
+                                `<span style="--i:${(i % 16) + 1}">${w}</span>${i % wordsPerLine === wordsPerLine - 1 && i !== words.length - 1 ? "<br>" : ""}`,
                         )
                         .join("");
                     waviy.innerHTML = html;
                     attachFirstListener();
-                    console.log("Rendered language:", lang);
+                    console.log(
+                        "Rendered language:",
+                        lang,
+                        "with",
+                        wordsPerLine,
+                        "words per line",
+                    );
                 }
                 render("ru");
                 sel.addEventListener("change", (e) => render(e.target.value));
