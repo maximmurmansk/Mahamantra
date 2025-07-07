@@ -15,13 +15,21 @@
 
         <style>
             /* ─── ДОБАВКИ ─── */
-
-            /* отменяем старый word-spacing и даём отступ через margin */
             .centered {
                 word-spacing: 0;
             }
             .waviy span + span {
                 margin-left: 30px;
+            }
+
+            #triggerArea {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                width: 300px;
+                height: 300px;
+                z-index: 1001;
+                pointer-events: auto;
             }
         </style>
     </head>
@@ -65,13 +73,15 @@
             <button id="fDec" class="f-btn">−</button>
         </div>
 
+        <!-- ТРИГГЕР ДЛЯ КНОПОК -->
+        <div id="triggerArea"></div>
+
         <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
         <div class="controls">
             <button id="dec" class="spd-btn">−</button>
             <span id="spdText" class="spd-text">5с</span>
             <button id="inc" class="spd-btn">+</button>
 
-            <!-- ТЕМА -->
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
                     id="moon"
@@ -237,48 +247,66 @@
             };
 
             /* ШРИФТ */
-            let baseSize = 70,
-                fStep = 5;
+            let baseSize = 100,
+                fStep = 30; // Начальный размер соответствует CSS
             const fontCtrl = document.getElementById("fontCtrl");
-            document.getElementById("fInc").onclick = () => {
+            const fInc = document.getElementById("fInc");
+            const fDec = document.getElementById("fDec");
+
+            function updateFontSize() {
+                document.documentElement.style.setProperty(
+                    "--font-size",
+                    `${baseSize}px`,
+                );
+                console.log(
+                    `Font size set to ${baseSize}px, computed: ${getComputedStyle(waviy).fontSize}`,
+                );
+            }
+
+            fInc.addEventListener("click", () => {
                 baseSize += fStep;
-                waviy.style.fontSize = baseSize + "px";
+                updateFontSize();
                 showCtrl();
-                console.log("Font size increased to", baseSize);
-            };
-            document.getElementById("fDec").onclick = () => {
+                console.log("Font increase clicked, new size:", baseSize);
+            });
+
+            fDec.addEventListener("click", () => {
                 if (baseSize > 30) {
                     baseSize -= fStep;
-                    waviy.style.fontSize = baseSize + "px";
+                    updateFontSize();
                     showCtrl();
-                    console.log("Font size decreased to", baseSize);
+                    console.log("Font decrease clicked, new size:", baseSize);
+                } else {
+                    console.log("Font size at minimum (30px)");
                 }
-            };
+            });
 
+            let hideTimer,
+                lastShowTime = 0;
             function showCtrl() {
                 if (window.innerWidth < 1024) {
                     console.log("Font controls not shown on mobile (<1024px)");
                     return;
                 }
+                const now = performance.now();
+                if (now - lastShowTime < 100) return; // дебounce
                 clearTimeout(hideTimer);
                 fontCtrl.classList.add("active");
+                lastShowTime = now;
                 hideTimer = setTimeout(() => {
                     fontCtrl.classList.remove("active");
                     console.log("Font controls hidden");
                 }, 4000);
+                console.log("Font controls shown");
             }
 
-            document.addEventListener("mousemove", (e) => {
+            const triggerArea = document.getElementById("triggerArea");
+            triggerArea.addEventListener("mousemove", (e) => {
                 if (window.innerWidth < 1024) return;
-                if (
-                    e.clientX > window.innerWidth - 250 &&
-                    e.clientY > window.innerHeight - 250
-                ) {
-                    console.log(
-                        `Mouse at: x=${e.clientX}, y=${e.clientY}, window: ${window.innerWidth}x${window.innerHeight}`,
-                    );
-                    showCtrl();
-                }
+                console.log(
+                    `Mouse in trigger area: x=${e.clientX}, y=${e.clientY}, window: ${window.innerWidth}x${window.innerHeight}`,
+                );
+                showCtrl();
             });
 
             fontCtrl.addEventListener("mouseenter", () => {
@@ -322,6 +350,7 @@
 
             /* НАЧАЛЬНАЯ УСТАНОВКА */
             setSpeed(false);
+            updateFontSize(); // Устанавливаем начальный размер шрифта
             showIntro();
         </script>
 

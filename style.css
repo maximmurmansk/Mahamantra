@@ -3,6 +3,7 @@
 :root {
     --speed: 5s;
     --step: 0.312s;
+    --font-size: 100px; /* Управляется JavaScript */
 }
 
 * {
@@ -42,10 +43,10 @@ body {
     transform: translate(-50%, -50%);
     font-size: 64px;
     white-space: pre-line;
-    hyphens: none; /* запрет разрывов по дефису */
+    hyphens: none;
     pointer-events: none;
     user-select: none;
-    z-index: 15; /* выше мантры */
+    z-index: 15;
 }
 #intro span:last-child {
     white-space: nowrap;
@@ -111,11 +112,10 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    word-spacing: 30px;
 }
 .waviy {
     position: relative;
-    font-size: 100px;
+    font-size: var(--font-size);
     -webkit-box-reflect: below -20px
         linear-gradient(transparent, rgba(0, 0, 0, 0.2));
     z-index: 5;
@@ -124,7 +124,7 @@ body {
 /* пауза анимации */
 .waviy.paused span {
     animation-play-state: paused !important;
-    opacity: 0; /* полностью скрыто, пока пауза */
+    opacity: 0;
 }
 
 /* волна каждой буквы */
@@ -133,13 +133,6 @@ body {
     animation: waviy var(--speed) infinite;
     animation-delay: calc(var(--step) * var(--i));
 }
-
-.waviy span + span {
-    margin-left: 30px;
-}
-.centered {
-    word-spacing: 0;
-} /* обнуляем старое */
 
 @keyframes waviy {
     0% {
@@ -166,7 +159,7 @@ body {
         opacity: 0;
         pointer-events: none;
         transition: 0.25s;
-        z-index: 10;
+        z-index: 1005;
     }
     .font-ctrl.active {
         opacity: 1;
