@@ -2,6 +2,8 @@
 <html lang="ru">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Добавлено для мобильной адаптации -->
         <title>Харе Кришна</title>
 
         <!-- ШРИФТЫ -->
@@ -30,6 +32,10 @@
                 height: 300px;
                 z-index: 1001;
                 pointer-events: auto;
+            }
+
+            #intro span:last-child {
+                white-space: nowrap;
             }
         </style>
     </head>
@@ -247,8 +253,8 @@
             };
 
             /* ШРИФТ */
-            let baseSize = 100,
-                fStep = 30; // Начальный размер соответствует CSS
+            let baseSize = window.innerWidth < 768 ? 40 : 100,
+                fStep = 30; // Меньший размер для мобильных
             const fontCtrl = document.getElementById("fontCtrl");
             const fInc = document.getElementById("fInc");
             const fDec = document.getElementById("fDec");

@@ -185,3 +185,21 @@ body {
         display: none;
     }
 }
+
+/* Мобильная адаптация для телефонов */
+@media (max-width: 767px) {
+    :root {
+        --font-size: 40px; /* Меньший размер шрифта для мобильных */
+    }
+    .waviy span + span {
+        margin-left: 10px; /* Меньший отступ между словами */
+    }
+    .waviy {
+        max-width: 90vw; /* Ограничение ширины текста */
+        word-wrap: break-word; /* Перенос слов */
+    }
+    .intro {
+        font-size: 32px; /* Меньший размер шрифта для intro на мобильных */
+        padding: 10px;
+    }
+}
