@@ -113,7 +113,8 @@ body {
 .waviy {
     position: relative;
     font-size: 100px;
-    -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+    -webkit-box-reflect: below -20px
+        linear-gradient(transparent, rgba(0, 0, 0, 0.1));
     z-index: 5;
 }
 
@@ -128,10 +129,25 @@ body {
     animation: waviy var(--speed) infinite;
     animation-delay: calc(var(--step) * var(--i));
 }
+
+.waviy span + span {
+    margin-left: 30px;
+}
+.centered {
+    word-spacing: 0;
+} /* обнуляем старое */
+
 @keyframes waviy {
-    0%   { transform: scale(1); }
-    10%  { transform: scale(1.3); color: #e4491d; }
-    15%  { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    10% {
+        transform: scale(1.3);
+        color: #e4491d;
+    }
+    15% {
+        transform: scale(1);
+    }
 }
 
 /* плавающий блок +/− (ПК) */
