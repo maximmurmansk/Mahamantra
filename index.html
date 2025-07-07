@@ -17,6 +17,28 @@
         <!-- СЧЁТЧИК -->
         <div class="counter" id="counter">Круги: 1 | Бусины: 1</div>
 
+        <!-- ВЫБОР ЯЗЫКА (▼) -->
+        <select
+            id="langSel"
+            class="icon-btn"
+            style="position: fixed; left: 10px; top: 10px; z-index: 20"
+        >
+            <option value="ru">🇷🇺 Ru</option>
+            <option value="en">🇬🇧 En</option>
+            <option value="pl">🇵🇱 Pl</option>
+            <option value="de">🇩🇪 De</option>
+            <option value="uk">🇺🇦 Uk</option>
+            <option value="cs">🇨🇿 Cs</option>
+            <option value="be">🇧🇾 Be</option>
+            <option value="tr">🇹🇷 Tr</option>
+            <option value="el">🇬🇷 El</option>
+            <option value="ka">🇬🇪 Ka</option>
+            <option value="he">🇮🇱 He</option>
+            <option value="yi">🕍 Yi</option>
+            <option value="ja">🇯🇵 Ja</option>
+            <option value="ko">🇰🇷 Ko</option>
+        </select>
+
         <!-- ПРИВЕТСТВИЕ -->
         <div id="intro" class="intro">
             <span> (джайа) Шри-Кришна-Чаитанйа </span>
@@ -125,11 +147,11 @@
             function setSpeed(restart) {
                 document.documentElement.style.setProperty(
                     "--speed",
-                    speed + "s"
+                    speed + "s",
                 );
                 document.documentElement.style.setProperty(
                     "--step",
-                    (speed / 16).toFixed(3) + "s"
+                    (speed / 16).toFixed(3) + "s",
                 );
                 spdText.textContent = speed.toFixed(1) + "с";
                 if (restart) restartWave();
@@ -235,7 +257,7 @@
                 fontCtrl.classList.add("active");
                 hideTimer = setTimeout(
                     () => fontCtrl.classList.remove("active"),
-                    1000
+                    1000,
                 );
             }
             document.addEventListener("mousemove", (e) => {
@@ -246,6 +268,38 @@
                 )
                     showCtrl();
             });
+        </script>
+        <!-- ======== ЗАГРУЖАЕМ JSON и РЕНДЕРИМ (работает во всех браузерах) ======== -->
+        <script type="module">
+            (async () => {
+                /* 1. читаем translations.json из той же папки */
+                const translations = await fetch("translations.json").then(
+                    (r) => r.json(),
+                );
+
+                /* 2. ссылки на DOM */
+                const waviy = document.getElementById("waviy");
+                const langSel = document.getElementById("langSel");
+
+                /* 3. функция-рендер */
+                function render(lang = "ru") {
+                    const text = translations[lang] || translations.ru; // если нет – fallback на ru
+                    const words = text.split(/\s+/).filter(Boolean); // массив слов
+                    const html = words
+                        .map(
+                            (w, i) =>
+                                `<span style="--i:${(i % 16) + 1}">${w}</span>${i % 4 === 3 && i !== 15 ? "<br>" : ""}`,
+                        )
+                        .join("");
+                    waviy.innerHTML = html;
+                }
+
+                /* 4. первый вывод + обработчик выбора */
+                render("ru");
+                langSel.addEventListener("change", (e) =>
+                    render(e.target.value),
+                );
+            })();
         </script>
     </body>
 </html>
