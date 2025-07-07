@@ -4,39 +4,17 @@
         <meta charset="UTF-8" />
         <title>Харе Кришна</title>
 
-        <!-- шрифты -->
+        <!-- ШРИФТЫ -->
         <link
             href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap"
             rel="stylesheet"
         />
 
-        <!-- светлая тема -->
+        <!-- СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ -->
         <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
 
         <style>
             /* ─── ДОБАВКИ ─── */
-
-            /* приветствие теперь фикс-центр и поверх всего */
-            #intro {
-                position: fixed;
-                inset: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 15;
-                font-size: 48px;
-                line-height: 1.3;
-                text-align: center;
-                backdrop-filter: blur(2px);
-                background: rgba(0, 0, 0, 0.65);
-                color: #fff;
-                transition: opacity 0.4s;
-            }
-            #intro.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
 
             /* отменяем старый word-spacing и даём отступ через margin */
             .centered {
@@ -48,10 +26,10 @@
         </style>
     </head>
     <body>
-        <!-- счётчик -->
+        <!-- СЧЁТЧИК -->
         <div class="counter" id="counter">Круги: 1 | Бусины: 1</div>
 
-        <!-- селектор языка -->
+        <!-- СЕЛЕКТОР ЯЗЫКА -->
         <select
             id="langSel"
             class="icon-btn"
@@ -73,7 +51,7 @@
             <option value="ko">🇰🇷 Ko</option>
         </select>
 
-        <!-- приветствие -->
+        <!-- ПРИВЕТСТВИЕ -->
         <div id="intro" class="intro">
             <span>(джайа) Шри-Кришна-Чайтания</span>
             <span>Прабху Нитьянанда</span>
@@ -81,19 +59,19 @@
             <span>Шривасади-Гаура-Бхакта-Вринда</span>
         </div>
 
-        <!-- кнопки ± шрифта -->
+        <!-- КНОПКИ ± ШРИФТА -->
         <div class="font-ctrl" id="fontCtrl">
             <button id="fInc" class="f-btn">+</button>
             <button id="fDec" class="f-btn">−</button>
         </div>
 
-        <!-- панель скорости / темы -->
+        <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
         <div class="controls">
             <button id="dec" class="spd-btn">−</button>
             <span id="spdText" class="spd-text">5с</span>
             <button id="inc" class="spd-btn">+</button>
 
-            <!-- тема -->
+            <!-- ТЕМА -->
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
                     id="moon"
@@ -133,12 +111,12 @@
             </button>
         </div>
 
-        <!-- мантра -->
+        <!-- МАНТРА -->
         <div class="centered"><div class="waviy" id="waviy"></div></div>
 
-        <!-- === базовый JS (коротко) === -->
+        <!-- === БАЗОВЫЙ JS === -->
         <script>
-            /* счётчик */
+            /* СЧЁТЧИК */
             let beads = 1,
                 rounds = 1,
                 introVisible = true;
@@ -147,25 +125,39 @@
             const intro = document.getElementById("intro");
             function updateCounter() {
                 out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
+                console.log(
+                    `Counter updated: Rounds=${rounds}, Beads=${beads}`,
+                );
             }
 
             function onIter() {
-                if (introVisible) return;
+                if (introVisible) {
+                    console.log(
+                        "Ignoring animation iteration due to intro visible",
+                    );
+                    return;
+                }
                 if (++beads > 108) {
-                    beads = 0;
+                    beads = 1;
                     ++rounds;
                     showIntro();
                 }
                 updateCounter();
             }
+
             function attachFirstListener() {
                 waviy
                     .querySelectorAll("#first")
                     .forEach((el) => el.removeAttribute("id"));
                 const first = waviy.querySelector("span");
-                if (!first) return;
+                if (!first) {
+                    console.log("No first span found, retrying after 100ms");
+                    setTimeout(attachFirstListener, 100);
+                    return;
+                }
                 first.id = "first";
                 first.addEventListener("animationiteration", onIter);
+                console.log("Animation listener attached to first span");
             }
 
             function showIntro() {
@@ -177,22 +169,173 @@
                     intro.classList.add("hidden");
                     waviy.classList.remove("paused");
                     introVisible = false;
-                    beads = 1;
+                    restartWave();
                     updateCounter();
-                    attachFirstListener();
+                    console.log("Intro hidden, animation restarted");
                 }, 10000);
             }
-            showIntro(); /* стартовое приветствие */
 
-            /* скорость, тема, масштаб и др. — ваш прежний код без изменений */
+            /* СКОРОСТЬ */
+            let speed = 6.0;
+            const min = 4,
+                max = 9,
+                step = 0.5;
+            const spdText = document.getElementById("spdText");
+
+            function setSpeed(restart) {
+                document.documentElement.style.setProperty(
+                    "--speed",
+                    speed + "s",
+                );
+                document.documentElement.style.setProperty(
+                    "--step",
+                    (speed / 16).toFixed(3) + "s",
+                );
+                spdText.textContent = speed.toFixed(1) + "с";
+                if (restart) {
+                    restartWave();
+                    console.log("Speed set, animation restarted");
+                }
+            }
+
+            function restartWave() {
+                const spans = waviy.querySelectorAll("span");
+                spans.forEach((s) => {
+                    s.style.animation = "none";
+                    s.offsetHeight; // триггер рефлоу
+                    s.style.animation = "waviy var(--speed) infinite";
+                    s.style.animationDelay = `calc(var(--step) * ${s.style.getPropertyValue("--i")})`;
+                });
+                attachFirstListener();
+                console.log("Wave animation reset for", spans.length, "spans");
+            }
+
+            function changeSpeed(delta) {
+                const next = +(speed + delta).toFixed(1);
+                if (next >= min && next <= max) {
+                    speed = next;
+                    setSpeed(true);
+                }
+            }
+
+            document.getElementById("inc").onclick = () => changeSpeed(+step);
+            document.getElementById("dec").onclick = () => changeSpeed(-step);
+
+            /* ТЕМА */
+            document.getElementById("theme").onclick = () => {
+                const link = document.getElementById("themeStylesheet");
+                const lightNow = link.href.endsWith("style2.css");
+                link.href = lightNow ? "style.css" : "style2.css";
+                document
+                    .getElementById("sun")
+                    .classList.toggle("hidden", !lightNow);
+                document
+                    .getElementById("moon")
+                    .classList.toggle("hidden", lightNow);
+                console.log("Theme switched to", lightNow ? "dark" : "light");
+                restartWave();
+            };
+
+            /* ШРИФТ */
+            let baseSize = 70,
+                fStep = 5;
+            const fontCtrl = document.getElementById("fontCtrl");
+            document.getElementById("fInc").onclick = () => {
+                baseSize += fStep;
+                waviy.style.fontSize = baseSize + "px";
+                showCtrl();
+                console.log("Font size increased to", baseSize);
+            };
+            document.getElementById("fDec").onclick = () => {
+                if (baseSize > 30) {
+                    baseSize -= fStep;
+                    waviy.style.fontSize = baseSize + "px";
+                    showCtrl();
+                    console.log("Font size decreased to", baseSize);
+                }
+            };
+
+            function showCtrl() {
+                if (window.innerWidth < 1024) {
+                    console.log("Font controls not shown on mobile (<1024px)");
+                    return;
+                }
+                clearTimeout(hideTimer);
+                fontCtrl.classList.add("active");
+                hideTimer = setTimeout(() => {
+                    fontCtrl.classList.remove("active");
+                    console.log("Font controls hidden");
+                }, 4000);
+            }
+
+            document.addEventListener("mousemove", (e) => {
+                if (window.innerWidth < 1024) return;
+                if (
+                    e.clientX > window.innerWidth - 250 &&
+                    e.clientY > window.innerHeight - 250
+                ) {
+                    console.log(
+                        `Mouse at: x=${e.clientX}, y=${e.clientY}, window: ${window.innerWidth}x${window.innerHeight}`,
+                    );
+                    showCtrl();
+                }
+            });
+
+            fontCtrl.addEventListener("mouseenter", () => {
+                if (window.innerWidth < 1024) return;
+                clearTimeout(hideTimer);
+                fontCtrl.classList.add("active");
+                console.log("Mouse entered font controls");
+            });
+            fontCtrl.addEventListener("mouseleave", () => {
+                if (window.innerWidth < 1024) return;
+                hideTimer = setTimeout(() => {
+                    fontCtrl.classList.remove("active");
+                    console.log("Font controls hidden after mouse leave");
+                }, 4000);
+            });
+
+            // Показываем кнопки на 3 секунды при загрузке
+            if (window.innerWidth >= 1024) {
+                fontCtrl.classList.add("active");
+                setTimeout(() => fontCtrl.classList.remove("active"), 3000);
+                console.log("Font controls shown on load");
+            }
+
+            // Fallback для проверки анимации
+            setInterval(() => {
+                const first = waviy.querySelector("#first");
+                if (!first) {
+                    console.log("No first span, reattaching listener");
+                    attachFirstListener();
+                    return;
+                }
+                const computedStyle = getComputedStyle(first);
+                if (
+                    computedStyle.animationPlayState === "paused" &&
+                    !introVisible
+                ) {
+                    console.log("Animation paused unexpectedly, restarting...");
+                    restartWave();
+                }
+            }, 5000);
+
+            /* НАЧАЛЬНАЯ УСТАНОВКА */
+            setSpeed(false);
+            showIntro();
         </script>
 
-        <!-- === загрузка JSON и смена языка === -->
+        <!-- === ЗАГРУЗКА JSON И СМЕНА ЯЗЫКА === -->
         <script type="module">
             (async () => {
-                const translations = await fetch("translations.json").then(
-                    (r) => r.json(),
-                );
+                const translations = await fetch("translations.json")
+                    .then((r) => r.json())
+                    .catch((e) => {
+                        console.error("Failed to load translations:", e);
+                        return {
+                            ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+                        };
+                    });
                 const sel = document.getElementById("langSel");
                 function render(lang = "ru") {
                     const txt = translations[lang] || translations.ru;
@@ -205,6 +348,7 @@
                         .join("");
                     waviy.innerHTML = html;
                     attachFirstListener();
+                    console.log("Rendered language:", lang);
                 }
                 render("ru");
                 sel.addEventListener("change", (e) => render(e.target.value));
