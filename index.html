@@ -15,14 +15,16 @@
         <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
 
         <style>
-            /* ─── ДОБАВКИ ─── */
             .centered {
                 word-spacing: 0;
+                width: 100%;
+                max-width: 100vw;
+                overflow: hidden;
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
-            .waviy span + span {
-                margin-left: 30px;
-            }
-
             #triggerArea {
                 position: fixed;
                 bottom: 0;
@@ -83,7 +85,7 @@
         <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
         <div class="controls">
             <button id="dec" class="spd-btn">−</button>
-            <span id="spdText" class="spd-text">5с</span>
+            <span id="spdText" class="spd-text">6с</span>
             <button id="inc" class="spd-btn">+</button>
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
                 <svg
@@ -127,7 +129,7 @@
         <!-- МАНТРА -->
         <div class="centered"><div class="waviy" id="waviy"></div></div>
 
-        <!-- === БАЗОВЫЙ JS === -->
+        <!-- === JAVASCRIPT === -->
         <script>
             /* СЧЁТЧИК */
             let beads = 1,
@@ -190,7 +192,7 @@
 
             /* СКОРОСТЬ */
             let speed = 6.0;
-            const min = 4,
+            const min = 2,
                 max = 9,
                 step = 0.5;
             const spdText = document.getElementById("spdText");
@@ -213,11 +215,11 @@
 
             function restartWave() {
                 const spans = waviy.querySelectorAll("span");
-                spans.forEach((s) => {
+                spans.forEach((s, i) => {
                     s.style.animation = "none";
-                    s.offsetHeight; // триггер рефлоу
+                    s.offsetHeight; // Триггер рефлоу
                     s.style.animation = "waviy var(--speed) infinite";
-                    s.style.animationDelay = `calc(var(--step) * ${s.style.getPropertyValue("--i")})`;
+                    s.style.animationDelay = `calc(var(--step) * ${s.dataset.i})`;
                 });
                 attachFirstListener();
                 console.log("Wave animation reset for", spans.length, "spans");
@@ -231,27 +233,36 @@
                 }
             }
 
-            document.getElementById("inc").onclick = () => changeSpeed(+step);
-            document.getElementById("dec").onclick = () => changeSpeed(-step);
+            document
+                .getElementById("inc")
+                .addEventListener("click", () => changeSpeed(+step));
+            document
+                .getElementById("dec")
+                .addEventListener("click", () => changeSpeed(-step));
 
             /* ТЕМА */
-            document.getElementById("theme").onclick = () => {
+            let isLightTheme = true;
+            document.getElementById("theme").addEventListener("click", () => {
                 const link = document.getElementById("themeStylesheet");
-                const lightNow = link.href.endsWith("style2.css");
-                link.href = lightNow ? "style.css" : "style2.css";
+                isLightTheme = !isLightTheme;
+                link.href = isLightTheme ? "style2.css" : "style.css";
                 document
                     .getElementById("sun")
-                    .classList.toggle("hidden", !lightNow);
+                    .classList.toggle("hidden", !isLightTheme);
                 document
                     .getElementById("moon")
-                    .classList.toggle("hidden", lightNow);
-                console.log("Theme switched to", lightNow ? "dark" : "light");
+                    .classList.toggle("hidden", isLightTheme);
+                console.log(
+                    "Theme switched to",
+                    isLightTheme ? "light" : "dark",
+                );
                 restartWave();
-            };
+                adjustFontSize(waviy.textContent.split(/\s+/).filter(Boolean));
+            });
 
             /* ШРИФТ */
-            let baseSize = window.innerWidth < 768 ? 40 : 100,
-                fStep = 30;
+            let baseSize;
+            const fStep = 30;
             const fontCtrl = document.getElementById("fontCtrl");
             const fInc = document.getElementById("fInc");
             const fDec = document.getElementById("fDec");
@@ -266,6 +277,39 @@
                 );
             }
 
+            function adjustFontSize(words) {
+                console.log("Adjusting font size for words:", words);
+                const testDiv = document.createElement("div");
+                testDiv.style.cssText = `
+                    position: absolute;
+                    visibility: hidden;
+                    white-space: nowrap;
+                    font-family: 'Great Vibes', cursive;
+                    font-size: 16px;
+                `;
+                let maxWidth = 0;
+                const wordMargin = window.innerWidth < 768 ? 2 : 4; // Соответствует CSS margin
+                for (let i = 0; i < words.length; i += 4) {
+                    const lineWords = words.slice(i, i + 4).join(" ");
+                    testDiv.textContent = lineWords;
+                    document.body.appendChild(testDiv);
+                    maxWidth = Math.max(
+                        maxWidth,
+                        testDiv.offsetWidth +
+                            wordMargin * 2 * Math.min(4, words.length - i),
+                    );
+                    document.body.removeChild(testDiv);
+                }
+                const availableWidth = window.innerWidth * 0.9;
+                const scaleFactor = availableWidth / maxWidth;
+                baseSize = Math.min(Math.floor(16 * scaleFactor * 1.1), 80); // 1.1 для запаса
+                baseSize = Math.max(baseSize, 74); // Минимальный размер 74px
+                updateFontSize();
+                console.log(
+                    `Adjusted font size to ${baseSize}px for window width ${window.innerWidth}px, max line width ${maxWidth}px`,
+                );
+            }
+
             fInc.addEventListener("click", () => {
                 baseSize += fStep;
                 updateFontSize();
@@ -274,13 +318,13 @@
             });
 
             fDec.addEventListener("click", () => {
-                if (baseSize > 30) {
+                if (baseSize > 24) {
                     baseSize -= fStep;
                     updateFontSize();
                     showCtrl();
                     console.log("Font decrease clicked, new size:", baseSize);
                 } else {
-                    console.log("Font size at minimum (30px)");
+                    console.log("Font size at minimum (24px)");
                 }
             });
 
@@ -292,7 +336,7 @@
                     return;
                 }
                 const now = performance.now();
-                if (now - lastShowTime < 100) return; // debounce
+                if (now - lastShowTime < 100) return;
                 clearTimeout(hideTimer);
                 fontCtrl.classList.add("active");
                 lastShowTime = now;
@@ -326,14 +370,12 @@
                 }, 4000);
             });
 
-            // Показываем кнопки на 3 секунды при загрузке
             if (window.innerWidth >= 1024) {
                 fontCtrl.classList.add("active");
                 setTimeout(() => fontCtrl.classList.remove("active"), 3000);
                 console.log("Font controls shown on load");
             }
 
-            // Fallback для проверки анимации
             setInterval(() => {
                 const first = waviy.querySelector("#first");
                 if (!first) {
@@ -353,45 +395,72 @@
 
             /* НАЧАЛЬНАЯ УСТАНОВКА */
             setSpeed(false);
-            updateFontSize();
             showIntro();
-        </script>
 
-        <!-- === ЗАГРУЗКА JSON И СМЕНА ЯЗЫКА === -->
-        <script type="module">
-            (async () => {
-                const translations = await fetch("translations.json")
-                    .then((r) => r.json())
-                    .catch((e) => {
-                        console.error("Failed to load translations:", e);
-                        return {
-                            ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-                        };
-                    });
-                const sel = document.getElementById("langSel");
-                function render(lang = "ru") {
-                    const txt = translations[lang] || translations.ru;
-                    const words = txt.split(/\s+/).filter(Boolean);
-                    const wordsPerLine = window.innerWidth < 768 ? 2 : 4; // 2 слова на линию для мобильных
-                    const html = words
-                        .map(
-                            (w, i) =>
-                                `<span style="--i:${(i % 16) + 1}">${w}</span>${i % wordsPerLine === wordsPerLine - 1 && i !== words.length - 1 ? "<br>" : ""}`,
-                        )
-                        .join("");
-                    waviy.innerHTML = html;
-                    attachFirstListener();
+            /* === ЗАГРУЗКА JSON И СМЕНА ЯЗЫКА === */
+            let translations = null;
+            async function loadTranslations() {
+                try {
+                    const response = await fetch("translations.json");
+                    if (!response.ok)
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`,
+                        );
+                    translations = await response.json();
                     console.log(
-                        "Rendered language:",
-                        lang,
-                        "with",
-                        wordsPerLine,
-                        "words per line",
+                        "Translations loaded successfully:",
+                        Object.keys(translations),
                     );
+                } catch (e) {
+                    console.error("Failed to load translations:", e);
+                    translations = {
+                        ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+                    };
                 }
                 render("ru");
-                sel.addEventListener("change", (e) => render(e.target.value));
-            })();
+            }
+
+            const sel = document.getElementById("langSel");
+            function render(lang = "ru") {
+                if (!translations) {
+                    console.log(
+                        "Translations not loaded yet, retrying after 100ms",
+                    );
+                    setTimeout(() => render(lang), 100);
+                    return;
+                }
+                const txt = translations[lang] || translations.ru;
+                const words = txt.split(/\s+/).filter(Boolean);
+                let html = "";
+                for (let i = 0; i < words.length; i++) {
+                    html += `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${words[i]}</span>`;
+                    if ((i + 1) % 4 === 0 && i !== words.length - 1)
+                        html += "<br>";
+                }
+                waviy.innerHTML = html;
+                adjustFontSize(words);
+                attachFirstListener();
+                console.log(
+                    "Rendered language:",
+                    lang,
+                    "with",
+                    words.length,
+                    "words, 4 words per line",
+                );
+            }
+
+            sel.addEventListener("change", (e) => {
+                console.log("Language changed to:", e.target.value);
+                render(e.target.value);
+            });
+
+            window.addEventListener("resize", () => {
+                const words = waviy.textContent.split(/\s+/).filter(Boolean);
+                adjustFontSize(words);
+                console.log("Window resized, recalculating font size");
+            });
+
+            loadTranslations();
         </script>
     </body>
 </html>
