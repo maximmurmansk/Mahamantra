@@ -11,62 +11,81 @@
             rel="stylesheet"
         />
 
-        <!-- СВЕТЛАЯ/ТЁМНАЯ ТЕМА -->
+        <!-- СТИЛИ (светлая тема по умолчанию) -->
         <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
-
-        <!-- ЛОКАЛЬНЫЕ ДОБАВКИ -->
-        <style>
-            .centered {
-                word-spacing: 0;
-                width: 100%;
-                max-width: 100vw;
-                overflow: hidden;
-                flex: 1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            #triggerArea {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                width: 300px;
-                height: 300px;
-                z-index: 1001;
-                pointer-events: auto;
-            }
-            #intro span:last-child {
-                white-space: nowrap;
-            }
-        </style>
     </head>
     <body>
-        <!-- СЧЁТЧИК -->
-        <div class="counter" id="counter">Круги: 1 | Бусины: 1</div>
+        <!-- ░░ ШАПКА ░░ -->
+        <div class="panel">
+            <!-- язык -->
+            <select id="langSel" class="circle">
+                <option value="ru">🇷🇺</option>
+                <option value="en">🇬🇧</option>
+                <option value="pl">🇵🇱</option>
+                <option value="de">🇩🇪</option>
+                <option value="uk">🇺🇦</option>
+                <option value="cs">🇨🇿</option>
+                <option value="be">🇧🇾</option>
+                <option value="tr">🇹🇷</option>
+                <option value="el">🇬🇷</option>
+                <option value="ka">🇬🇪</option>
+                <option value="he">🇮🇱</option>
+                <option value="yi">🕍</option>
+                <option value="ja">🇯🇵</option>
+                <option value="ko">🇰🇷</option>
+            </select>
 
-        <!-- СЕЛЕКТОР ЯЗЫКА -->
-        <select
-            id="langSel"
-            class="icon-btn"
-            style="position: fixed; left: 10px; top: 10px; z-index: 20"
-        >
-            <option value="ru">🇷🇺 Ru</option>
-            <option value="en">🇬🇧 En</option>
-            <option value="pl">🇵🇱 Pl</option>
-            <option value="de">🇩🇪 De</option>
-            <option value="uk">🇺🇦 Uk</option>
-            <option value="cs">🇨🇿 Cs</option>
-            <option value="be">🇧🇾 Be</option>
-            <option value="tr">🇹🇷 Tr</option>
-            <option value="el">🇬🇷 El</option>
-            <option value="ka">🇬🇪 Ka</option>
-            <option value="he">🇮🇱 He</option>
-            <option value="yi">🕍 Yi</option>
-            <option value="ja">🇯🇵 Ja</option>
-            <option value="ko">🇰🇷 Ko</option>
-        </select>
+            <!-- скорость + тема -->
+            <div class="controls">
+                <button id="dec" class="circle">−</button>
+                <span id="spdText" class="spd-text">6 с</span>
+                <button id="inc" class="circle">+</button>
+                <button id="theme" class="circle">
+                    <!-- Луна -->
+                    <svg id="moon" class="icon" viewBox="0 0 24 24">
+                        <path
+                            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                        />
+                    </svg>
+                    <!-- Солнце -->
+                    <svg id="sun" class="icon hidden" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                </button>
+            </div>
 
-        <!-- ПРИВЕТСТВИЕ -->
+            <!-- счётчик -->
+            <div class="counter circle">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <polyline points="23 4 23 10 17 10" />
+                    <path d="M20.49 15A9 9 0 1 1 23 10" />
+                </svg>
+                <span id="roundsVal">1</span>
+                <span class="sep">/</span>
+                <svg class="icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="4" r="2" />
+                    <circle cx="16" cy="6" r="2" />
+                    <circle cx="18" cy="10" r="2" />
+                    <circle cx="16" cy="14" r="2" />
+                    <circle cx="12" cy="16" r="2" />
+                    <circle cx="8" cy="14" r="2" />
+                    <circle cx="6" cy="10" r="2" />
+                    <circle cx="8" cy="6" r="2" />
+                    <circle cx="12" cy="20" r="3" />
+                </svg>
+                <span id="beadsVal">1</span>
+            </div>
+        </div>
+
+        <!-- приветствие -->
         <div id="intro" class="intro">
             <span>(джайа) Шри-Кришна-Чайтания</span>
             <span>Прабху Нитьянанда</span>
@@ -74,303 +93,17 @@
             <span>Шривасади-Гаура-Бхакта-Вринда</span>
         </div>
 
-        <!-- КНОПКИ ± ШРИФТА -->
+        <!-- кнопки +/− шрифта (ПК) -->
         <div class="font-ctrl" id="fontCtrl">
             <button id="fInc" class="f-btn">+</button>
             <button id="fDec" class="f-btn">−</button>
         </div>
-
-        <!-- ТРИГГЕР ДЛЯ КНОПОК -->
         <div id="triggerArea"></div>
 
-        <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
-        <div class="controls">
-            <button id="dec" class="spd-btn">−</button>
-            <span id="spdText" class="spd-text">6 с</span>
-            <button id="inc" class="spd-btn">+</button>
-            <button id="theme" class="icon-btn" aria-label="Сменить тему">
-                <!-- moon & sun -->
-                <svg
-                    id="moon"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-                <svg
-                    id="sun"
-                    class="hidden"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <circle cx="12" cy="12" r="5" />
-                    <line x1="12" y1="1" x2="12" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-            </button>
-        </div>
+        <!-- мантра -->
+        <div class="centered"><div id="waviy" class="waviy"></div></div>
 
-        <!-- МАНТРА -->
-        <div class="centered"><div class="waviy" id="waviy"></div></div>
-
-        <!-- === JAVASCRIPT === -->
-        <script>
-            /* --------- СЧЁТЧИК ---------- */
-            let beads = 1,
-                rounds = 1,
-                introVisible = true;
-            const waviy = document.getElementById("waviy"),
-                out = document.getElementById("counter"),
-                intro = document.getElementById("intro");
-            function updateCounter() {
-                out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
-            }
-
-            function onIter() {
-                if (introVisible) return;
-                if (++beads > 108) {
-                    beads = 1;
-                    ++rounds;
-                    showIntro();
-                }
-                updateCounter();
-            }
-
-            function attachFirstListener() {
-                waviy
-                    .querySelectorAll("#first")
-                    .forEach((el) => el.removeAttribute("id"));
-                const first = waviy.querySelector("span");
-                if (!first) {
-                    setTimeout(attachFirstListener, 100);
-                    return;
-                }
-                first.id = "first";
-                first.addEventListener("animationiteration", onIter);
-            }
-
-            function showIntro() {
-                clearTimeout(showIntro.t);
-                introVisible = true;
-                intro.classList.remove("hidden");
-                waviy.classList.add("paused");
-                showIntro.t = setTimeout(() => {
-                    intro.classList.add("hidden");
-                    waviy.classList.remove("paused");
-                    introVisible = false;
-                    restartWave();
-                    updateCounter();
-                }, 10000);
-            }
-
-            /* --------- СКОРОСТЬ ---------- */
-            let speed = 6.0,
-                constMin = 2,
-                constMax = 9,
-                constStep = 0.5,
-                spdText = document.getElementById("spdText");
-            function setSpeed(restart) {
-                document.documentElement.style.setProperty(
-                    "--speed",
-                    speed + "s",
-                );
-                document.documentElement.style.setProperty(
-                    "--step",
-                    (speed / 16).toFixed(3) + "s",
-                );
-                spdText.textContent = speed.toFixed(1) + " с";
-                if (restart) restartWave();
-            }
-            function restartWave() {
-                const spans = waviy.querySelectorAll("span");
-                spans.forEach((s) => {
-                    s.style.animation = "none";
-                    s.offsetHeight;
-                    s.style.animation = "waviy var(--speed) infinite";
-                    s.style.animationDelay = `calc(var(--step) * ${s.dataset.i})`;
-                });
-                attachFirstListener();
-            }
-            function changeSpeed(d) {
-                const next = +(speed + d).toFixed(1);
-                if (next >= constMin && next <= constMax) {
-                    speed = next;
-                    setSpeed(true);
-                }
-            }
-            document
-                .getElementById("inc")
-                .addEventListener("click", () => changeSpeed(+constStep));
-            document
-                .getElementById("dec")
-                .addEventListener("click", () => changeSpeed(-constStep));
-
-            /* --------- ТЕМА ---------- */
-            let isLightTheme = true;
-            document.getElementById("theme").addEventListener("click", () => {
-                const link = document.getElementById("themeStylesheet");
-                isLightTheme = !isLightTheme;
-                link.href = isLightTheme ? "style2.css" : "style.css";
-                document
-                    .getElementById("sun")
-                    .classList.toggle("hidden", !isLightTheme);
-                document
-                    .getElementById("moon")
-                    .classList.toggle("hidden", isLightTheme);
-                restartWave();
-                adjustFontSize(waviy.textContent.split(/\s+/).filter(Boolean));
-            });
-
-            /* --------- ШРИФТ ---------- */
-            let baseSize,
-                fStep = 30,
-                fontCtrl = document.getElementById("fontCtrl"),
-                fInc = document.getElementById("fInc"),
-                fDec = document.getElementById("fDec");
-            function updateFontSize() {
-                document.documentElement.style.setProperty(
-                    "--font-size",
-                    `${baseSize}px`,
-                );
-            }
-            function adjustFontSize(words) {
-                const test = document.createElement("div");
-                test.style.cssText =
-                    "position:absolute;visibility:hidden;white-space:nowrap;font-family:'Great Vibes',cursive;font-size:16px;";
-                let maxW = 0,
-                    wm = window.innerWidth < 768 ? 2 : 4;
-                for (let i = 0; i < words.length; i += 4) {
-                    test.textContent = words.slice(i, i + 4).join(" ");
-                    document.body.appendChild(test);
-                    maxW = Math.max(
-                        maxW,
-                        test.offsetWidth +
-                            wm * 2 * Math.min(4, words.length - i),
-                    );
-                    document.body.removeChild(test);
-                }
-                const avail = window.innerWidth * 0.9,
-                    scale = avail / maxW;
-                baseSize = Math.min(Math.floor(16 * scale * 0.95), 80);
-                baseSize = Math.max(baseSize, 24);
-                updateFontSize();
-            }
-            fInc.addEventListener("click", () => {
-                baseSize += fStep;
-                updateFontSize();
-                showCtrl();
-            });
-            fDec.addEventListener("click", () => {
-                if (baseSize > 24) {
-                    baseSize -= fStep;
-                    updateFontSize();
-                    showCtrl();
-                }
-            });
-
-            /* --------- Панель масштаба / автоскрытие ---------- */
-            let hideTimer,
-                lastShow = 0;
-            function showCtrl() {
-                if (window.innerWidth < 1024) return;
-                const now = performance.now();
-                if (now - lastShow < 100) return;
-                clearTimeout(hideTimer);
-                fontCtrl.classList.add("active");
-                lastShow = now;
-                hideTimer = setTimeout(
-                    () => fontCtrl.classList.remove("active"),
-                    4000,
-                );
-            }
-            document
-                .getElementById("triggerArea")
-                .addEventListener("mousemove", () => showCtrl());
-            fontCtrl.addEventListener("mouseenter", () => {
-                clearTimeout(hideTimer);
-                fontCtrl.classList.add("active");
-            });
-            fontCtrl.addEventListener("mouseleave", () => {
-                hideTimer = setTimeout(
-                    () => fontCtrl.classList.remove("active"),
-                    4000,
-                );
-            });
-
-            if (window.innerWidth >= 1024) {
-                fontCtrl.classList.add("active");
-                setTimeout(() => fontCtrl.classList.remove("active"), 3000);
-            }
-
-            /* --------- Страж анимации ---------- */
-            setInterval(() => {
-                const first = waviy.querySelector("#first");
-                if (
-                    !first ||
-                    (getComputedStyle(first).animationPlayState === "paused" &&
-                        !introVisible)
-                )
-                    restartWave();
-            }, 5000);
-
-            /* --------- ЗАГРУЗКА JSON + рендер ---------- */
-            let translations = null;
-            async function loadTranslations() {
-                try {
-                    const r = await fetch("translations.json");
-                    translations = r.ok ? await r.json() : {};
-                } catch (e) {
-                    translations = {
-                        ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-                    };
-                }
-                render("ru");
-            }
-            const sel = document.getElementById("langSel");
-            function render(lang = "ru") {
-                if (!translations) {
-                    setTimeout(() => render(lang), 100);
-                    return;
-                }
-                const txt = translations[lang] || translations.ru,
-                    words = txt.split(/\s+/).filter(Boolean);
-                let html = "";
-                for (let i = 0; i < words.length; i++) {
-                    html += `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${words[i]}</span>`;
-                    if ((i + 1) % 4 === 0 && i !== words.length - 1)
-                        html += "<br>";
-                }
-                waviy.innerHTML = html;
-                adjustFontSize(words);
-                attachFirstListener();
-            }
-            sel.addEventListener("change", (e) => render(e.target.value));
-            window.addEventListener("resize", () =>
-                adjustFontSize(waviy.textContent.split(/\s+/).filter(Boolean)),
-            );
-
-            /* --------- GO! ---------- */
-            setSpeed(false);
-            showIntro();
-            loadTranslations();
-        </script>
+        <!-- ЛОГИКА -->
+        <script src="app.js"></script>
     </body>
 </html>

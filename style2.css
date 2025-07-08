@@ -1,10 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap");
+/* переменные */
+#triggerArea {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    z-index: 10;
+    pointer-events: auto;
+}
 :root {
+    --btn-bg: #e0e0e0;
+    --btn-fg: #141414;
     --speed: 6s;
     --step: 0.375s;
     --font-size: 60px;
-    --word-margin: 16px;
 }
+
+/* базовые ресеты */
 * {
     margin: 0;
     padding: 0;
@@ -12,110 +24,104 @@
 }
 body {
     background: #f5f5f5;
-    color: #141414;
+    color: var(--btn-fg);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     font-family: "Great Vibes", cursive;
 }
-.counter {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    font-size: clamp(20px, 4vw, 24px);
-    background: rgba(255, 255, 255, 0.6);
-    padding: 6px 12px;
-    border-radius: 8px;
-    z-index: 20;
+
+/* круг */
+.circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+.circle svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
 }
 
+/* шапка */
+.panel {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.spd-text {
+    font-size: 26px;
+    font-style: normal;
+    width: 48px;
+    text-align: center;
+}
+
+/* счётчик */
+.counter {
+    gap: 6px;
+}
+.sep {
+    margin: 0 2px;
+    font-size: 24px;
+}
+
+/* intro */
 .intro {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: clamp(20px, 5vw, 36px);
-    white-space: pre-line;
+    text-align: center;
     pointer-events: none;
-    user-select: none;
-    z-index: 15;
 }
 .hidden {
     display: none !important;
 }
 
-.controls {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-}
-.spd-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 24px;
-    line-height: 36px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    color: #141414;
-    background: #e0e0e0;
-    transition: 0.2s;
-}
-.spd-btn:hover {
-    background: #d0d0d0;
-}
-.spd-text {
-    font-size: 24px;
-}
-.icon-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #ff8c00;
-    background: #e0e0e0;
-    transition: 0.2s;
-}
-.icon-btn:hover {
-    background: #d0d0d0;
-}
-
+/* мантра */
 .centered {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    overflow: hidden;
 }
 .waviy {
-    position: relative;
     font-size: var(--font-size);
+    text-align: center;
     -webkit-box-reflect: below -10px
         linear-gradient(transparent, rgba(0, 0, 0, 0.1));
-    z-index: 5;
-    width: 100%;
-    max-width: 90vw;
-    text-align: center;
-}
-.waviy.paused span {
-    animation-play-state: paused !important;
-    opacity: 0;
 }
 .waviy span {
     display: inline-block;
+    margin: 0 16px;
     animation: waviy var(--speed) infinite;
     animation-delay: calc(var(--step) * var(--i));
-    margin: 0 var(--word-margin);
 }
-
+.waviy.paused span {
+    animation-play-state: paused;
+    opacity: 0;
+}
 @keyframes waviy {
     0%,
     15%,
@@ -128,6 +134,7 @@ body {
     }
 }
 
+/* панель масштабирования шрифта */
 @media (min-width: 1024px) {
     .font-ctrl {
         position: fixed;
@@ -139,7 +146,7 @@ body {
         opacity: 0;
         pointer-events: none;
         transition: 0.25s;
-        z-index: 1005;
+        z-index: 2000;
     }
     .font-ctrl.active {
         opacity: 1;
@@ -148,18 +155,15 @@ body {
     .f-btn {
         width: 36px;
         height: 36px;
-        font-size: 24px;
-        border: none;
         border-radius: 50%;
+        border: none;
+        background: var(--btn-bg);
+        font-size: 24px;
         cursor: pointer;
-        background: #e0e0e0;
-        color: #141414;
-        transition: 0.2s;
-    }
-    .f-btn:hover {
-        background: #d0d0d0;
     }
 }
+
+/* мобильный */
 @media (max-width: 1023px) {
     .font-ctrl {
         display: none;
@@ -167,26 +171,6 @@ body {
 }
 @media (max-width: 767px) {
     .waviy span {
-        margin: 0 calc(var(--word-margin) / 2);
-    }
-    .controls {
-        margin-top: 70px;
-        gap: 6px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .spd-btn,
-    .icon-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 20px;
-        line-height: 32px;
-    }
-    .spd-text {
-        font-size: 20px;
-    }
-    .icon-btn svg {
-        width: 18px;
-        height: 18px;
+        margin: 0 8px;
     }
 }
