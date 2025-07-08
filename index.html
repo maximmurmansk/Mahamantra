@@ -11,9 +11,10 @@
             rel="stylesheet"
         />
 
-        <!-- СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ -->
+        <!-- СВЕТЛАЯ/ТЁМНАЯ ТЕМА -->
         <link id="themeStylesheet" rel="stylesheet" href="style2.css" />
 
+        <!-- ЛОКАЛЬНЫЕ ДОБАВКИ -->
         <style>
             .centered {
                 word-spacing: 0;
@@ -85,9 +86,10 @@
         <!-- ПАНЕЛЬ СКОРОСТИ / ТЕМЫ -->
         <div class="controls">
             <button id="dec" class="spd-btn">−</button>
-            <span id="spdText" class="spd-text">6с</span>
+            <span id="spdText" class="spd-text">6 с</span>
             <button id="inc" class="spd-btn">+</button>
             <button id="theme" class="icon-btn" aria-label="Сменить тему">
+                <!-- moon & sun -->
                 <svg
                     id="moon"
                     viewBox="0 0 24 24"
@@ -131,27 +133,19 @@
 
         <!-- === JAVASCRIPT === -->
         <script>
-            /* СЧЁТЧИК */
+            /* --------- СЧЁТЧИК ---------- */
             let beads = 1,
                 rounds = 1,
                 introVisible = true;
-            const waviy = document.getElementById("waviy");
-            const out = document.getElementById("counter");
-            const intro = document.getElementById("intro");
+            const waviy = document.getElementById("waviy"),
+                out = document.getElementById("counter"),
+                intro = document.getElementById("intro");
             function updateCounter() {
                 out.textContent = `Круги: ${rounds} | Бусины: ${beads}`;
-                console.log(
-                    `Counter updated: Rounds=${rounds}, Beads=${beads}`,
-                );
             }
 
             function onIter() {
-                if (introVisible) {
-                    console.log(
-                        "Ignoring animation iteration due to intro visible",
-                    );
-                    return;
-                }
+                if (introVisible) return;
                 if (++beads > 108) {
                     beads = 1;
                     ++rounds;
@@ -166,13 +160,11 @@
                     .forEach((el) => el.removeAttribute("id"));
                 const first = waviy.querySelector("span");
                 if (!first) {
-                    console.log("No first span found, retrying after 100ms");
                     setTimeout(attachFirstListener, 100);
                     return;
                 }
                 first.id = "first";
                 first.addEventListener("animationiteration", onIter);
-                console.log("Animation listener attached to first span");
             }
 
             function showIntro() {
@@ -186,17 +178,15 @@
                     introVisible = false;
                     restartWave();
                     updateCounter();
-                    console.log("Intro hidden, animation restarted");
                 }, 10000);
             }
 
-            /* СКОРОСТЬ */
-            let speed = 6.0;
-            const min = 2,
-                max = 9,
-                step = 0.5;
-            const spdText = document.getElementById("spdText");
-
+            /* --------- СКОРОСТЬ ---------- */
+            let speed = 6.0,
+                constMin = 2,
+                constMax = 9,
+                constStep = 0.5,
+                spdText = document.getElementById("spdText");
             function setSpeed(restart) {
                 document.documentElement.style.setProperty(
                     "--speed",
@@ -206,41 +196,34 @@
                     "--step",
                     (speed / 16).toFixed(3) + "s",
                 );
-                spdText.textContent = speed.toFixed(1) + "с";
-                if (restart) {
-                    restartWave();
-                    console.log("Speed set, animation restarted");
-                }
+                spdText.textContent = speed.toFixed(1) + " с";
+                if (restart) restartWave();
             }
-
             function restartWave() {
                 const spans = waviy.querySelectorAll("span");
-                spans.forEach((s, i) => {
+                spans.forEach((s) => {
                     s.style.animation = "none";
-                    s.offsetHeight; // Триггер рефлоу
+                    s.offsetHeight;
                     s.style.animation = "waviy var(--speed) infinite";
                     s.style.animationDelay = `calc(var(--step) * ${s.dataset.i})`;
                 });
                 attachFirstListener();
-                console.log("Wave animation reset for", spans.length, "spans");
             }
-
-            function changeSpeed(delta) {
-                const next = +(speed + delta).toFixed(1);
-                if (next >= min && next <= max) {
+            function changeSpeed(d) {
+                const next = +(speed + d).toFixed(1);
+                if (next >= constMin && next <= constMax) {
                     speed = next;
                     setSpeed(true);
                 }
             }
-
             document
                 .getElementById("inc")
-                .addEventListener("click", () => changeSpeed(+step));
+                .addEventListener("click", () => changeSpeed(+constStep));
             document
                 .getElementById("dec")
-                .addEventListener("click", () => changeSpeed(-step));
+                .addEventListener("click", () => changeSpeed(-constStep));
 
-            /* ТЕМА */
+            /* --------- ТЕМА ---------- */
             let isLightTheme = true;
             document.getElementById("theme").addEventListener("click", () => {
                 const link = document.getElementById("themeStylesheet");
@@ -252,185 +235,123 @@
                 document
                     .getElementById("moon")
                     .classList.toggle("hidden", isLightTheme);
-                console.log(
-                    "Theme switched to",
-                    isLightTheme ? "light" : "dark",
-                );
                 restartWave();
                 adjustFontSize(waviy.textContent.split(/\s+/).filter(Boolean));
             });
 
-            /* ШРИФТ */
-            let baseSize;
-            const fStep = 30;
-            const fontCtrl = document.getElementById("fontCtrl");
-            const fInc = document.getElementById("fInc");
-            const fDec = document.getElementById("fDec");
-
+            /* --------- ШРИФТ ---------- */
+            let baseSize,
+                fStep = 30,
+                fontCtrl = document.getElementById("fontCtrl"),
+                fInc = document.getElementById("fInc"),
+                fDec = document.getElementById("fDec");
             function updateFontSize() {
                 document.documentElement.style.setProperty(
                     "--font-size",
                     `${baseSize}px`,
                 );
-                console.log(
-                    `Font size set to ${baseSize}px, computed: ${getComputedStyle(waviy).fontSize}`,
-                );
             }
-
             function adjustFontSize(words) {
-                console.log("Adjusting font size for words:", words);
-                const testDiv = document.createElement("div");
-                testDiv.style.cssText = `
-                    position: absolute;
-                    visibility: hidden;
-                    white-space: nowrap;
-                    font-family: 'Great Vibes', cursive;
-                    font-size: 16px;
-                `;
-                let maxWidth = 0;
-                const wordMargin = window.innerWidth < 768 ? 2 : 4; // Соответствует CSS margin
+                const test = document.createElement("div");
+                test.style.cssText =
+                    "position:absolute;visibility:hidden;white-space:nowrap;font-family:'Great Vibes',cursive;font-size:16px;";
+                let maxW = 0,
+                    wm = window.innerWidth < 768 ? 2 : 4;
                 for (let i = 0; i < words.length; i += 4) {
-                    const lineWords = words.slice(i, i + 4).join(" ");
-                    testDiv.textContent = lineWords;
-                    document.body.appendChild(testDiv);
-                    maxWidth = Math.max(
-                        maxWidth,
-                        testDiv.offsetWidth +
-                            wordMargin * 2 * Math.min(4, words.length - i),
+                    test.textContent = words.slice(i, i + 4).join(" ");
+                    document.body.appendChild(test);
+                    maxW = Math.max(
+                        maxW,
+                        test.offsetWidth +
+                            wm * 2 * Math.min(4, words.length - i),
                     );
-                    document.body.removeChild(testDiv);
+                    document.body.removeChild(test);
                 }
-                const availableWidth = window.innerWidth * 0.9;
-                const scaleFactor = availableWidth / maxWidth;
-                baseSize = Math.min(Math.floor(16 * scaleFactor * 1.1), 80); // 1.1 для запаса
-                baseSize = Math.max(baseSize, 74); // Минимальный размер 74px
+                const avail = window.innerWidth * 0.9,
+                    scale = avail / maxW;
+                baseSize = Math.min(Math.floor(16 * scale * 0.95), 80);
+                baseSize = Math.max(baseSize, 24);
                 updateFontSize();
-                console.log(
-                    `Adjusted font size to ${baseSize}px for window width ${window.innerWidth}px, max line width ${maxWidth}px`,
-                );
             }
-
             fInc.addEventListener("click", () => {
                 baseSize += fStep;
                 updateFontSize();
                 showCtrl();
-                console.log("Font increase clicked, new size:", baseSize);
             });
-
             fDec.addEventListener("click", () => {
                 if (baseSize > 24) {
                     baseSize -= fStep;
                     updateFontSize();
                     showCtrl();
-                    console.log("Font decrease clicked, new size:", baseSize);
-                } else {
-                    console.log("Font size at minimum (24px)");
                 }
             });
 
+            /* --------- Панель масштаба / автоскрытие ---------- */
             let hideTimer,
-                lastShowTime = 0;
+                lastShow = 0;
             function showCtrl() {
-                if (window.innerWidth < 1024) {
-                    console.log("Font controls not shown on mobile (<1024px)");
-                    return;
-                }
+                if (window.innerWidth < 1024) return;
                 const now = performance.now();
-                if (now - lastShowTime < 100) return;
+                if (now - lastShow < 100) return;
                 clearTimeout(hideTimer);
                 fontCtrl.classList.add("active");
-                lastShowTime = now;
-                hideTimer = setTimeout(() => {
-                    fontCtrl.classList.remove("active");
-                    console.log("Font controls hidden");
-                }, 4000);
-                console.log("Font controls shown");
-            }
-
-            const triggerArea = document.getElementById("triggerArea");
-            triggerArea.addEventListener("mousemove", (e) => {
-                if (window.innerWidth < 1024) return;
-                console.log(
-                    `Mouse in trigger area: x=${e.clientX}, y=${e.clientY}, window: ${window.innerWidth}x${window.innerHeight}`,
+                lastShow = now;
+                hideTimer = setTimeout(
+                    () => fontCtrl.classList.remove("active"),
+                    4000,
                 );
-                showCtrl();
-            });
-
+            }
+            document
+                .getElementById("triggerArea")
+                .addEventListener("mousemove", () => showCtrl());
             fontCtrl.addEventListener("mouseenter", () => {
-                if (window.innerWidth < 1024) return;
                 clearTimeout(hideTimer);
                 fontCtrl.classList.add("active");
-                console.log("Mouse entered font controls");
             });
             fontCtrl.addEventListener("mouseleave", () => {
-                if (window.innerWidth < 1024) return;
-                hideTimer = setTimeout(() => {
-                    fontCtrl.classList.remove("active");
-                    console.log("Font controls hidden after mouse leave");
-                }, 4000);
+                hideTimer = setTimeout(
+                    () => fontCtrl.classList.remove("active"),
+                    4000,
+                );
             });
 
             if (window.innerWidth >= 1024) {
                 fontCtrl.classList.add("active");
                 setTimeout(() => fontCtrl.classList.remove("active"), 3000);
-                console.log("Font controls shown on load");
             }
 
+            /* --------- Страж анимации ---------- */
             setInterval(() => {
                 const first = waviy.querySelector("#first");
-                if (!first) {
-                    console.log("No first span, reattaching listener");
-                    attachFirstListener();
-                    return;
-                }
-                const computedStyle = getComputedStyle(first);
                 if (
-                    computedStyle.animationPlayState === "paused" &&
-                    !introVisible
-                ) {
-                    console.log("Animation paused unexpectedly, restarting...");
+                    !first ||
+                    (getComputedStyle(first).animationPlayState === "paused" &&
+                        !introVisible)
+                )
                     restartWave();
-                }
             }, 5000);
 
-            /* НАЧАЛЬНАЯ УСТАНОВКА */
-            setSpeed(false);
-            showIntro();
-
-            /* === ЗАГРУЗКА JSON И СМЕНА ЯЗЫКА === */
+            /* --------- ЗАГРУЗКА JSON + рендер ---------- */
             let translations = null;
             async function loadTranslations() {
                 try {
-                    const response = await fetch("translations.json");
-                    if (!response.ok)
-                        throw new Error(
-                            `HTTP error! status: ${response.status}`,
-                        );
-                    translations = await response.json();
-                    console.log(
-                        "Translations loaded successfully:",
-                        Object.keys(translations),
-                    );
+                    const r = await fetch("translations.json");
+                    translations = r.ok ? await r.json() : {};
                 } catch (e) {
-                    console.error("Failed to load translations:", e);
                     translations = {
                         ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
                     };
                 }
                 render("ru");
             }
-
             const sel = document.getElementById("langSel");
             function render(lang = "ru") {
                 if (!translations) {
-                    console.log(
-                        "Translations not loaded yet, retrying after 100ms",
-                    );
                     setTimeout(() => render(lang), 100);
                     return;
                 }
-                const txt = translations[lang] || translations.ru;
-                const words = txt.split(/\s+/).filter(Boolean);
+                const txt = translations[lang] || translations.ru,
+                    words = txt.split(/\s+/).filter(Boolean);
                 let html = "";
                 for (let i = 0; i < words.length; i++) {
                     html += `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${words[i]}</span>`;
@@ -440,26 +361,15 @@
                 waviy.innerHTML = html;
                 adjustFontSize(words);
                 attachFirstListener();
-                console.log(
-                    "Rendered language:",
-                    lang,
-                    "with",
-                    words.length,
-                    "words, 4 words per line",
-                );
             }
+            sel.addEventListener("change", (e) => render(e.target.value));
+            window.addEventListener("resize", () =>
+                adjustFontSize(waviy.textContent.split(/\s+/).filter(Boolean)),
+            );
 
-            sel.addEventListener("change", (e) => {
-                console.log("Language changed to:", e.target.value);
-                render(e.target.value);
-            });
-
-            window.addEventListener("resize", () => {
-                const words = waviy.textContent.split(/\s+/).filter(Boolean);
-                adjustFontSize(words);
-                console.log("Window resized, recalculating font size");
-            });
-
+            /* --------- GO! ---------- */
+            setSpeed(false);
+            showIntro();
             loadTranslations();
         </script>
     </body>

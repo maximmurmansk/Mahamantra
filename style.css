@@ -1,17 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Great+Vibes&display=swap");
-
 :root {
     --speed: 6s;
     --step: 0.375s;
     --font-size: 60px;
-    --word-margin: 16px; /* Расстояние между словами */
+    --word-margin: 16px;
 }
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     background: #151719;
     color: #fff;
@@ -22,7 +20,6 @@ body {
     text-align: center;
     font-family: "Great Vibes", cursive;
 }
-
 .counter {
     position: fixed;
     top: 10px;
@@ -41,7 +38,6 @@ body {
     transform: translate(-50%, -50%);
     font-size: clamp(20px, 5vw, 36px);
     white-space: pre-line;
-    hyphens: none;
     pointer-events: none;
     user-select: none;
     z-index: 15;
@@ -75,7 +71,6 @@ body {
 .spd-text {
     font-size: 24px;
 }
-
 .icon-btn {
     width: 36px;
     height: 36px;
@@ -170,12 +165,12 @@ body {
         display: none;
     }
 }
-
 @media (max-width: 767px) {
     .waviy span {
         margin: 0 calc(var(--word-margin) / 2);
     }
     .controls {
+        margin-top: 70px;
         gap: 6px;
         flex-wrap: wrap;
         justify-content: center;
