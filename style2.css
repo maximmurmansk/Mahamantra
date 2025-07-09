@@ -129,7 +129,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(32px, 5vw, 64px);
+    font-size: clamp(30px, 5vw, 64px);
     white-space: pre-line;
     text-align: center;
     pointer-events: none;
