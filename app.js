@@ -118,7 +118,7 @@ function fit(words) {
   }
   const avail = innerWidth * 0.9,
     scale = avail / max;
-  base = Math.max(Math.min(Math.floor(16 * scale * 0.95), 80), 24);
+  base = Math.max(Math.min(Math.floor(16 * scale * 0.95), 80), 30);
   document.documentElement.style.setProperty("--font-size", base + "px");
 }
 document.getElementById("fInc").onclick = () => {
@@ -127,7 +127,7 @@ document.getElementById("fInc").onclick = () => {
   showCtrl();
 };
 document.getElementById("fDec").onclick = () => {
-  if (base > 24) {
+  if (base > 30) {
     base -= 30;
     document.documentElement.style.setProperty("--font-size", base + "px");
     showCtrl();
