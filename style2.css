@@ -44,6 +44,34 @@ body {
     border: none;
     cursor: pointer;
 }
+
+.ellipse {
+    /* фиксируем высоту */
+    height: 48px;
+    /* ширина зависит от контента */
+    width: auto; /* растёт сколько нужно */
+    min-width: 100px; /* можно оставить минимальное */
+    padding: 0 18px; /* регулируйте по вкусу */
+    /* закругляем половину высоты → ровная капсула */
+    border-radius: 24px; /* 48 / 2  */
+    /* или просто 9999px — то же самое */
+    /* остальное без изменений */
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    display: inline-flex; /* или flex/inline-block — как удобно */
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap; /* запрет переноса внутри, если нужно */
+}
+/* внутри овала-счётчика все svg держим одного размера */
+.ellipse svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0; /* запрещаем сжиматься при нехватке места */
+}
 .circle svg {
     width: 24px;
     height: 24px;
@@ -51,7 +79,11 @@ body {
     stroke-width: 2;
     fill: none;
 }
-
+/* крупные цифры в счётчике */
+.counter-num {
+    font-size: 22px; /* выберите 22–26 px, как нравится */
+    line-height: 1; /* чтобы не «подпрыгивали» */
+}
 /* шапка */
 .panel {
     position: fixed;
