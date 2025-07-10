@@ -3,7 +3,6 @@ let beads = 1,
   rounds = 1,
   introVisible = true,
   speed = 6,
-  base = 0,
   isLight = true;
 
 const waviy = document.getElementById("waviy"),
@@ -104,35 +103,20 @@ document.getElementById("theme").onclick = () => {
 };
 
 /* ---------- шрифт ---------- */
-function fit(words) {
-  const probe = document.createElement("div");
-  probe.style.cssText =
-    "position:absolute;visibility:hidden;white-space:nowrap;font-family:'Great Vibes',cursive;font-size:16px";
-  let max = 0,
-    margin = innerWidth < 768 ? 2 : 4;
-  for (let i = 0; i < words.length; i += 4) {
-    probe.textContent = words.slice(i, i + 4).join(" ");
-    document.body.appendChild(probe);
-    max = Math.max(max, probe.offsetWidth + margin * 2);
-    document.body.removeChild(probe);
-  }
-  const avail = innerWidth * 0.9,
-    scale = avail / max;
-  base = Math.max(Math.min(Math.floor(16 * scale * 0.95), 80), 30);
-  document.documentElement.style.setProperty("--font-size", base + "px");
+function getScale() {
+  return (
+    parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--scale"),
+    ) || 1
+  );
 }
-document.getElementById("fInc").onclick = () => {
-  base += 30;
-  document.documentElement.style.setProperty("--font-size", base + "px");
-  showCtrl();
-};
-document.getElementById("fDec").onclick = () => {
-  if (base > 30) {
-    base -= 30;
-    document.documentElement.style.setProperty("--font-size", base + "px");
-    showCtrl();
-  }
-};
+function setScale(value) {
+  const s = Math.max(0.5, Math.min(value, 3)); // допустимый диапазон
+  document.documentElement.style.setProperty("--scale", s);
+}
+/* кнопки A± : меняем коэффициент, а не пиксели --------------------------- */
+document.getElementById("fInc").onclick = () => setScale(getScale() + 0.2);
+document.getElementById("fDec").onclick = () => setScale(getScale() - 0.2);
 
 /* автоскрытие панели масштаба */
 let hideT,
@@ -161,6 +145,7 @@ if (innerWidth >= 1024) {
 
 /* ---------- текст мантры ---------- */
 let tr = null;
+let wordsCache = [];
 async function load() {
   try {
     const r = await fetch("translations.json");
@@ -177,18 +162,21 @@ function render(lang = "ru") {
     setTimeout(() => render(lang), 100);
     return;
   }
+
   const words = (tr[lang] || tr.ru).trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>${(i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""}`,
+        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
+        ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
-  fit(words);
-  hook();
+
+  wordsCache = words; // ← если нужен кеш
+  hook(); // счётчик анимации
 }
 document.getElementById("langSel").onchange = (e) => render(e.target.value);
-window.onresize = () => fit(waviy.textContent.trim().split(/\s+/));
+window.onresize = () => render(document.getElementById("langSel").value);
 
 /* ---------- старт ---------- */
 load();

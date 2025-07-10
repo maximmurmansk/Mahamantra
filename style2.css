@@ -13,7 +13,9 @@
     --btn-fg: #141414;
     --speed: 6s;
     --step: 0.375s;
-    --font-size: 60px;
+    --base-clamp: clamp(30px, 5vw, 72px);
+    --scale: 1;
+    --fz-base: calc(var(--base-clamp) * var(--scale));
 }
 
 /* базовые ресеты */
@@ -129,7 +131,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(30px, 5vw, 72px);
+    font-size: var(--fz-base);
     white-space: pre-line;
     text-align: center;
     pointer-events: none;
@@ -150,7 +152,7 @@ body {
     overflow: hidden;
 }
 .waviy {
-    font-size: var(--font-size);
+    font-size: var(--fz-base);
     text-align: center;
     -webkit-box-reflect: below -10px
         linear-gradient(transparent, rgba(0, 0, 0, 0.1));
