@@ -13,7 +13,7 @@
     --btn-fg: #141414;
     --speed: 6s;
     --step: 0.375s;
-    --base-clamp: clamp(30px, 5vw, 72px);
+    --base-clamp: clamp(30px, 7vw, 100px);
     --scale: 1;
     --fz-base: calc(var(--base-clamp) * var(--scale));
 }
@@ -159,7 +159,6 @@ body {
 }
 .waviy span {
     display: inline-block;
-    margin: 0 16px;
     animation: waviy var(--speed) infinite;
     animation-delay: calc(var(--step) * var(--i));
 }

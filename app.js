@@ -167,11 +167,10 @@ function render(lang = "ru") {
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
+        `${i ? "&nbsp;" : ""}<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
         ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
-
   wordsCache = words; // ← если нужен кеш
   hook(); // счётчик анимации
 }
