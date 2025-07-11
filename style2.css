@@ -9,6 +9,7 @@
     pointer-events: auto;
 }
 :root {
+    --panel-h: 68px; /* 48px кнопка + 2×10px отступа сверху/снизу */
     --btn-bg: #e0e0e0;
     --btn-fg: #141414;
     --speed: 6s;
@@ -25,6 +26,7 @@
     box-sizing: border-box;
 }
 body {
+    padding-top: var(--panel-h); /* теперь flex-часть начинается ниже панели */
     background: #f5f5f5;
     color: var(--btn-fg);
     min-height: 100vh;
@@ -145,6 +147,7 @@ body {
 
 /* мантра */
 .centered {
+    height: calc(100vh - var(--panel-h));
     flex: 1;
     display: flex;
     justify-content: center;
@@ -179,6 +182,7 @@ body {
 }
 
 /* панель масштабирования шрифта */
+
 @media (min-width: 1024px) {
     .font-ctrl {
         position: fixed;
