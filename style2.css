@@ -14,8 +14,7 @@
     --btn-fg: #141414;
     --speed: 6s;
     --step: 0.375s;
-    --base-clamp: clamp(30px, 7vw, 100px);
-    --base-clamp: clamp(30px, 7vmin, 100px);
+    --base-clamp: clamp(30px, max(5vw, 7vmin), 100px);
     --scale: 1;
     --fz-base: calc(var(--base-clamp) * var(--scale));
 }
