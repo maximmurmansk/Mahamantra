@@ -15,6 +15,7 @@
     --speed: 6s;
     --step: 0.375s;
     --base-clamp: clamp(30px, 7vw, 100px);
+    --base-clamp: clamp(30px, 7vmin, 100px);
     --scale: 1;
     --fz-base: calc(var(--base-clamp) * var(--scale));
 }
@@ -29,8 +30,7 @@ body {
     padding-top: var(--panel-h); /* теперь flex-часть начинается ниже панели */
     background: #f5f5f5;
     color: var(--btn-fg);
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     font-family: "Great Vibes", cursive;
