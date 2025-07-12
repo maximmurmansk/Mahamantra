@@ -29,7 +29,8 @@ body {
     padding-top: var(--panel-h); /* теперь flex-часть начинается ниже панели */
     background: #f5f5f5;
     color: var(--btn-fg);
-    min-height: 100vh;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
     display: flex;
     flex-direction: column;
     font-family: "Great Vibes", cursive;
@@ -211,7 +212,6 @@ body {
     }
 }
 
-/* мобильный */
 @media (max-width: 1023px) {
     .font-ctrl {
         display: none;
