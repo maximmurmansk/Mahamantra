@@ -2,7 +2,7 @@
 let beads = 1,
   rounds = 1,
   introVisible = true,
-  speed = 6,
+  speed = 4.5,
   isLight = true;
 
 const waviy = document.getElementById("waviy"),
