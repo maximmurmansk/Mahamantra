@@ -202,12 +202,16 @@ function render(lang = "ru") {
   const panchaStr = typeof rec === "string" ? "" : rec.pancha || tr.ru.pancha;
 
   /* маха-мантра */
+  /* маха-мантра: 4 слова → <br> */
   const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i ? " " : ""}<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
-        ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
+        `${i % 4 ? "&nbsp;" : ""}
+       <span style="--i:${(i % 16) + 1}"
+             data-i="${(i % 16) + 1}">
+         ${w}
+       </span>` + ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
 
