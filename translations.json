@@ -1,39 +1,149 @@
 {
-  "be": "Харэ Крышна Харэ Крышна Крышна Крышна Харэ Харэ Харэ Рама Харэ Рама Рама Рама Харэ Харэ",
-  "cs": "Hare Kršna Haré Kršna Krišna Krišna Hare Hare Hare Ráma Hare Ráma Ráma Ráma Hare Hare",
-  "he": "קרישנה קרישנה הארי קרישנה קרישנה ארנב ארנב ראמה ראמה ארנב ארנב ארנב ארנב ראמה ראמה",
-  "yi": "האָז קרישנאַ האָז קרישנאַ קרישנאַ קרישנאַ האָז האָז האָז ראַמאַ האָז ראַמאַ ראַמאַ ראַמאַ האָז האָז",
-  "nl": "Harry Krisjna Harry Krisjna Krisjna Krisjna Harry Harry Harry Rama Harry Rama Rama Rama Harry Harry",
-  "lv": "Harē Krišna Harē Krišna Krišna Krišna Harē Harē Harē Rāma Harē Rāma Rāma Rāma Harē Harē",
-  "uk": "Харе Крішна Харе Крішна Крішна Крішна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-  "hr": "Hare Krišna Hare Krišna Krišna Krišna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "sl": "Hare Krišna Hare Krišna Krišna Krišna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "fa": "خرگوش کریشنا خرگوش کریشنا کریشنا کریشنا خرگوش خرگوش خرگوش راما خرگوش راما راما راما خرگوش خرگوش",
-  "ka": "ჰარე კრიშნა ჰარე კრიშნა კრიშნა კრიშნა ჰარე ჰარე ჰარე რამა ჰარე რამა რამა რამა ჰარე ჰარე",
-  "el": "Χαρε Κρίσνα Χαρε Κρίσνα Κρίσνα Κρίσνα Χαρε Χαρε Χαρε Ράμα Χαρε Ράμα Ράμα Ράμα Χαρε Χαρε",
-  "ko": "하레 크리슈나 하레 크리슈나 크리슈나 크리슈나 하레 하레 하레 라마 하레 라마 라마 라마하레 하레",
-  "de": "Hare Krischna Hare Krischna Krischna Krischna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "hu": "Hare Krisna Hare Krisna Krisna Krisna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "tl": "Hare Krisna Hare Krisna Krisna Krisna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "tr": "Hare Krişna Hare Krişna Krişna Krişna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "pl": "Hare Kryszna Hare Kryszna Kryszna Kryszna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "ru": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-  "sr": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-  "mk": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-  "ja": "ハレー クリシュナ ハレー クリシュナ クリシュナ クリシュナ ハレー ハレー ハレー ラーマ ハレー ラーマ ラーマ ラーマ ハレー ハレー",
-  "bn": "হরে কৃষ্ণ হরে কৃষ্ণ কৃষ্ণ কৃষ্ণ হরে হরে হরে রাম হরে রাম রাম রাম হরে হরে এবং সুখী হউন ।।",
-  "gu": "હરે કૃષ્ણ હરે કૃષ્ણ કૃષ્ણ કૃષ્ણ હરે હરે હરે રામ હરે રામ રામ રામ હરે હરે",
-  "pa": "ਹਾਰੇ ਕ੍ਰਿਸ਼ਨਾ ਹਾਰੇ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਹਾਰੇ ਹਾਰੇ ਹਾਰੇ ਰਾਮਾ ਹਾਰੇ ਰਾਮਾ ਰਾਮਾ ਰਾਮਾ ਹਾਰੇ ਹਾਰੇ",
-  "or": "ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ ହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ",
-  "ta": "ஹரே கிருஷ்ணா ஹரே கிருஷ்ணா கிருஷ்ணா கிருஷ்ணா ஹரே ஹரே ஹரே ராம ஹரே ராம ராம ராம ஹரே ஹரே",
-  "ml": "ഹരേ കൃഷ്ണ ഹരേ കൃഷ്ണ കൃഷ്ണ കൃഷ്ണ ഹരേ ഹരേ ഹരേ രാമ ഹരേ രാമ രാമ രാമ ഹരേ ഹരേ",
-  "kn": "ಹರೇ ಕೃಷ್ಣ ಹರೇ ಕೃಷ್ಣ ಕೃಷ್ಣ ಕೃಷ್ಣ ಹರೇ ಹರೇ ಹರೇ ರಾಮ ಹರೇ ರಾಮ ರಾಮ ರಾಮ ಹರೇ ಹರೇ",
-  "zh": "哈瑞 克里希纳 哈瑞 克里希纳 克里希纳 克里希纳 哈瑞 哈瑞 哈瑞 茹阿玛 哈瑞 茹阿玛 茹阿玛 茹阿玛 哈瑞 哈瑞",
-  "te": "హరే కృష్ణ హరే కృష్ణ కృష్ణ కృష్ణ హరే హరే హరే రామ హరే రామ రామ రామ హరే హరే",
-  "ar": "هاره کریشنا هاره کریشناکریشنا کریشنا هاره هاره هاره راما هاره راما راما",
-  "ur": "ہارے کرشنا ہارے کرشنا کرشنا کرشنا ہارے ہارے ہارے رام ہارے رام رام رام ہارے ہارے",
-  "hi": "हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे हरे राम हरे राम राम राम हरे हरे",
-  "es": "Jare Krishná Jare Krishná Krishná Krishná Jare Jare Jare Rama Jare Rama Rama Rama Jare Jare",
-  "en": "Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
-  "lt": "Harė Krišna Harė Krišna Krišna Krišna Harė Harė Harė Rama Harė Rama Rama Rama Harė Harė"
-}
+  "en": {
+    "maha": "Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": "Jaya Sri Krishna Chaitanya Prabhu Nityananda Sri Advaita Gadadhara Srivasadi Gaura Bhakta Vrinda"
+  },
+  "es": {
+    "maha": "Jare Krishná Jare Krishná Krishná Krishná Jare Jare Jare Rama Jare Rama Rama Rama Jare Jare",
+    "pancha": "Jaya Sri Krishna Chaitanya Prabhu Nityananda Sri Advaita Gadadhara Srivasadi Gaura Bhakta Vrinda"
+  },
+  "be": {
+    "maha": "Харэ Крышна Харэ Крышна Крышна Крышна Харэ Харэ Харэ Рама Харэ Рама Рама Рама Харэ Харэ",
+    "pancha": ""
+  },
+  "cs": {
+    "maha": "Hare Kršna Haré Kršna Krišna Krišna Hare Hare Hare Ráma Hare Ráma Ráма Ráма Hare Hare",
+    "pancha": "Jaya Sri Krishna Chaitanya Prabhu Nityananda Sri Advaita Gadadhara Srivasadi Gaura Bhakta Vrinda"
+  },
+  "he": {
+    "maha": "קרישנה קרישנה הארי קרישנה קרישנה ארנב ארנב ראמה ראמה ארנב ארנב ארנב ארנב ראמה ראמה",
+    "pancha": ""
+  },
+  "yi": {
+    "maha": "האָז קרישנאַ האָז קרישнאַ קרישנאַ קרישנאַ האָז האָז האָז ראַמאַ האָז ראַמאַ ראַמאַ ראַמאַ האָז האָז.",
+    "pancha": ""
+  },
+  "nl": {
+    "maha": "Harry Krisjna Harry Krisjna Krisjna Krisjna Harry Harry Harry Rama Harry Rama Rama Rama Harry Harry",
+    "pancha": ""
+  },
+  "lt": {
+    "mahamantra": "Harė Krišna Harė Krišna Krišna Krišna Harė Harė Harė Rama Harė Rama Rama Rama Harė Harė",
+    "pancha": "Jaya Sri Krishna Chaitanya Prabhu Nityananda Sri Advaita Gadadhara Srivasadi Gaura Bhakta Vrinda"
+  },
+  "lv": {
+    "maha": "Harē Krišna Harē Krišna Krišna Krišna Harē Harē Harē Rāma Harē Rāma Rāма Rāма Harē Harē",
+    "pancha": ""
+  },
+  "uk": {
+    "maha": "Харе Крішна Харе Крішна Крішна Крішна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+    "pancha": ""
+  },
+  "hr": {
+    "maha": "Hare Krišna Hare Krišna Krišna Krišna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "sl": {
+    "maha": "Hare Krišna Hare Krišna Krišna Krišna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "fa": {
+    "maha": "خرگوش کریشنا خرگوش کریشنا کریشنا کریشنا خرگوش خرگوش خرگوش راما خرگوش راما راما راما خرگوش خرگوش",
+    "pancha": ""
+  },
+  "ka": {
+    "maha": "ჰარე კრიშნა ჰარე კრიშნა კრიშნა კრიშნა ჰარე ჰარე ჰარე რამა ჰარე რამა რამა რამა ჰარე ჰარე",
+    "pancha": ""
+  },
+  "el": {
+    "maha": "Χαρε Κρίσνα Χαρε Κρίσνα Κρίσνα Κρίσνα Χαρε Χαρε Χαρε Ράμα Χαρε Ράμα Ράμα Ράμα Χαρε Χαρε",
+    "pancha": ""
+  },
+  "ko": {
+    "maha": "하레 크리슈나 하레 크리슈나 크리슈나 크리슈나 하레 하레 하레 라마 하레 라마 라마 라마하레 하레",
+    "pancha": ""
+  },
+  "de": {
+    "maha": "Hare Krischna Hare Krischna Krischna Krischna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "hu": {
+    "maha": "Hare Krisna Hare Krisna Krisna Krisna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "tl": {
+    "maha": "Hare Krisna Hare Krisna Krisna Krisna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "tr": {
+    "maha": "Hare Krişna Hare Krişна Krişna Krişна Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "pl": {
+    "maha": "Hare Kryszna Hare Kryszна Kryszna Kryszна Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare",
+    "pancha": ""
+  },
+  "ru": {
+    "maha": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+    "pancha": "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда"
+  },
+  "sr": {
+    "maha": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+    "pancha": ""
+  },
+  "mk": {
+    "maha": "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+    "pancha": ""
+  },
+  "ja": {
+    "maha": "ハレー クリシュナ ハレー クリシュナ クリシュナ クリシュナ ハレー ハレー ハレー ラーマ ハレー ラーマ ラーマ ラーマ ハレー ハレー",
+    "pancha": ""
+  },
+  "bn": {
+    "maha": "হরে কৃষ্ণ হরে কৃষ্ণ কৃষ্ণ কৃষ্ণ হরে হরে হরে রাম হরে রাম রাম রাম হরে হরে",
+    "pancha": "জয় শ্রীকৃষ্ণচৈতন্য প্রভু নিত্যানন্দ শ্রী অদ্বৈত গদাধর শ্রীবাসাদি গৌর ভক্তবৃন্দ"
+  },
+  "gu": {
+    "maha": "હરે કૃષ્ણ હરે કૃષ્ણ કૃષ્ણ કૃષ્ણ હરે હરે હરે રામ હરે રામ રામ રામ હરે હરે",
+    "pancha": "જય શ્રીકૃષ્ણ ચૈતન્ય પ્રભુ નિત્યાનંદ શ્રી અદ્વૈત ગદાધર શ્રીવાસાદિ ગૌર ભક્તવૃંદ"
+  },
+  "pa": {
+    "maha": "ਹਾਰੇ ਕ੍ਰਿਸ਼ਨਾ ਹਾਰੇ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਹਾਰੇ ਹਾਰੇ ਹਾਰੇ ਰਾਮਾ ਹਾਰੇ ਰਾਮਾ ਰਾਮਾ ਰਾਮਾ ਹਾਰੇ ਹਾਰੇ",
+    "pancha": ""
+  },
+  "or": {
+    "maha": "ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ ହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ",
+    "pancha": "ଜୟ ଶ୍ରୀ କୃଷ୍ଣ ଚୈତନ୍ୟ ପ୍ରଭୁ ନିତ୍ୟାନନ୍ଦ ଶ୍ରୀ ଅଦ୍ଵୈତ ଗଦାଧର ଶ୍ରୀବାସାଦି ଗୌର ଭକ୍ତବୃନ୍ଦ"
+  },
+  "ta": {
+    "maha": "ஹரே கிருஷ்ணா ஹரே கிருஷ்ணா கிருஷ்ணா கிருஷ்ணா ஹரே ஹரே ஹரே ராம ஹரே ராம ராம ராம ஹரே ஹரே",
+    "pancha": ""
+  },
+  "ml": {
+    "maha": "ഹരേ കൃഷ്ണ ഹരേ കൃഷ്ണ കൃഷ്ണ കൃഷ്ണ ഹരേ ഹരേ ഹരേ രാമ ഹരേ രാമ രാമ രാമ ഹരേ ഹരേ",
+    "pancha": ""
+  },
+  "kn": {
+    "maha": "ಹರೇ ಕೃಷ್ಣ ಹರೇ ಕೃಷ್ಣ ಕೃಷ್ಣ ಕೃಷ್ಣ ಹರೇ ಹರೇ ಹರೇ ರಾಮ ಹರೇ ರಾಮ ರಾಮ ರಾಮ ಹರೇ ಹರೇ",
+    "pancha": ""
+  },
+  "zh": {
+    "maha": "哈瑞 克里希纳 哈瑞 克里希纳 克里希纳 克里希নա 哈瑞 哈瑞 哈瑞 茹阿玛 哈瑞 茹阿玛 茹阿玛 茹阿玛 哈瑞 哈瑞",
+    "pancha": "佳呀 施瑞 奎师那 采坦亚 普茹阿布 尼提安南达 施瑞 阿对塔 嘎达达尔 施瑞瓦萨迪 勾茹阿 巴克塔 温达"
+  },
+  "te": {
+    "maha": "హరే కృష్ణ హరే కృష్ణ కృష్ణ కృష్ణ హరే హరే హరే రామ హరే రామ రామ రామ హరే హరే",
+    "pancha": "జయ శ్రీ కృష్ణ చైతన్య ప్రభు నిత్యానంద శ్రీ అద్వైత గదాధర శ్రీ వాసాది గౌర భక్తవృంద"
+  },
+  "ar": {
+    "maha": "هاره کریشنا هاره کریشناکریشنا کریشنا هاره هاره هاره راما هاره راما راما",
+    "pancha": ""
+  },
+  "ur": {
+    "maha": "ہارے کرشنا ہارے کرشنا کرشنا کرشنا ہارے ہارے ہارے رام ہارے رام رام رام ہارے ہارے",
+    "pancha": ""
+  },
+  "hi": {
+    "maha": "हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे हरे राम हरे राम राम राम हरे हरे",
+    "pancha": "जय श्रीकृष्णचैतन्य प्रभु नित्यानंद श्री अद्वैत गदाधर श्रीवासादि गौर भक्तवृंद"
+  }

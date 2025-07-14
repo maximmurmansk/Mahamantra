@@ -1,17 +1,18 @@
-/* глобальные переменные */
+/* ---------- глобальные переменные ---------- */
 let beads = 1,
   rounds = 1,
-  introVisible = true,
+  introVisible = true, // интро будет показано сразу
   speed = 4.5,
   isLight = true;
 
-const waviy = document.getElementById("waviy"),
-  intro = document.getElementById("intro"),
-  roundsVal = document.getElementById("roundsVal"),
-  beadsVal = document.getElementById("beadsVal"),
-  spdText = document.getElementById("spdText"),
-  fontCtrl = document.getElementById("fontCtrl"),
-  triggerArea = document.getElementById("triggerArea");
+/* ---------- быстрые ссылки на DOM ---------- */
+const waviy = document.getElementById("waviy");
+const intro = document.getElementById("intro");
+const roundsVal = document.getElementById("roundsVal");
+const beadsVal = document.getElementById("beadsVal");
+const spdText = document.getElementById("spdText");
+const fontCtrl = document.getElementById("fontCtrl");
+const triggerArea = document.getElementById("triggerArea");
 
 /* ---------- счётчик ---------- */
 function updateCounter() {
@@ -19,15 +20,19 @@ function updateCounter() {
   beadsVal.textContent = beads;
 }
 
+/* каждый полный цикл анимации одного слова */
 function onIter() {
-  if (introVisible) return;
+  if (introVisible) return; // пока интро видно — счёт не идёт
   if (++beads > 108) {
+    // 108 бусин → новый круг
     beads = 1;
-    ++rounds;
+    rounds++;
     showIntro();
   }
   updateCounter();
 }
+
+/* «прицепить» onIter к первому <span> */
 function hook() {
   waviy.querySelectorAll("#first").forEach((e) => e.removeAttribute("id"));
   const first = waviy.querySelector("span");
@@ -39,7 +44,7 @@ function hook() {
   first.addEventListener("animationiteration", onIter);
 }
 
-/* ---------- intro ---------- */
+/* ---------- intro ON/OFF ---------- */
 function showIntro() {
   clearTimeout(showIntro.t);
   introVisible = true;
@@ -51,10 +56,10 @@ function showIntro() {
     introVisible = false;
     resetWave();
     updateCounter();
-  }, 10000);
+  }, 10000); // 10 секунд показ
 }
 
-/* ---------- скорость ---------- */
+/* ---------- скорость анимации ---------- */
 function setSpeed(reset) {
   document.documentElement.style.setProperty("--speed", speed + "s");
   document.documentElement.style.setProperty(
@@ -67,12 +72,14 @@ function setSpeed(reset) {
 function resetWave() {
   waviy.querySelectorAll("span").forEach((s) => {
     s.style.animation = "none";
-    s.offsetHeight;
+    /* force-reflow */ s.offsetHeight;
     s.style.animation = "waviy var(--speed) infinite";
     s.style.animationDelay = `calc(var(--step)*${s.dataset.i})`;
   });
-  hook();
+  hook(); // повторно цепляем счётчик
 }
+
+/* кнопки скорости */
 document.getElementById("dec").onclick = () => {
   if (speed > 2) {
     speed -= 0.5;
@@ -86,23 +93,19 @@ document.getElementById("inc").onclick = () => {
   }
 };
 
-/* ---------- тема ---------- */
+/* ---------- переключение темы ---------- */
 const sun = document.getElementById("sun");
 const moon = document.getElementById("moon");
-
 document.getElementById("theme").onclick = () => {
   const link = document.getElementById("themeStylesheet");
-  isLight = !isLight; // переключаем флаг
-  link.href = isLight ? "style2.css" : "style.css"; // меняем файл темы
-
-  // правильно прячем / показываем
-  sun.classList.toggle("hidden", isLight); // солнце скрыто в светлой
-  moon.classList.toggle("hidden", !isLight); // луна скрыта в тёмной
-
-  resetWave(); // перезапуск анимации
+  isLight = !isLight;
+  link.href = isLight ? "style2.css" : "style.css";
+  sun.classList.toggle("hidden", isLight);
+  moon.classList.toggle("hidden", !isLight);
+  resetWave();
 };
 
-/* ---------- шрифт ---------- */
+/* ---------- масштаб шрифта ---------- */
 function getScale() {
   return (
     parseFloat(
@@ -110,15 +113,16 @@ function getScale() {
     ) || 1
   );
 }
-function setScale(value) {
-  const s = Math.max(0.5, Math.min(value, 3)); // допустимый диапазон
-  document.documentElement.style.setProperty("--scale", s);
+function setScale(v) {
+  document.documentElement.style.setProperty(
+    "--scale",
+    Math.max(0.5, Math.min(v, 3)),
+  );
 }
-/* кнопки A± : меняем коэффициент, а не пиксели --------------------------- */
 document.getElementById("fInc").onclick = () => setScale(getScale() + 0.2);
 document.getElementById("fDec").onclick = () => setScale(getScale() - 0.2);
 
-/* автоскрытие панели масштаба */
+/* автоскрытие панели «A±» */
 let hideT,
   last = 0;
 function showCtrl() {
@@ -143,27 +147,38 @@ if (innerWidth >= 1024) {
   setTimeout(() => fontCtrl.classList.remove("active"), 3000);
 }
 
-/* ---------- текст мантры ---------- */
-let tr = null;
-let wordsCache = [];
-async function load() {
+/* ---------- загрузка переводов ---------- */
+let tr = null; // сюда придёт объект {ru:{maha,pancha}, …}
+async function loadTranslations() {
   try {
     const r = await fetch("translations.json");
     tr = r.ok ? await r.json() : {};
   } catch {
     tr = {
-      ru: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+      ru: {
+        maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+        pancha:
+          "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда",
+      },
     };
   }
-  render("ru");
+  render("ru"); // старт — русский
 }
+
+/* ---------- рендер мантры ---------- */
 function render(lang = "ru") {
   if (!tr) {
+    // ещё не загрузилось?
     setTimeout(() => render(lang), 100);
     return;
   }
 
-  const words = (tr[lang] || tr.ru).trim().split(/\s+/);
+  const rec = tr[lang] || tr.ru; // {maha, pancha} или строка
+  const mahaStr = typeof rec === "string" ? rec : rec.maha;
+  const panchaStr = typeof rec === "string" ? "" : rec.pancha || "";
+
+  /* -------- MAHA-мантра → волна -------- */
+  const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
@@ -171,18 +186,36 @@ function render(lang = "ru") {
         ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
-  wordsCache = words; // ← если нужен кеш
-  hook(); // счётчик анимации
+
+  /* ---------- PANCHA-таттва → intro ---------- */
+  const spans = intro.querySelectorAll("span");
+
+  /* 1. получаем 4 фразы (если в JSON одна строка — делим каждые два пробела или \n) */
+  const parts = panchaStr.split(/\n|\s{2,}/).filter(Boolean);
+
+  /* 2. если частей меньше 4 – дополняем пустыми, чтобы было четыре */
+  while (parts.length < 4) parts.push("");
+
+  rows.forEach((txt, idx) => {
+    const span = document.createElement("span");
+    span.className = "line";
+    span.textContent = txt.trim() + (idx < 3 ? "," : ""); // запятая, кроме последней
+    intro.appendChild(span);
+    if (idx < 3) intro.appendChild(document.createElement("br"));
+  });
+
+  hook(); // цепляем счётчик
 }
+
+/* смена языка */
 document.getElementById("langSel").onchange = (e) => render(e.target.value);
-window.onresize = () => render(document.getElementById("langSel").value);
 
 /* ---------- старт ---------- */
-load();
+loadTranslations();
 setSpeed(false);
 showIntro();
 
-/* страж анимации */
+/* страж анимации — если что-то зависло, перезапускаем */
 setInterval(() => {
   const f = waviy.querySelector("#first");
   if (
