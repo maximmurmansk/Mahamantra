@@ -35,7 +35,7 @@ function onIter() {
 /* «прицепить» onIter к первому <span> */
 function hook() {
   waviy.querySelectorAll("#first").forEach((e) => {
-    e.removeEventListener("animationiteration", onIter); // ← добавили
+    e.removeEventListener("animationiteration", onIter);
     e.removeAttribute("id");
   });
 
@@ -47,6 +47,7 @@ function hook() {
 
   first.id = "first";
   first.addEventListener("animationiteration", onIter);
+  console.log("Hook attached to:", first);
 }
 
 /* ---------- intro ON/OFF ---------- */
@@ -157,8 +158,19 @@ let tr = null; // сюда придёт объект {ru:{maha,pancha}, …}
 async function loadTranslations() {
   try {
     const r = await fetch("translations.json");
-    tr = r.ok ? await r.json() : {};
-  } catch {
+    tr = r.ok
+      ? await r.json()
+      : {
+          ru: {
+            maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
+            pancha:
+              "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда",
+          },
+        };
+    console.log("Translations loaded:", tr);
+    render("ru"); // Render only after data is ready
+  } catch (e) {
+    console.error("Failed to load translations:", e);
     tr = {
       ru: {
         maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
@@ -166,27 +178,28 @@ async function loadTranslations() {
           "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда",
       },
     };
+    render("ru");
   }
-  render("ru"); // старт — русский
 }
 
 /* ---------- рендер мантры ---------- */
 function render(lang = "ru") {
   if (!tr) {
+    console.log("Translations not loaded yet, retrying...");
     setTimeout(() => render(lang), 100);
     return;
   }
 
   const rec = tr[lang] || tr.ru;
-  const mahaStr = typeof rec === "string" ? rec : rec.maha || tr.ru.maha; // ← защита
-  const panchaStr = typeof rec === "string" ? "" : rec.pancha || "";
+  const mahaStr = typeof rec === "string" ? rec : rec.maha || tr.ru.maha;
+  const panchaStr = typeof rec === "string" ? "" : rec.pancha || tr.ru.pancha;
 
   /* маха-мантра */
   const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i ? "&nbsp;" : ""}<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
+        `${i ? " " : ""}<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
         ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
@@ -195,12 +208,12 @@ function render(lang = "ru") {
   const spans = intro.querySelectorAll("span");
   const parts = panchaStr.split(/\n|\s{2,}/).filter(Boolean);
   while (parts.length < 4) parts.push("");
-  spans[0].textContent = parts[0] ? parts[0] + "," : "";
-  spans[1].textContent = parts[1] ? parts[1] + "," : "";
-  spans[2].textContent = parts[2] ? parts[2] + "," : "";
-  spans[3].textContent = parts[3];
+  spans.forEach((span, i) => {
+    span.textContent = parts[i] ? parts[i] + (i < 3 ? "," : "") : "";
+  });
 
-  hook(); // перевесить счётчик
+  hook(); // Ensure hook runs after DOM update
+  console.log(`Rendered language: ${lang}`);
 }
 
 /* смена языка */
