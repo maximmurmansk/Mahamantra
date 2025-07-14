@@ -211,13 +211,38 @@ function render(lang = "ru") {
     )
     .join("");
 
-  /* панча-таттва */
-  const spans = intro.querySelectorAll("span");
-  const parts = panchaStr.split(/\n|\s{2,}/).filter(Boolean);
-  while (parts.length < 4) parts.push("");
-  spans.forEach((span, i) => {
-    span.textContent = parts[i] ? parts[i] + (i < 3 ? "," : "") : "";
-  });
+  /* ---------- PANCHA-таттва ---------- */
+  const spans = intro.querySelectorAll("span"); // 4 готовые строки
+  const limits = [4, 2, 3, 4]; // сколько слов в строках
+
+  /* разбиваем исходный текст по пробелам/переводам строки */
+  const tokens = panchaStr.trim().split(/\s+/).filter(Boolean);
+
+  const lines = ["", "", "", ""];
+  let iLine = 0; // индекс текущей строки (0‒3)
+  let wCnt = 0; // сколько «слов» уже в текущей строке
+
+  for (const tok of tokens) {
+    if (iLine > 3) break; // лишнее игнорируем
+
+    /* сколько «слов» содержит токен с учётом дефисов */
+    const wInTok = tok.split("-").filter(Boolean).length;
+
+    /* если токен не помещается в текущий лимит — переходим на строку ниже */
+    if (wCnt + wInTok > limits[iLine] && iLine < 3) {
+      iLine++;
+      wCnt = 0;
+    }
+
+    /* добавляем токен в строку */
+    lines[iLine] += (lines[iLine] ? " " : "") + tok;
+    wCnt += wInTok;
+  }
+
+  /* заполняем <span>, лишние строки очищаем */
+  for (let k = 0; k < 4; k++) {
+    spans[k].textContent = lines[k] || "";
+  }
 
   hook(); // Reattach the animation listener
   console.log(`Rendered language: ${lang}`);
