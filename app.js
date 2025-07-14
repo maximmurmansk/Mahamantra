@@ -34,12 +34,17 @@ function onIter() {
 
 /* «прицепить» onIter к первому <span> */
 function hook() {
-  waviy.querySelectorAll("#first").forEach((e) => e.removeAttribute("id"));
+  waviy.querySelectorAll("#first").forEach((e) => {
+    e.removeEventListener("animationiteration", onIter); // ← добавили
+    e.removeAttribute("id");
+  });
+
   const first = waviy.querySelector("span");
   if (!first) {
     setTimeout(hook, 100);
     return;
   }
+
   first.id = "first";
   first.addEventListener("animationiteration", onIter);
 }
@@ -168,16 +173,15 @@ async function loadTranslations() {
 /* ---------- рендер мантры ---------- */
 function render(lang = "ru") {
   if (!tr) {
-    // ещё не загрузилось?
     setTimeout(() => render(lang), 100);
     return;
   }
 
-  const rec = tr[lang] || tr.ru; // {maha, pancha} или строка
-  const mahaStr = typeof rec === "string" ? rec : rec.maha;
+  const rec = tr[lang] || tr.ru;
+  const mahaStr = typeof rec === "string" ? rec : rec.maha || tr.ru.maha; // ← защита
   const panchaStr = typeof rec === "string" ? "" : rec.pancha || "";
 
-  /* -------- MAHA-мантра → волна -------- */
+  /* маха-мантра */
   const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
@@ -187,22 +191,16 @@ function render(lang = "ru") {
     )
     .join("");
 
-  /* ---------- PANCHA-таттва → intro ---------- */
+  /* панча-таттва */
   const spans = intro.querySelectorAll("span");
-
-  /* 1. получаем 4 фразы (если в JSON одна строка — делим каждые два пробела или \n) */
   const parts = panchaStr.split(/\n|\s{2,}/).filter(Boolean);
-
-  /* 2. если частей меньше 4 – дополняем пустыми, чтобы было четыре */
   while (parts.length < 4) parts.push("");
-
-  /* заполняем готовые 4 <span> */
   spans[0].textContent = parts[0] ? parts[0] + "," : "";
   spans[1].textContent = parts[1] ? parts[1] + "," : "";
   spans[2].textContent = parts[2] ? parts[2] + "," : "";
-  spans[3].textContent = parts[3]; // без запятой
+  spans[3].textContent = parts[3];
 
-  hook(); // цепляем счётчик
+  hook(); // перевесить счётчик
 }
 
 /* смена языка */
