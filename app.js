@@ -196,13 +196,11 @@ function render(lang = "ru") {
   /* 2. если частей меньше 4 – дополняем пустыми, чтобы было четыре */
   while (parts.length < 4) parts.push("");
 
-  rows.forEach((txt, idx) => {
-    const span = document.createElement("span");
-    span.className = "line";
-    span.textContent = txt.trim() + (idx < 3 ? "," : ""); // запятая, кроме последней
-    intro.appendChild(span);
-    if (idx < 3) intro.appendChild(document.createElement("br"));
-  });
+  /* заполняем готовые 4 <span> */
+  spans[0].textContent = parts[0] ? parts[0] + "," : "";
+  spans[1].textContent = parts[1] ? parts[1] + "," : "";
+  spans[2].textContent = parts[2] ? parts[2] + "," : "";
+  spans[3].textContent = parts[3]; // без запятой
 
   hook(); // цепляем счётчик
 }
