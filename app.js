@@ -153,6 +153,13 @@ if (innerWidth >= 1024) {
   setTimeout(() => fontCtrl.classList.remove("active"), 3000);
 }
 
+/* ---------- смена языка ---------- */
+document.getElementById("langSel").onchange = (e) => {
+  const lang = e.target.value;
+  console.log("Switching to language:", lang); // Debug log
+  render(lang); // Call render with the selected language
+};
+
 /* ---------- загрузка переводов ---------- */
 let tr = null; // сюда придёт объект {ru:{maha,pancha}, …}
 async function loadTranslations() {
@@ -168,7 +175,7 @@ async function loadTranslations() {
           },
         };
     console.log("Translations loaded:", tr);
-    render("ru"); // Render only after data is ready
+    render("ru"); // Initial render with Russian
   } catch (e) {
     console.error("Failed to load translations:", e);
     tr = {
@@ -212,12 +219,9 @@ function render(lang = "ru") {
     span.textContent = parts[i] ? parts[i] + (i < 3 ? "," : "") : "";
   });
 
-  hook(); // Ensure hook runs after DOM update
+  hook(); // Reattach the animation listener
   console.log(`Rendered language: ${lang}`);
 }
-
-/* смена языка */
-document.getElementById("langSel").onchange = (e) => render(e.target.value);
 
 /* ---------- старт ---------- */
 loadTranslations();
