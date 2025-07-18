@@ -217,7 +217,7 @@ body {
         display: none;
     }
 }
-@media (max-width: 767px) {
+@media (max-width: 767px) and (orientation: portrait) {
     #langSel {
         min-width: 45px; /* ширина под один emoji-флаг */
         width: 45px;
