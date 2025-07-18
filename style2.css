@@ -218,9 +218,6 @@ body {
     }
 }
 @media (max-width: 767px) {
-    .waviy span {
-        margin: 0 8px;
-    }
     .controls {
         gap: 0px;
     }
