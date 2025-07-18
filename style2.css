@@ -222,7 +222,7 @@ body {
         font-size: 20px;
         min-width: 60px; /* ширина под один emoji-флаг */
         width: 60px;
-        padding: 0 5px; /* чуть места по краям */
+        padding: 0 10px; /* чуть места по краям */
         overflow: hidden; /* всё, что не влезло — прячем */
         text-overflow: clip; /* на всякий случай */
         white-space: nowrap; /* не переносить */
