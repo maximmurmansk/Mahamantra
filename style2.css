@@ -219,7 +219,7 @@ body {
 }
 @media (max-width: 767px) and (orientation: portrait) {
     #langSel {
-        font-size: 22px;
+        font-size: 20px;
         min-width: 48px; /* ширина под один emoji-флаг */
         width: 48px;
         padding: 0 2px; /* чуть места по краям */
