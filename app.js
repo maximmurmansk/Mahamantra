@@ -203,13 +203,14 @@ function render(lang = "ru") {
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i % 4 ? "\u00A0" : ""}` + // неразрывный пробел
-        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
+        `${i % 4 ? "&nbsp;" : ""}
+           <span style="--i:${(i % 16) + 1}"
+                 data-i="${(i % 16) + 1}">
+             ${w}
+           </span>` +
         ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
-
-  hook(); // ← заново цепляем onIter к первому span
 
   /* ---------- PANCHA-таттва: распределение + «караван» волны ---------- */
   const panchaStr = (rec.pancha || tr.ru.pancha || "").trim();
