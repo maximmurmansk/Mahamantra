@@ -180,14 +180,35 @@ body {
     }
 }
 /* каждая строка интро с новой строки */
-.intro > span {
-    /* только «наружные» четыре span */
-    display: block;
-    line-height: 1.15; /* можно по вкусу */
+.intro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--fz-base);
+    text-align: center;
+    pointer-events: none;
+    white-space: normal;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    //gap: 0.6em;
+}
+
+.intro div {
+    display: inline-block;
     white-space: nowrap;
 }
-.intro {
-    white-space: normal;
+
+.intro .w {
+    display: inline-block;
+    margin-right: 0.3em;
+    animation-name: introWave;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-duration: 10s;
+    animation-delay: var(--delay);
 }
 
 @keyframes introWave {
@@ -200,11 +221,6 @@ body {
         transform: scale(1.2);
         color: #e4491d;
     }
-}
-.intro .w {
-    display: inline-block;
-    animation: introWave linear infinite;
-    animation-delay: var(--delay); /* приходит из inline-style */
 }
 
 /* панель масштабирования шрифта */

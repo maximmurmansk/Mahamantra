@@ -212,56 +212,50 @@ function render(lang = "ru") {
   hook(); // ← заново цепляем onIter к первому span
 
   /* ---------- PANCHA-таттва: распределение + «караван» волны ---------- */
-  if (!intro.querySelector("span")) {
-    intro.innerHTML = "<span></span><span></span><span></span><span></span>";
-  }
-  const rowSpans = intro.querySelectorAll("span");
+  const panchaStr = (rec.pancha || tr.ru.pancha || "").trim();
+  if (!panchaStr) return; // нет текста — выходим
 
-  const pLine = (rec.pancha || tr.ru.pancha || "").trim();
-  if (!pLine) return; // перевода нет – оставляем старое
-
-  /* 1. делим слова по 4-2-3-4 */
+  // 1. Делим на строки по количеству слов: 4-2-3-4
   const limits = [4, 2, 3, 4];
-  const rows = ["", "", "", ""];
+  const panchaWords = panchaStr.split(/\s+/).filter(Boolean);
+  const rows = [];
   let r = 0,
-    wCnt = 0;
+    line = [];
 
-  pLine.split(/\s+/).forEach((word) => {
-    if (wCnt >= limits[r] && r < 3) {
+  for (let i = 0; i < panchaWords.length; i++) {
+    line.push(panchaWords[i]);
+    if (line.length === limits[r] || i === panchaWords.length - 1) {
+      rows.push(line.join(" "));
+      line = [];
       r++;
-      wCnt = 0;
+      if (r >= limits.length) break;
     }
-    rows[r] += (rows[r] ? " " : "") + word;
-    wCnt++;
-  });
+  }
 
-  /* 2. вычисляем «слот» */
-  const allWords = rows.join(" ").split(/\s+/).filter(Boolean);
-  const N = allWords.length || 1;
-  const STEP = 10 / N; // секунды на одно слово
+  const totalWords = panchaWords.length;
+  const STEP = 10 / totalWords;
 
-  /* helper: строку → набор span-слов c «караваном» */
-  let idx = 0; // общий счётчик слов (0,1,2…)
-  const makeLine = (txt) =>
-    txt
+  // 3. Строим HTML
+  let idx = 0;
+  const makeLine = (text) =>
+    text
       .split(/\s+/)
-      .map((w) => {
-        const delay = (idx * STEP).toFixed(3) + "s";
+      .map((word) => {
+        const delay = (idx * STEP).toFixed(3);
         idx++;
-        return `<span class="w"
-                     style="animation-delay:${delay};
-                            animation-duration:10s;">
-                  ${w}
-                </span>`;
+        return `<span class="w" style="
+          animation-delay:${delay}s;
+          animation-duration:10s;">${word}</span>`;
       })
       .join(" ");
 
-  /* выводим строки в 4 контейнера */
-  for (let i = 0; i < 4; i++) {
-    rowSpans[i].innerHTML = rows[i] ? makeLine(rows[i]) : "";
-  }
+  // 4. Вставляем строки внутрь #intro
+  intro.innerHTML = rows
+    .map(makeLine)
+    .map((line) => `<div>${line}</div>`)
+    .join("");
 
-  /* 4. обновляем только одну переменную, если она нужна ещё в CSS */
+  // 5. Обновляем CSS-переменную
   document.documentElement.style.setProperty(
     "--introSlot",
     STEP.toFixed(3) + "s",
