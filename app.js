@@ -171,7 +171,7 @@ async function loadTranslations() {
           ru: {
             maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
             pancha:
-              "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда",
+              "Джая Шри Кришна Чайтанья Прабху Нитьянанда Шри Адвайта Гададхара Шривасади Гаура Бхакта Вринда",
           },
         };
     console.log("Translations loaded:", tr);
@@ -182,7 +182,7 @@ async function loadTranslations() {
       ru: {
         maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
         pancha:
-          "Джая Шри-Кришна-Чайтанья Прабху-Нитьянанда Шри-Адвайта Гададхара Шривасади Гаура-Бхакта-Вринда",
+          "Джая Шри Кришна Чайтанья Прабху Нитьянанда Шри Адвайта Гададхара Шривасади Гаура Бхакта Вринда",
       },
     };
     render("ru");
@@ -192,72 +192,87 @@ async function loadTranslations() {
 /* ---------- рендер мантры ---------- */
 function render(lang = "ru") {
   if (!tr) {
-    console.log("Translations not loaded yet, retrying...");
     setTimeout(() => render(lang), 100);
     return;
   }
 
   const rec = tr[lang] || tr.ru;
   const mahaStr = typeof rec === "string" ? rec : rec.maha || tr.ru.maha;
-  const panchaStr = typeof rec === "string" ? "" : rec.pancha || tr.ru.pancha;
-
-  /* маха-мантра */
-  /* маха-мантра: 4 слова → <br> */
+  /* ---- маха-мантра (4 слова строка) ---- */
   const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i % 4 ? "&nbsp;" : ""}
-       <span style="--i:${(i % 16) + 1}"
-             data-i="${(i % 16) + 1}">
-         ${w}
-       </span>` + ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
+        `${i % 4 ? "\u00A0" : ""}` + // неразрывный пробел
+        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
+        ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
 
-  /* ---------- PANCHA-таттва ---------- */
-  const spans = intro.querySelectorAll("span"); // 4 готовые строки
-  const limits = [4, 2, 3, 4]; // сколько слов в строках
+  hook(); // ← заново цепляем onIter к первому span
 
-  /* разбиваем исходный текст по пробелам/переводам строки */
-  const tokens = panchaStr.trim().split(/\s+/).filter(Boolean);
+  /* ---------- PANCHA-таттва: распределение + «караван» волны ---------- */
+  if (!intro.querySelector("span")) {
+    intro.innerHTML = "<span></span><span></span><span></span><span></span>";
+  }
+  const rowSpans = intro.querySelectorAll("span");
 
-  const lines = ["", "", "", ""];
-  let iLine = 0; // индекс текущей строки (0‒3)
-  let wCnt = 0; // сколько «слов» уже в текущей строке
+  const pLine = (rec.pancha || tr.ru.pancha || "").trim();
+  if (!pLine) return; // перевода нет – оставляем старое
 
-  for (const tok of tokens) {
-    if (iLine > 3) break; // лишнее игнорируем
+  /* 1. делим слова по 4-2-3-4 */
+  const limits = [4, 2, 3, 4];
+  const rows = ["", "", "", ""];
+  let r = 0,
+    wCnt = 0;
 
-    /* сколько «слов» содержит токен с учётом дефисов */
-    const wInTok = tok.split("-").filter(Boolean).length;
-
-    /* если токен не помещается в текущий лимит — переходим на строку ниже */
-    if (wCnt + wInTok > limits[iLine] && iLine < 3) {
-      iLine++;
+  pLine.split(/\s+/).forEach((word) => {
+    if (wCnt >= limits[r] && r < 3) {
+      r++;
       wCnt = 0;
     }
+    rows[r] += (rows[r] ? " " : "") + word;
+    wCnt++;
+  });
 
-    /* добавляем токен в строку */
-    lines[iLine] += (lines[iLine] ? " " : "") + tok;
-    wCnt += wInTok;
+  /* 2. вычисляем «слот» */
+  const allWords = rows.join(" ").split(/\s+/).filter(Boolean);
+  const N = allWords.length || 1;
+  const STEP = 10 / N; // секунды на одно слово
+
+  /* helper: строку → набор span-слов c «караваном» */
+  let idx = 0; // общий счётчик слов (0,1,2…)
+  const makeLine = (txt) =>
+    txt
+      .split(/\s+/)
+      .map((w) => {
+        const delay = (idx * STEP).toFixed(3) + "s";
+        idx++;
+        return `<span class="w"
+                     style="animation-delay:${delay};
+                            animation-duration:10s;">
+                  ${w}
+                </span>`;
+      })
+      .join(" ");
+
+  /* выводим строки в 4 контейнера */
+  for (let i = 0; i < 4; i++) {
+    rowSpans[i].innerHTML = rows[i] ? makeLine(rows[i]) : "";
   }
 
-  /* заполняем <span>, лишние строки очищаем */
-  for (let k = 0; k < 4; k++) {
-    spans[k].textContent = lines[k] || "";
-  }
-
-  hook(); // Reattach the animation listener
-  console.log(`Rendered language: ${lang}`);
+  /* 4. обновляем только одну переменную, если она нужна ещё в CSS */
+  document.documentElement.style.setProperty(
+    "--introSlot",
+    STEP.toFixed(3) + "s",
+  );
 }
-
 /* ---------- старт ---------- */
 loadTranslations();
 setSpeed(false);
 showIntro();
 
-/* страж анимации — если что-то зависло, перезапускаем */
+/* «сторож» анимации */
 setInterval(() => {
   const f = waviy.querySelector("#first");
   if (
