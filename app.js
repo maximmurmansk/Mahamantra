@@ -1,12 +1,14 @@
 /* ---------- глобальные переменные ---------- */
 let beads = 1,
   rounds = 1,
-  introVisible = true, // интро будет показано сразу
+  introVisible = true,
   speed = 4.5,
   isLight = true,
   introDuration = 9.8;
 
-/* ---------- быстрые ссылки на DOM ---------- */
+const INTRO_MS = 10000;
+
+/* ---------- DOM ---------- */
 const waviy = document.getElementById("waviy");
 const intro = document.getElementById("intro");
 const roundsVal = document.getElementById("roundsVal");
@@ -21,11 +23,10 @@ function updateCounter() {
   beadsVal.textContent = beads;
 }
 
-/* каждый полный цикл анимации одного слова */
+/* ---------- итерация анимации ---------- */
 function onIter() {
-  if (introVisible) return; // пока интро видно — счёт не идёт
+  if (introVisible) return;
   if (++beads > 108) {
-    // 108 бусин → новый круг
     beads = 1;
     rounds++;
     showIntro();
@@ -33,25 +34,22 @@ function onIter() {
   updateCounter();
 }
 
-/* «прицепить» onIter к первому <span> */
+/* ---------- hook ---------- */
 function hook() {
   waviy.querySelectorAll("#first").forEach((e) => {
     e.removeEventListener("animationiteration", onIter);
     e.removeAttribute("id");
   });
-
   const first = waviy.querySelector("span");
   if (!first) {
     setTimeout(hook, 100);
     return;
   }
-
   first.id = "first";
   first.addEventListener("animationiteration", onIter);
-  console.log("Hook attached to:", first);
 }
 
-/* ---------- intro ON/OFF ---------- */
+/* ---------- intro ---------- */
 function hideIntro() {
   intro.classList.add("hidden");
   waviy.classList.remove("paused");
@@ -65,14 +63,16 @@ function showIntro() {
   introVisible = true;
   intro.classList.remove("hidden");
   waviy.classList.add("paused");
-  showIntro.t = setTimeout(hideIntro, 10000);
+  showIntro.t = setTimeout(hideIntro, INTRO_MS);
 }
 
 function restartIntroTimer() {
+  // интро уже на экране: просто заново отсчитываем 10с
   clearTimeout(showIntro.t);
-  showIntro.t = setTimeout(hideIntro, 10000);
+  showIntro.t = setTimeout(hideIntro, INTRO_MS);
 }
-/* ---------- скорость анимации ---------- */
+
+/* ---------- скорость ---------- */
 function setSpeed(reset) {
   document.documentElement.style.setProperty("--speed", speed + "s");
   document.documentElement.style.setProperty(
@@ -85,14 +85,12 @@ function setSpeed(reset) {
 function resetWave() {
   waviy.querySelectorAll("span").forEach((s) => {
     s.style.animation = "none";
-    /* force-reflow */ s.offsetHeight;
+    s.offsetHeight;
     s.style.animation = "waviy var(--speed) infinite";
     s.style.animationDelay = `calc(var(--step)*${s.dataset.i})`;
   });
-  hook(); // повторно цепляем счётчик
+  hook();
 }
-
-/* кнопки скорости */
 document.getElementById("dec").onclick = () => {
   if (speed > 2) {
     speed -= 0.5;
@@ -106,7 +104,7 @@ document.getElementById("inc").onclick = () => {
   }
 };
 
-/* ---------- переключение темы ---------- */
+/* ---------- тема ---------- */
 const sun = document.getElementById("sun");
 const moon = document.getElementById("moon");
 document.getElementById("theme").onclick = () => {
@@ -118,7 +116,7 @@ document.getElementById("theme").onclick = () => {
   resetWave();
 };
 
-/* ---------- масштаб шрифта ---------- */
+/* ---------- масштаб ---------- */
 function getScale() {
   return (
     parseFloat(
@@ -135,7 +133,7 @@ function setScale(v) {
 document.getElementById("fInc").onclick = () => setScale(getScale() + 0.2);
 document.getElementById("fDec").onclick = () => setScale(getScale() - 0.2);
 
-/* автоскрытие панели «A±» */
+/* ---------- панель A± ---------- */
 let hideT,
   last = 0;
 function showCtrl() {
@@ -160,36 +158,14 @@ if (innerWidth >= 1024) {
   setTimeout(() => fontCtrl.classList.remove("active"), 3000);
 }
 
-/* ---------- смена языка ---------- */
-document.getElementById("langSel").onchange = (e) => {
-  const lang = e.target.value;
-  const panchaChanged = render(lang); // верни true/false из render
-  if (panchaChanged) {
-    introVisible = true;
-    intro.classList.remove("hidden");
-    waviy.classList.add("paused");
-    restartIntroTimer();
-  }
-};
-
 /* ---------- загрузка переводов ---------- */
-let tr = null; // сюда придёт объект {ru:{maha,pancha}, …}
+let tr = null;
 async function loadTranslations() {
   try {
     const r = await fetch("translations.json");
-    tr = r.ok
-      ? await r.json()
-      : {
-          ru: {
-            maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
-            pancha:
-              "Джая Шри Кришна Чайтанья Прабху Нитьянанда Шри Адвайта Гададхара Шривасади Гаура Бхакта Вринда",
-          },
-        };
-    console.log("Translations loaded:", tr);
-    render("ru"); // Initial render with Russian
-  } catch (e) {
-    console.error("Failed to load translations:", e);
+    tr = r.ok ? await r.json() : null;
+  } catch {}
+  if (!tr) {
     tr = {
       ru: {
         maha: "Харе Кришна Харе Кришна Кришна Кришна Харе Харе Харе Рама Харе Рама Рама Рама Харе Харе",
@@ -197,95 +173,89 @@ async function loadTranslations() {
           "Джая Шри Кришна Чайтанья Прабху Нитьянанда Шри Адвайта Гададхара Шривасади Гаура Бхакта Вринда",
       },
     };
-    render("ru");
   }
+  render("ru");
 }
 
-/* ---------- рендер мантры ---------- */
+/* ---------- render ---------- */
 function render(lang = "ru") {
-  if (!tr) {
-    setTimeout(() => render(lang), 100);
-    return;
-  }
+  const prevIntroHTML = intro.innerHTML;
 
   const rec = tr[lang] || tr.ru;
   const mahaStr = typeof rec === "string" ? rec : rec.maha || tr.ru.maha;
-  /* ---- маха-мантра (4 слова строка) ---- */
+  const panchaStr =
+    typeof rec === "string" ? "" : rec.pancha || tr.ru.pancha || "";
+
+  /* MAHA */
   const words = mahaStr.trim().split(/\s+/);
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i % 4 ? "&nbsp;" : ""}
-           <span style="--i:${(i % 16) + 1}"
-                 data-i="${(i % 16) + 1}">
-             ${w}
-           </span>` +
+        `${i % 4 ? "\u00A0" : ""}` + // ← заменил на \u00A0
+        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
         ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
+  hook();
 
-  /* ---------- PANCHA-таттва: распределение + «караван» волны ---------- */
-  const panchaStr = (rec.pancha || tr.ru.pancha || "").trim();
-  if (!panchaStr) return; // нет текста — выходим
+  /* PANCHA */
+  if (!panchaStr) return false;
 
-  // 1. Делим на строки по количеству слов: 4-2-3-4
   const limits = [4, 2, 3, 4];
-  const panchaWords = panchaStr.split(/\s+/).filter(Boolean);
+  const ps = panchaStr.split(/\s+/).filter(Boolean);
   const rows = [];
   let r = 0,
-    line = [];
-
-  for (let i = 0; i < panchaWords.length; i++) {
-    line.push(panchaWords[i]);
-    if (line.length === limits[r] || i === panchaWords.length - 1) {
-      rows.push(line.join(" "));
-      line = [];
+    buf = [];
+  for (let i = 0; i < ps.length; i++) {
+    buf.push(ps[i]);
+    if (buf.length === limits[r] || i === ps.length - 1) {
+      rows.push(buf.join(" "));
+      buf = [];
       r++;
       if (r >= limits.length) break;
     }
   }
 
-  const totalWords = panchaWords.length;
-  const STEP = introDuration / totalWords;
+  const totalWords = ps.length || 1;
+  const slot = introDuration / totalWords;
 
-  // 3. Строим HTML
   let idx = 0;
-  const makeLine = (text) =>
-    text
+  const makeLine = (line) =>
+    line
       .split(/\s+/)
-      .map((word) => {
-        const delay = (idx * STEP).toFixed(3);
+      .map((w) => {
+        const delay = (idx * slot).toFixed(3);
         idx++;
-        return `<span class="w" style="
-          animation-delay:${delay}s;
-          animation-duration:${introDuration}s;">${word}</span>`;
+        return `<span class="w" style="animation-delay:${delay}s;animation-duration:${introDuration}s;">${w}</span>`;
       })
       .join(" ");
 
-  // 4. Вставляем строки внутрь #intro
-  intro.innerHTML = rows
-    .map(makeLine)
-    .map((line) => `<div>${line}</div>`)
-    .join("");
+  intro.innerHTML = rows.map((l) => `<div>${makeLine(l)}</div>`).join("");
 
-  // 5. Обновляем CSS-переменную
-  document.documentElement.style.setProperty(
-    "--introSlot",
-    STEP.toFixed(3) + "s",
-  );
-  hook(); // Reattach the animation listener
+  // вернуть, изменилось ли intro
+  return intro.innerHTML !== prevIntroHTML;
 }
+
+/* ---------- смена языка ---------- */
+const langSel = document.getElementById("langSel");
+
+langSel.onchange = (e) => {
+  const lang = e.target.value;
+  render(lang);
+  if (introVisible) restartIntroTimer();
+};
 /* ---------- старт ---------- */
 loadTranslations();
 setSpeed(false);
 showIntro();
 
-/* «сторож» анимации */
+/* сторож */
 setInterval(() => {
   const f = waviy.querySelector("#first");
   if (
     !f ||
     (getComputedStyle(f).animationPlayState === "paused" && !introVisible)
-  )
+  ) {
     resetWave();
+  }
 }, 5000);
