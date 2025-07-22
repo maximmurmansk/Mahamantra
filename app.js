@@ -3,7 +3,8 @@ let beads = 1,
   rounds = 1,
   introVisible = true, // интро будет показано сразу
   speed = 4.5,
-  isLight = true;
+  isLight = true,
+  introDuration = 9.8;
 
 /* ---------- быстрые ссылки на DOM ---------- */
 const waviy = document.getElementById("waviy");
@@ -234,7 +235,7 @@ function render(lang = "ru") {
   }
 
   const totalWords = panchaWords.length;
-  const STEP = 10 / totalWords;
+  const STEP = introDuration / totalWords;
 
   // 3. Строим HTML
   let idx = 0;
@@ -246,7 +247,7 @@ function render(lang = "ru") {
         idx++;
         return `<span class="w" style="
           animation-delay:${delay}s;
-          animation-duration:10s;">${word}</span>`;
+          animation-duration:${introDuration}s;">${word}</span>`;
       })
       .join(" ");
 
