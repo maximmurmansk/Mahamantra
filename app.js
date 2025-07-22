@@ -261,6 +261,7 @@ function render(lang = "ru") {
     "--introSlot",
     STEP.toFixed(3) + "s",
   );
+  hook(); // Reattach the animation listener
 }
 /* ---------- старт ---------- */
 loadTranslations();
