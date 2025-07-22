@@ -191,9 +191,11 @@ function render(lang = "ru") {
   waviy.innerHTML = words
     .map(
       (w, i) =>
-        `${i % 4 ? "\u00A0" : ""}` + // ← заменил на \u00A0
-        `<span style="--i:${(i % 16) + 1}" data-i="${(i % 16) + 1}">${w}</span>` +
-        ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
+        `${i % 4 ? "&nbsp;" : ""}
+         <span style="--i:${(i % 16) + 1}"
+               data-i="${(i % 16) + 1}">
+           ${w}
+         </span>` + ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
     )
     .join("");
   hook();
