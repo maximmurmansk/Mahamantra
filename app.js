@@ -52,20 +52,26 @@ function hook() {
 }
 
 /* ---------- intro ON/OFF ---------- */
+function hideIntro() {
+  intro.classList.add("hidden");
+  waviy.classList.remove("paused");
+  introVisible = false;
+  resetWave();
+  updateCounter();
+}
+
 function showIntro() {
   clearTimeout(showIntro.t);
   introVisible = true;
   intro.classList.remove("hidden");
   waviy.classList.add("paused");
-  showIntro.t = setTimeout(() => {
-    intro.classList.add("hidden");
-    waviy.classList.remove("paused");
-    introVisible = false;
-    resetWave();
-    updateCounter();
-  }, 10000); // 10 секунд показ
+  showIntro.t = setTimeout(hideIntro, 10000);
 }
 
+function restartIntroTimer() {
+  clearTimeout(showIntro.t);
+  showIntro.t = setTimeout(hideIntro, 10000);
+}
 /* ---------- скорость анимации ---------- */
 function setSpeed(reset) {
   document.documentElement.style.setProperty("--speed", speed + "s");
@@ -157,8 +163,13 @@ if (innerWidth >= 1024) {
 /* ---------- смена языка ---------- */
 document.getElementById("langSel").onchange = (e) => {
   const lang = e.target.value;
-  console.log("Switching to language:", lang); // Debug log
-  render(lang); // Call render with the selected language
+  const panchaChanged = render(lang); // верни true/false из render
+  if (panchaChanged) {
+    introVisible = true;
+    intro.classList.remove("hidden");
+    waviy.classList.add("paused");
+    restartIntroTimer();
+  }
 };
 
 /* ---------- загрузка переводов ---------- */
