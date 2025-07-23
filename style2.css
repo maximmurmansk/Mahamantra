@@ -259,4 +259,7 @@ body {
     .controls {
         gap: 0px;
     }
+    .intro {
+        padding-top: var(--panel-h);
+    }
 }
