@@ -241,9 +241,13 @@ body {
     }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1023px) and (orientation: landscape) {
     .font-ctrl {
         display: none;
+    }
+    .intro {
+        --panel-h: 68px; /* 48px кнопка + 2×10px отступа сверху/снизу */
+        padding-top: var(--panel-h);
     }
 }
 @media (max-width: 767px) and (orientation: portrait) {
@@ -258,9 +262,5 @@ body {
     }
     .controls {
         gap: 0px;
-    }
-    .intro {
-        --panel-h: 68px; /* 48px кнопка + 2×10px отступа сверху/снизу */
-        padding-top: var(--panel-h);
     }
 }
