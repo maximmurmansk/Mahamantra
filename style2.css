@@ -260,6 +260,7 @@ body {
         gap: 0px;
     }
     .intro {
+        --panel-h: 68px; /* 48px кнопка + 2×10px отступа сверху/снизу */
         padding-top: var(--panel-h);
     }
 }
