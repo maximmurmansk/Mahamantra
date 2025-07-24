@@ -269,7 +269,7 @@ body {
     .font-ctrl {
         display: none;
     }
-    .intro {
+    .intro and .centered {
         --panel-h: 68px; /* 48px кнопка + 2×10px отступа сверху/снизу */
         padding-top: var(--panel-h);
     }
