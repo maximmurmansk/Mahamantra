@@ -130,6 +130,12 @@ body {
     display: none !important;
 }
 
+/* ----------- ручная пауза пользователя ----------- */
+.userPaused .w,
+.userPaused .waviy span {
+    animation-play-state: paused !important; /* гасим и waviy, и intro */
+}
+
 /* ---------- общая «волна» для всех слов ---------- */
 .w {
     display: inline-block;

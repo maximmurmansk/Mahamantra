@@ -1,6 +1,10 @@
 /* ---------- глобальные переменные ---------- */
 let beads = 1,
   rounds = 1,
+  userPaused = false, // «ручная» пауза по клику
+  introRestMS = 0, // сколько осталось до конца интро
+  guardId = null, // id сторожевого setInterval
+  introEndStamp = 0, // абсолютное время, когда интро должно скрыться
   introVisible = true;
 let speed = +(localStorage.getItem("mantraSpeed") ?? 4.5);
 let curLang = localStorage.getItem("mantraLang") || "ru";
@@ -54,20 +58,23 @@ function hook() {
 }
 
 /* ---------- intro ---------- */
-function hideIntro() {
-  intro.classList.add("hidden");
-  waviy.classList.remove("paused");
-  introVisible = false;
-  resetWave();
-  updateCounter();
-}
-
 function showIntro() {
   clearTimeout(showIntro.t);
   introVisible = true;
   intro.classList.remove("hidden");
   waviy.classList.add("paused");
+
+  introEndStamp = Date.now() + INTRO_MS; // <- запомнили «дедлайн»
   showIntro.t = setTimeout(hideIntro, INTRO_MS);
+}
+
+function hideIntro() {
+  intro.classList.add("hidden");
+  waviy.classList.remove("paused");
+  introVisible = false;
+  introRestMS = 0; // сбрасываем остаток
+  resetWave();
+  updateCounter();
 }
 
 function restartIntroTimer() {
@@ -110,6 +117,33 @@ document.getElementById("inc").onclick = () => {
     setSpeed(true);
   }
 };
+
+/* ---------- ручная пауза волны ---------- */
+function toggleUserPause() {
+  userPaused = !userPaused;
+  document.documentElement.classList.toggle("userPaused", userPaused);
+
+  if (userPaused) {
+    /* ============ ПАУЗА ============ */
+    // 1. Приостанавливаем таймер интро
+    if (introVisible) {
+      introRestMS = introEndStamp - Date.now(); // сколько осталось
+      clearTimeout(showIntro.t);
+    }
+    // 2. Останавливаем «сторож»
+    stopGuard();
+  } else {
+    /* ============ ВОЗОБНОВЛЕНИЕ ============ */
+    // 1. Возобновляем интро, если оно было на экране
+    if (introVisible && introRestMS > 0) {
+      introEndStamp = Date.now() + introRestMS;
+      showIntro.t = setTimeout(hideIntro, introRestMS);
+      introRestMS = 0;
+    }
+    // 2. Перезапускаем «сторож»
+    startGuard();
+  }
+}
 
 /* ---------- тема ---------- */
 const sun = document.getElementById("sun");
@@ -164,6 +198,12 @@ if (innerWidth >= 1024) {
   fontCtrl.classList.add("active");
   setTimeout(() => fontCtrl.classList.remove("active"), 3000);
 }
+
+// пауза по клику в любом месте, КРОМЕ панели, A± и кнопок
+document.addEventListener("click", (e) => {
+  const skip = e.target.closest(".panel, .font-ctrl, #langSel, button");
+  if (!skip) toggleUserPause();
+});
 
 /* ---------- загрузка переводов ---------- */
 let tr = null;
@@ -270,14 +310,24 @@ langSel.onchange = (e) => {
 loadTranslations();
 setSpeed(false);
 showIntro();
+startGuard(); // запуск «сторожа» после первой инициализации
 
 /* сторож */
-setInterval(() => {
-  const f = waviy.querySelector("#first");
-  if (
-    !f ||
-    (getComputedStyle(f).animationPlayState === "paused" && !introVisible)
-  ) {
-    resetWave();
-  }
-}, 5000);
+function startGuard() {
+  if (guardId) return; // уже запущен
+  guardId = setInterval(() => {
+    if (userPaused) return; // во время паузы не трогаем
+    const f = waviy.querySelector("#first");
+    if (
+      !f ||
+      (getComputedStyle(f).animationPlayState === "paused" && !introVisible)
+    ) {
+      resetWave();
+    }
+  }, 5000);
+}
+
+function stopGuard() {
+  clearInterval(guardId);
+  guardId = null;
+}
