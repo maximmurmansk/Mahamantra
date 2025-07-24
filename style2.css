@@ -251,6 +251,9 @@ body {
     }
 }
 @media (max-width: 767px) and (orientation: portrait) {
+    .font-ctrl {
+        display: none;
+    }
     #langSel {
         font-size: 20px;
         min-width: 60px; /* ширина под один emoji-флаг */
