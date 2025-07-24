@@ -136,6 +136,33 @@ body {
     animation-play-state: paused !important; /* гасим и waviy, и intro */
 }
 
+/* --- Значок паузы ------------------------------------------------------- */
+.pause-badge {
+    position: fixed;
+    bottom: 5vh; /* чуть выше низа экрана */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    background: rgba(128, 128, 128, 0.25); /* полупрозрачный серый кружок */
+    backdrop-filter: blur(6px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.25s ease;
+    pointer-events: none; /* клики проходят сквозь */
+}
+.pause-badge svg {
+    width: 34px;
+    height: 34px;
+    fill: #777; /* похожий на macOS grey */
+}
+.pause-badge.hidden {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.8);
+}
+
 /* ---------- общая «волна» для всех слов ---------- */
 .w {
     display: inline-block;

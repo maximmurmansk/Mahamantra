@@ -121,6 +121,9 @@ document.getElementById("inc").onclick = () => {
 /* ---------- ручная пауза волны ---------- */
 function toggleUserPause() {
   userPaused = !userPaused;
+
+  // ===== визуальное состояние (иконка) =====
+  document.getElementById("pauseBadge").classList.toggle("hidden", !userPaused);
   document.documentElement.classList.toggle("userPaused", userPaused);
 
   if (userPaused) {
