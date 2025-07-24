@@ -1,9 +1,11 @@
 /* ---------- глобальные переменные ---------- */
 let beads = 1,
   rounds = 1,
-  introVisible = true,
-  speed = 4.5,
-  isLight = true,
+  introVisible = true;
+let speed = +(localStorage.getItem("mantraSpeed") ?? 4.5);
+let curLang = localStorage.getItem("mantraLang") || "ru";
+
+let isLight = true,
   introDuration = 9.8;
 
 const INTRO_MS = 10000;
@@ -16,6 +18,8 @@ const beadsVal = document.getElementById("beadsVal");
 const spdText = document.getElementById("spdText");
 const fontCtrl = document.getElementById("fontCtrl");
 const triggerArea = document.getElementById("triggerArea");
+document.getElementById("langSel").value = curLang;
+spdText.textContent = speed.toFixed(1) + " с";
 
 /* ---------- счётчик ---------- */
 function updateCounter() {
@@ -94,12 +98,15 @@ function resetWave() {
 document.getElementById("dec").onclick = () => {
   if (speed > 2) {
     speed -= 0.5;
+    localStorage.setItem("mantraSpeed", speed); // ← сохраняем
     setSpeed(true);
   }
 };
+
 document.getElementById("inc").onclick = () => {
   if (speed < 9) {
     speed += 0.5;
+    localStorage.setItem("mantraSpeed", speed); // ← сохраняем
     setSpeed(true);
   }
 };
@@ -174,7 +181,7 @@ async function loadTranslations() {
       },
     };
   }
-  render("ru");
+  render(curLang);
 }
 
 /* ---------- render ---------- */
@@ -254,6 +261,8 @@ const langSel = document.getElementById("langSel");
 
 langSel.onchange = (e) => {
   const lang = e.target.value;
+  curLang = lang;
+  localStorage.setItem("mantraLang", lang); // ← сохраняем
   render(lang);
   if (introVisible) restartIntroTimer();
 };
