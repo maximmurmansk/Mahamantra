@@ -26,7 +26,6 @@
     box-sizing: border-box;
 }
 body {
-    padding-top: var(--panel-h); /* теперь flex-часть начинается ниже панели */
     background: #f5f5f5;
     color: var(--btn-fg);
     min-height: 100vh;
@@ -131,6 +130,28 @@ body {
     display: none !important;
 }
 
+/* ---------- общая «волна» для всех слов ---------- */
+.w {
+    display: inline-block;
+    margin-right: 0.3em; /* одинаковый визуальный пробел */
+    animation: wave var(--speed) infinite;
+    animation-delay: calc(var(--step) * var(--i));
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+
+@keyframes wave {
+    0%,
+    15%,
+    100% {
+        transform: scale(1);
+    }
+    10% {
+        transform: scale(1.2);
+        color: #e4491d;
+    }
+}
+
 /* мантра */
 .centered {
     //height: calc(100vh - var(--panel-h));
@@ -142,20 +163,28 @@ body {
 }
 .waviy {
     font-size: var(--fz-base);
-    text-align: center;
-    white-space: nowrap;
+    display: flex; /* вертикальный столбец строк */
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.3;
+    white-space: normal; /* переносы как в intro */
     -webkit-box-reflect: below -10px
         linear-gradient(transparent, rgba(0, 0, 0, 0.1));
 }
-.waviy span {
-    display: inline-block;
-    animation: waviy var(--speed) infinite;
-    animation-delay: calc(var(--step) * var(--i));
-}
+.waviy > div {
+    white-space: nowrap;
+} /* каждая строка не ломается */
+
 .waviy.paused span {
     animation-play-state: paused;
     opacity: 0;
 }
+.waviy .w {
+    animation: waviy var(--speed) infinite;
+    /* ключевая строчка ↓ */
+    animation-delay: calc(var(--step) * var(--i));
+}
+
 @keyframes waviy {
     0%,
     15%,
@@ -190,12 +219,7 @@ body {
 }
 
 .intro .w {
-    display: inline-block;
-    margin-right: 0.3em;
-    animation-name: introWave;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: both;
-    animation-iteration-count: infinite;
+    animation: wave 10s infinite;
     animation-delay: var(--delay);
 }
 

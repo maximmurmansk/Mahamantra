@@ -186,19 +186,31 @@ function render(lang = "ru") {
   const panchaStr =
     typeof rec === "string" ? "" : rec.pancha || tr.ru.pancha || "";
 
-  /* MAHA */
+  /* MAHA-мантра */
   const words = mahaStr.trim().split(/\s+/);
-  waviy.innerHTML = words
-    .map(
-      (w, i) =>
-        `${i % 4 ? "&nbsp;" : ""}
-         <span style="--i:${(i % 16) + 1}"
-               data-i="${(i % 16) + 1}">
-           ${w}
-         </span>` + ((i + 1) % 4 === 0 && i !== words.length - 1 ? "<br>" : ""),
-    )
-    .join("");
-  hook();
+  let ids = 0;
+  const rowsHTML = [];
+
+  for (let i = 0; i < words.length; i += 4) {
+    const rowHTML = words
+      .slice(i, i + 4)
+      .map((w) => {
+        const iVar = (ids % 16) + 1; // 1…16
+        ids++;
+        return `
+          <span class="w"
+                style="--i:${iVar}"
+                data-i="${iVar}">
+            ${w}
+          </span>`;
+      })
+      .join(" ");
+
+    rowsHTML.push(`<div>${rowHTML}</div>`);
+  }
+
+  waviy.innerHTML = rowsHTML.join(""); // ← вставляем в документ!
+  hook(); // теперь первый <span> уже на месте
 
   /* PANCHA */
   if (!panchaStr) return false;
@@ -220,7 +232,6 @@ function render(lang = "ru") {
 
   const totalWords = ps.length || 1;
   const slot = introDuration / totalWords;
-
   let idx = 0;
   const makeLine = (line) =>
     line
