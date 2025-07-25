@@ -167,7 +167,7 @@ document.getElementById("theme").onclick = () => {
   link.href = isLight ? "style2.css" : "style.css";
   sun.classList.toggle("hidden", isLight);
   moon.classList.toggle("hidden", !isLight);
-  resetWave();
+  //resetWave();
 };
 
 /* ---------- масштаб ---------- */
