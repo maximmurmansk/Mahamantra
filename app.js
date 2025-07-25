@@ -78,8 +78,15 @@ function hideIntro() {
 }
 
 function restartIntroTimer() {
-  // интро уже на экране: просто заново отсчитываем 10с
+  if (userPaused) {
+    introRestMS = INTRO_MS;
+    clearTimeout(showIntro.t);
+    return;
+  }
+
+  // обычный рестарт, когда паузы нет
   clearTimeout(showIntro.t);
+  introEndStamp = Date.now() + INTRO_MS;
   showIntro.t = setTimeout(hideIntro, INTRO_MS);
 }
 
@@ -94,13 +101,17 @@ function setSpeed(reset) {
   if (reset) resetWave();
 }
 function resetWave() {
-  waviy.querySelectorAll("span").forEach((s) => {
+  waviy.querySelectorAll(".w").forEach((s) => {
+    /* 1. снимаем анимацию */
     s.style.animation = "none";
-    s.offsetHeight;
-    s.style.animation = "wave var(--speed) infinite";
-    s.style.animationDelay = `calc(var(--step)*${s.dataset.i})`;
+    /* 2. форс-перерисовка */
+    void s.offsetHeight;
+    /* 3. возвращаемся к декларативному CSS  */
+    s.style.animation = "";
+    s.style.animationDelay = `calc(var(--step) * ${s.dataset.i})`;
   });
-  hook();
+
+  hook(); // заново «цепляем» счётчик на первый <span>
 }
 document.getElementById("dec").onclick = () => {
   if (speed > 2) {
