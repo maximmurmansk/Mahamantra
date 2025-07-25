@@ -166,11 +166,13 @@ body {
 /* ---------- общая «волна» для всех слов ---------- */
 .w {
     display: inline-block;
-    margin-right: 0.3em; /* одинаковый визуальный пробел */
-    animation: wave var(--speed) infinite;
-    animation-delay: calc(var(--step) * var(--i));
+    margin-right: 0.3em;
+    animation-name: wave;
+    animation-duration: var(--speed);
     animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
     animation-fill-mode: both;
+    /* задержку будем переопределять ниже */
 }
 
 @keyframes wave {
@@ -213,21 +215,7 @@ body {
     opacity: 0;
 }
 .waviy .w {
-    animation: waviy var(--speed) infinite;
-    /* ключевая строчка ↓ */
     animation-delay: calc(var(--step) * var(--i));
-}
-
-@keyframes waviy {
-    0%,
-    15%,
-    100% {
-        transform: scale(1);
-    }
-    10% {
-        transform: scale(1.3);
-        color: #e4491d;
-    }
 }
 
 /* intro */
@@ -252,20 +240,8 @@ body {
 }
 
 .intro .w {
-    animation: wave 10s infinite;
     animation-delay: var(--delay);
-}
-
-@keyframes introWave {
-    0%,
-    15%,
-    100% {
-        transform: scale(1);
-    }
-    10% {
-        transform: scale(1.2);
-        color: #e4491d;
-    }
+    animation-duration: 10s; /* или var(--introDur) */
 }
 
 /* панель масштабирования шрифта */

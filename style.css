@@ -1,17 +1,20 @@
-@import url("style2.css");
+/* style.css – тёмная тема */
+@import url("style2.css"); /* ← сначала базовый (светлый) стиль */
 
-/* переопределяем отличия */
 :root {
-    --btn-bg: #444;
-    --btn-fg: #fff;
+    --btn-bg: #444; /* тёмная кнопка */
+    --btn-fg: #fff; /* светлая иконка/текст */
 }
 body {
     background: #151719;
-}
-.waviy span {
+} /* почти-чёрный фон */
+
+.waviy span,
+.intro {
     color: #fff;
-}
-@keyframes waviy {
+} /* буквы светлые */
+
+@keyframes wave {
     0%,
     15%,
     100% {

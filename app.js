@@ -97,7 +97,7 @@ function resetWave() {
   waviy.querySelectorAll("span").forEach((s) => {
     s.style.animation = "none";
     s.offsetHeight;
-    s.style.animation = "waviy var(--speed) infinite";
+    s.style.animation = "wave var(--speed) infinite";
     s.style.animationDelay = `calc(var(--step)*${s.dataset.i})`;
   });
   hook();
