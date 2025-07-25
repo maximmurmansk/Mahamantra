@@ -23,7 +23,6 @@ const spdText = document.getElementById("spdText");
 const fontCtrl = document.getElementById("fontCtrl");
 const triggerArea = document.getElementById("triggerArea");
 document.getElementById("langSel").value = curLang;
-spdText.textContent = speed.toFixed(1) + " с";
 
 /* ---------- счётчик ---------- */
 function updateCounter() {
@@ -97,7 +96,7 @@ function setSpeed(reset) {
     "--step",
     (speed / 16).toFixed(3) + "s",
   );
-  spdText.textContent = speed.toFixed(1) + " с";
+  spdText.textContent = speed.toFixed(1);
   if (reset) resetWave();
 }
 function resetWave() {
