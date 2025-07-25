@@ -6,7 +6,9 @@
     --btn-fg: #fff; /* светлая иконка/текст */
 }
 body {
-    background: #151719;
+    //background: #151719;
+    //background: #202124;
+    background: #2d3337;
 } /* почти-чёрный фон */
 
 .waviy span,
