@@ -161,14 +161,21 @@ function toggleUserPause() {
 /* ---------- тема ---------- */
 const sun = document.getElementById("sun");
 const moon = document.getElementById("moon");
-document.getElementById("theme").onclick = () => {
+const themeBtn = document.getElementById("theme");
+
+function toggleTheme() {
   const link = document.getElementById("themeStylesheet");
+  if (!link) return; // чтобы не уронить скрипт
+
   isLight = !isLight;
   link.href = isLight ? "style2.css" : "style.css";
-  sun.classList.toggle("hidden", isLight);
-  moon.classList.toggle("hidden", !isLight);
-  //resetWave();
-};
+
+  if (sun) sun.classList.toggle("hidden", isLight);
+  if (moon) moon.classList.toggle("hidden", !isLight);
+  // волну не перезапускаем
+}
+
+if (themeBtn) themeBtn.onclick = toggleTheme;
 
 /* ---------- масштаб ---------- */
 function getScale() {
@@ -216,6 +223,62 @@ if (innerWidth >= 1024) {
 document.addEventListener("click", (e) => {
   const skip = e.target.closest(".panel, .font-ctrl, #langSel, button");
   if (!skip) toggleUserPause();
+});
+
+// Hot keys
+
+document.addEventListener("keydown", (e) => {
+  // не реагируем, если фокус в элементах ввода
+  if (
+    e.target.closest(
+      "input, textarea, select, button, [contenteditable='true']",
+    )
+  )
+    return;
+
+  // Пауза — пробел
+  if (e.code === "Space") {
+    e.preventDefault();
+    toggleUserPause();
+    return;
+  }
+
+  // масштаб: + / -
+  if (e.key === "+" || e.code === "NumpadAdd" || e.key === "=") {
+    e.preventDefault();
+    setScale(getScale() + 0.2);
+    return;
+  }
+  if (e.key === "-" || e.code === "NumpadSubtract" || e.key === "_") {
+    e.preventDefault();
+    setScale(getScale() - 0.2);
+    return;
+  }
+
+  // Скорость волны: < и >
+  if (e.key === "<" || e.key === "," || (e.code === "Comma" && e.shiftKey)) {
+    if (speed > 2) {
+      speed -= 0.5;
+      localStorage.setItem("mantraSpeed", speed);
+      setSpeed(true);
+    }
+    return;
+  }
+  if (e.key === ">" || e.key === "." || (e.code === "Period" && e.shiftKey)) {
+    if (speed < 9) {
+      speed += 0.5;
+      localStorage.setItem("mantraSpeed", speed);
+      setSpeed(true);
+    }
+    return;
+  }
+
+  // Тема: ?  (Shift + /)
+  if (e.key === "?" || e.key === "/" || (e.code === "Slash" && e.shiftKey)) {
+    e.preventDefault();
+    toggleTheme();
+    return;
+  }
 });
 
 /* ---------- загрузка переводов ---------- */
