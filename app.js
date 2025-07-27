@@ -5,6 +5,7 @@ let beads = 1,
   introRestMS = 0, // сколько осталось до конца интро
   guardId = null, // id сторожевого setInterval
   introEndStamp = 0, // абсолютное время, когда интро должно скрыться
+  wakeLock = null,
   introVisible = true;
 let speed = +(localStorage.getItem("mantraSpeed") ?? 4.5);
 let curLang = localStorage.getItem("mantraLang") || "ru";
@@ -391,8 +392,6 @@ startGuard(); // запуск «сторожа» после первой ини�
 acquireWakeLock();
 
 // --- wake lock ---
-let wakeLock = null;
-
 async function acquireWakeLock() {
   if (!("wakeLock" in navigator)) return; // нет поддержки
   if (wakeLock || userPaused) return; // уже есть / на паузе
