@@ -16,6 +16,9 @@ let isLight = true,
 const INTRO_MS = 10000;
 
 /* ---------- DOM ---------- */
+const decBtn = document.getElementById("dec");
+const incBtn = document.getElementById("inc");
+const spdBox = document.getElementById("spdText");
 const waviy = document.getElementById("waviy");
 const intro = document.getElementById("intro");
 const roundsVal = document.getElementById("roundsVal");
@@ -64,7 +67,9 @@ function showIntro() {
   intro.classList.remove("hidden");
   waviy.classList.add("paused");
 
-  introEndStamp = Date.now() + INTRO_MS; // <- запомнили «дедлайн»
+  setSpeedCtrlsVisible(false); // ← спрятать − / скорость / +
+
+  introEndStamp = Date.now() + INTRO_MS;
   showIntro.t = setTimeout(hideIntro, INTRO_MS);
 }
 
@@ -72,7 +77,10 @@ function hideIntro() {
   intro.classList.add("hidden");
   waviy.classList.remove("paused");
   introVisible = false;
-  introRestMS = 0; // сбрасываем остаток
+  introRestMS = 0;
+
+  setSpeedCtrlsVisible(true); // ← вернуть элементы
+
   resetWave();
   updateCounter();
 }
@@ -90,6 +98,12 @@ function restartIntroTimer() {
   showIntro.t = setTimeout(hideIntro, INTRO_MS);
 }
 
+// скрывать кнопки скорости во время панчататтва мантры
+function setSpeedCtrlsVisible(show) {
+  [decBtn, incBtn, spdBox].forEach((el) =>
+    el.classList.toggle("hidden", !show),
+  );
+}
 /* ---------- скорость ---------- */
 function setSpeed(reset) {
   document.documentElement.style.setProperty("--speed", speed + "s");
