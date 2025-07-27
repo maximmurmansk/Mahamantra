@@ -132,31 +132,32 @@ document.getElementById("inc").onclick = () => {
 function toggleUserPause() {
   userPaused = !userPaused;
 
-  // ===== визуальное состояние (иконка) =====
   document.getElementById("pauseBadge").classList.toggle("hidden", !userPaused);
   document.documentElement.classList.toggle("userPaused", userPaused);
 
   if (userPaused) {
-    /* ============ ПАУЗА ============ */
-    // 1. Приостанавливаем таймер интро
     if (introVisible) {
-      introRestMS = introEndStamp - Date.now(); // сколько осталось
+      introRestMS = introEndStamp - Date.now();
       clearTimeout(showIntro.t);
     }
-    // 2. Останавливаем «сторож»
     stopGuard();
+    releaseWakeLock(); // ← отпускаем, чтобы устройство могло заснуть
   } else {
-    /* ============ ВОЗОБНОВЛЕНИЕ ============ */
-    // 1. Возобновляем интро, если оно было на экране
     if (introVisible && introRestMS > 0) {
       introEndStamp = Date.now() + introRestMS;
       showIntro.t = setTimeout(hideIntro, introRestMS);
       introRestMS = 0;
     }
-    // 2. Перезапускаем «сторож»
     startGuard();
+    acquireWakeLock(); // ← возобновляем блокировку
   }
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && !userPaused) {
+    acquireWakeLock();
+  }
+});
 
 /* ---------- тема ---------- */
 const sun = document.getElementById("sun");
@@ -387,6 +388,35 @@ loadTranslations();
 setSpeed(false);
 showIntro();
 startGuard(); // запуск «сторожа» после первой инициализации
+acquireWakeLock();
+
+// --- wake lock ---
+let wakeLock = null;
+
+async function acquireWakeLock() {
+  if (!("wakeLock" in navigator)) return; // нет поддержки
+  if (wakeLock || userPaused) return; // уже есть / на паузе
+  try {
+    wakeLock = await navigator.wakeLock.request("screen");
+    // если система сама освободила — попробуем вернуть (если не на паузе)
+    wakeLock.addEventListener("release", () => {
+      wakeLock = null;
+      if (!userPaused && document.visibilityState === "visible") {
+        acquireWakeLock();
+      }
+    });
+  } catch (err) {
+    console.warn("WakeLock error:", err);
+    wakeLock = null;
+  }
+}
+
+async function releaseWakeLock() {
+  try {
+    if (wakeLock) await wakeLock.release();
+  } catch {}
+  wakeLock = null;
+}
 
 /* сторож */
 function startGuard() {
