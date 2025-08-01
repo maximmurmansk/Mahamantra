@@ -38,6 +38,18 @@ body {
     font-family: "Great Vibes", cursive;
 }
 
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden; /* прячем от зрения */
+    clip: rect(0 0 0 0); /* прячем от старых браузеров */
+    white-space: nowrap; /* не даём переносить строки */
+}
+
 /* круг */
 .circle {
     width: 48px;
