@@ -26,11 +26,11 @@
     box-sizing: border-box;
 }
 body {
-    //background: #f5f5f5;
-    //background: #eed5ab;
+    /* background: #f5f5f5; */
+    /* background: #eed5ab; */
     background: #f5f5f7;
-    //background: #dddddd;
-    //background: #f7cea0;
+    /* background: #dddddd; */
+    /* background: #f7cea0; */
     color: var(--btn-fg);
     min-height: 100vh;
     display: flex;
@@ -125,7 +125,7 @@ body {
 .spd-text {
     font-size: 26px;
     font-style: normal;
-    //width: 48px;
+    /* width: 48px; */
     text-align: center;
 }
 
@@ -205,7 +205,7 @@ body {
 
 /* мантра */
 .centered {
-    //height: calc(100vh - var(--panel-h));
+    /* height: calc(100vh - var(--panel-h)); */
     flex: 1;
     display: flex;
     justify-content: center;
@@ -247,7 +247,7 @@ body {
     line-height: 1.3;
     display: flex;
     flex-direction: column;
-    //gap: 0.6em;
+    /* gap: 0.6em; */
 }
 
 .intro div {

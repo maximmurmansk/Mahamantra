@@ -104,6 +104,7 @@ function setSpeedCtrlsVisible(show) {
     el.classList.toggle("hidden", !show),
   );
 }
+
 /* ---------- скорость ---------- */
 function setSpeed(reset) {
   document.documentElement.style.setProperty("--speed", speed + "s");
@@ -127,6 +128,7 @@ function resetWave() {
 
   hook(); // заново «цепляем» счётчик на первый <span>
 }
+
 document.getElementById("dec").onclick = () => {
   if (speed > 2) {
     speed -= 0.5;
@@ -143,33 +145,53 @@ document.getElementById("inc").onclick = () => {
   }
 };
 
-/* ---------- ручная пауза волны ---------- */
-function toggleUserPause() {
-  userPaused = !userPaused;
+/* ---------- ИДЕМПОТЕНТНОЕ управление паузой ---------- */
+function setUserPaused(next) {
+  if (userPaused === next) return;
+
+  userPaused = next;
 
   document.getElementById("pauseBadge").classList.toggle("hidden", !userPaused);
   document.documentElement.classList.toggle("userPaused", userPaused);
 
   if (userPaused) {
+    // включаем паузу
     if (introVisible) {
-      introRestMS = introEndStamp - Date.now();
+      introRestMS = Math.max(0, introEndStamp - Date.now());
       clearTimeout(showIntro.t);
     }
     stopGuard();
-    releaseWakeLock(); // ← отпускаем, чтобы устройство могло заснуть
+    releaseWakeLock();
   } else {
-    if (introVisible && introRestMS > 0) {
-      introEndStamp = Date.now() + introRestMS;
-      showIntro.t = setTimeout(hideIntro, introRestMS);
+    // снимаем паузу
+    if (introVisible) {
+      // 👉 как при смене языка: полный перезапуск интро
+      clearTimeout(showIntro.t);
       introRestMS = 0;
+      render(curLang); // пересобирает DOM интро и сбрасывает анимации
+      showIntro(); // заново запускает таймер и показывает интро
     }
+    // если интро не видно — просто продолжаем волну, ничего не навязываем
+
     startGuard();
-    acquireWakeLock(); // ← возобновляем блокировку
+    if (document.visibilityState === "visible") acquireWakeLock();
   }
 }
 
+/* ---------- ручная пауза волны (переключатель) ---------- */
+function toggleUserPause() {
+  setUserPaused(!userPaused);
+}
+
+/* ---------- видимость вкладки: мгновенная пауза при уходе ---------- */
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && !userPaused) {
+  if (document.visibilityState === "hidden") {
+    // мгновенно включаем «ручную» паузу
+    setUserPaused(true);
+    return;
+  }
+  // вкладка снова видима: только вернуть Wake Lock, если юзер НЕ оставил паузу
+  if (!userPaused) {
     acquireWakeLock();
   }
 });
@@ -242,7 +264,6 @@ document.addEventListener("click", (e) => {
 });
 
 // Hot keys
-
 document.addEventListener("keydown", (e) => {
   // не реагируем, если фокус в элементах ввода
   if (
@@ -398,6 +419,7 @@ langSel.onchange = (e) => {
   render(lang);
   if (introVisible) restartIntroTimer();
 };
+
 /* ---------- старт ---------- */
 loadTranslations();
 setSpeed(false);
